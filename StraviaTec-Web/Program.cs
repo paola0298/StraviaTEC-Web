@@ -13,14 +13,18 @@ namespace StraviaTec_Web
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var config = new ConfigurationBuilder()
+                .AddCommandLine(args)
+                .Build();
+            
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls("http://127.0.0.1:5001", "http://0.0.0.0:5001")
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+            
+            host.Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
     }
 }
