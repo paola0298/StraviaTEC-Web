@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Athlete } from '../models/athlete'
+import { UtilsService } from '../services/utils.service'
 
 @Component({
   selector: 'app-register-athlete',
@@ -9,7 +10,7 @@ import { Athlete } from '../models/athlete'
 export class RegisterAthleteComponent implements OnInit {
   
   localUrl: any[];
-  constructor() { }
+  constructor(private utilsService: UtilsService) { }
 
   ngOnInit(): void {
   }
@@ -46,7 +47,7 @@ export class RegisterAthleteComponent implements OnInit {
   }
 }
 
-  async saveAthlete() {
+  saveAthlete() {
     const profilePhoto = (document.getElementById('profile-photo') as HTMLInputElement);
     const name = (document.getElementById('name') as HTMLInputElement);
     const lastName1 = (document.getElementById('last-name1') as HTMLInputElement);
@@ -60,18 +61,22 @@ export class RegisterAthleteComponent implements OnInit {
     if (profilePhoto.value == '' || name.value == '' || lastName1.value == '' || lastName2.value == '' || birth.value == '' || 
       nationality.value == '' || username.value == '' || pass.value == '' || passConfirm.value == '') {
         console.log('Completar todos los datos');
+        this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
         return;
     } 
 
     if (pass.value !== passConfirm.value) {
       console.log('Contrasenia no coincide');
+      this.utilsService.showInfoModal('Error', 'La contraseña debe ser igual en ambos campos', 'saveMsjLabel', 'msjText', 'saveMsj');
       return;
     }
 
-    const photo = await this.encodeImageFileAsURL('image-src');
+    
 
     const athlete = new Athlete(name.value, lastName1.value, lastName2.value, birth.value, nationality.value,
-      username.value, pass.value, photo);
+      username.value, pass.value, this.localUrl.toString());
+
+    // Llamar metodo que se conecte con el api para guardar un nuevo atleta
 
   }
 
