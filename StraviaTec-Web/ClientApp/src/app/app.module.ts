@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { RegisterAthleteComponent } from './register-athlete/register-athlete.component';
+import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { RegisterAthleteComponent } from './register-athlete/register-athlete.co
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    RegisterAthleteComponent
+    RegisterAthleteComponent,
+    ProfileAthleteComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -29,6 +31,7 @@ import { RegisterAthleteComponent } from './register-athlete/register-athlete.co
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'register-athlete', component: RegisterAthleteComponent},
+      { path: 'profile-athlete', component: ProfileAthleteComponent},
     ])
   ],
   providers: [],
