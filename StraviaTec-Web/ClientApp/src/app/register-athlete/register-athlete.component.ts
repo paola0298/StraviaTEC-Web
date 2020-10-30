@@ -13,28 +13,11 @@ export class RegisterAthleteComponent implements OnInit {
   constructor(private utilsService: UtilsService) { }
 
   ngOnInit(): void { }
-  
-  
-  encodeImageFileAsURL(imageHtml:string): Promise<string> {
-    const promise = new Promise<string>(function (resolve, result) {
-      const image = document.getElementById(imageHtml) as HTMLInputElement;
-      const file = image.files[0];
-      const reader = new FileReader();
-      const k = this;
 
-      reader.onloadend = function() {
-        console.log('File readed: ', reader.result);
-        resolve(reader.result.toString());
-      };
-      reader.onerror = function () {
-        resolve(null);
-      };
-      reader.readAsDataURL(file);
-    });
-    return promise;
-  }
-
-
+  /**
+   * Metodo para cargar una imagen
+   * @param event 
+   */
   loadImage(event:any) {
     (document.getElementById('image') as HTMLInputElement).setAttribute('hidden', 'true');
     if (event.target.files && event.target.files[0]) {
