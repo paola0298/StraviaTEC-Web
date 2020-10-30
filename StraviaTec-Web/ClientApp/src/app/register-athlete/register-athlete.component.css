@@ -62,19 +62,6 @@
     margin-bottom: 30px !important;
 }
 
-.column-right {
-    float: left;
-    width: 70%;
-  }
-
-.column-left {
-    float: left;
-    width: 30%;
-  }
-
-.avatar-pic {
-    width: 150px;
-}
 
 .margin-bottom {
     margin-bottom: 5px !important;
