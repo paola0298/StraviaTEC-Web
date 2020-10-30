@@ -1,1 +1,100 @@
-<p>profile-athlete works!</p>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+<div class="primary-container">
+  <hr>
+  <div class="card bg-light article-custom">
+    <article class="card-body mx-auto">
+      <h4 class="card-title mt-3 text-center custom-margin">Mi Perfil</h4>
+      <form class="container">
+        <div class="form-group">
+          <img [src]="localUrl" id="image" alt="profile-picture" *ngIf="localUrl">
+          <input type="file" name="profile-photo" id="profile-photo-input" class="form-control" (change)="loadImage($event)">
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <label>Nombre</label>
+            <input id="name" name="name" class="form-control" placeholder="Nombre" type="text" disabled>
+          </div> <!-- form-group// -->
+          
+          <div class="form-group col">
+            <label>Primer Apellido</label>
+            <input id="last-name1" name="last-name1" class="form-control" placeholder="Primer Apellido" type="text" disabled>
+          </div> <!-- form-group// -->
+
+          <div class="form-group col">
+            <label>Segundo Apellido</label>
+            <input id="last-name2" name="last-name2" class="form-control" placeholder="Segundo Apellido" type="text" disabled>
+          </div> <!-- form-group// -->
+        </div> <!-- row// -->
+        
+        <div class="row">
+          <div class="form-group col">
+            <label>Fecha de nacimiento</label>
+            <input id="birth" name="birth" class="form-control" placeholder="Fecha de nacimiento" type="date" disabled>
+          </div> <!-- form-group// -->
+          
+          <div class="form-group col">
+            <label>Nacionalidad</label>
+            <input id="nationality" name="nationality" class="form-control" placeholder="Nacionalidad" type="text" disabled>
+          </div> <!-- form-group// -->
+
+          <div class="form-group col">
+            <label>Nombre de Usuario</label>
+            <input id="username" name="username" class="form-control" placeholder="Nombre de usuario" type="text" disabled>
+          </div> <!-- form-group// -->
+        </div> <!-- row// -->
+        
+        <div class="row margin-div">
+          <div class="form-group col">
+            <button id="saveButton" type="submit" class="btn btn-primary btn-block" (click)="updateData()">Modificar mis datos</button>
+          </div> <!-- form-group// -->
+          
+          <div class="form-group col">
+            <button type="submit" class="btn btn-danger btn-block" (click)="askUser()">Eliminar mi cuenta</button>
+          </div> <!-- form-group// -->
+        </div> <!-- row -->
+      </form>
+    </article>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="saveMsj">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="saveMsjLabel"></h4>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <a id="msjText"></a>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" (click)="closeModal('saveMsj')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- The Option Modal -->
+<div class="modal" id="optionMsj">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="optionMsjLabel"></h4>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <a id="optionText"></a>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="deleteAccount()">Si</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('optionMsj')">No</button>
+      </div>
+    </div>
+  </div>
+</div>
