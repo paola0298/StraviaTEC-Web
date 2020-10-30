@@ -12,8 +12,7 @@ export class RegisterAthleteComponent implements OnInit {
   localUrl: any[];
   constructor(private utilsService: UtilsService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
   
   
   encodeImageFileAsURL(imageHtml:string): Promise<string> {
