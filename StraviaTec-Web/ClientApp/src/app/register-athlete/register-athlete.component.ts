@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Athlete } from '../models/athlete'
+import { Usuario } from '../models/user'
 import { UtilsService } from '../services/utils.service'
 
 @Component({
@@ -55,10 +55,10 @@ export class RegisterAthleteComponent implements OnInit {
 
     
 
-    const athlete = new Athlete(name.value, lastName1.value, lastName2.value, birth.value, nationality.value,
-      username.value, pass.value, this.localUrl.toString());
+    const user = new Usuario(username.value, pass.value, name.value, lastName1.value, lastName2.value,
+      birth.value, nationality.value, profilePhoto.value);
 
-    // Llamar metodo que se conecte con el api para guardar un nuevo atleta
+    // Llamar metodo que se conecte con el api para guardar un nuevo usuario
 
   }
 

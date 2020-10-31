@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
-import { Athlete } from '../models/athlete';
+import { Usuario } from '../models/user';
 
 @Component({
   selector: 'app-profile-athlete',
