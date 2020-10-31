@@ -30,8 +30,8 @@ import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.compo
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'register-athlete', component: RegisterAthleteComponent},
-      { path: 'profile-athlete', component: ProfileAthleteComponent},
+      { path: 'register-user', component: RegisterAthleteComponent},
+      { path: 'profile', component: ProfileAthleteComponent},
     ])
   ],
   providers: [],
