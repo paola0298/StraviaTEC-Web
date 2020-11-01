@@ -20,7 +20,7 @@ namespace StraviaTec_Web
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseConfiguration(config)
-                //.UseUrls("http://127.0.0.1:61589", "http://0.0.0.0:61589")
+                .UseUrls("http://127.0.0.1:5001", "http://0.0.0.0:5001")
                 //.UseUrls("http://localhost:61589")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
