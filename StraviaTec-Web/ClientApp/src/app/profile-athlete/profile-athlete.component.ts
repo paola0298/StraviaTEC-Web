@@ -13,14 +13,17 @@ export class ProfileAthleteComponent implements OnInit {
 
   localUrl:string;
   update:boolean = true;
-  user = 'paola2'; //obtener nombre de usuario actual
+  user:string; //obtener nombre de usuario actual
   actualUser:Usuario;
+  modifyPhoto:boolean = true;
 
   constructor(private utilsService: UtilsService, private apiService:ApiService,
     private router:Router) { }
 
   ngOnInit(): void {
     (document.getElementById('profile-photo-input') as HTMLInputElement).hidden = true;
+    // this.user = window.localStorage.getItem('username');
+    this.user = 'paola1';
     this.loadData();
   }
 
@@ -91,6 +94,7 @@ export class ProfileAthleteComponent implements OnInit {
       
       if (inputFile == '') {
         console.log('Imagen no actualizada');
+        this.modifyPhoto = false;
       }
       this.actualUser.nombre = name;
       this.actualUser.apellido1 = lastName1;
@@ -98,8 +102,30 @@ export class ProfileAthleteComponent implements OnInit {
       this.actualUser.fecha_nacimiento = birth;
       this.actualUser.nacionalidad = nationality;
       this.actualUser.user = username;
-      this.actualUser.foto = this.localUrl;
-  }
+
+      var result = this.apiService.put(`http://localhost:${this.apiService.PORT}/api/Usuarios/${this.actualUser.user}`, this.actualUser);
+      result.subscribe(
+        (value:any) => {
+          if (this.modifyPhoto) {
+            var data = {
+              User: this.actualUser.user,
+              Foto: this.localUrl
+            }
+            var updatePhoto = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Foto`, data);
+            updatePhoto.subscribe(
+              (value:any)=>{
+                console.log('Foto actualizada correctamente');
+            }, (error:any) => {
+              console.log('Error actualizando foto');
+              console.log(error.statusText);
+              console.log(error.status);
+            });
+          }
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+      });
+    }
 
   /**
    * Metodo para eliminar la cuenta de un usuario
