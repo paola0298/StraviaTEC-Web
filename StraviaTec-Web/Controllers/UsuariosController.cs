@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
 
 namespace Controllers
@@ -79,6 +80,10 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+            var fotoPath = await FileHandler.SaveFileAsync(usuario.Foto, usuario.User);
+            
+            usuario.Foto = fotoPath;
+
             _context.USUARIO.Add(usuario);
             try
             {
