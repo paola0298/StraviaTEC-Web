@@ -101,7 +101,6 @@ export class ProfileAthleteComponent implements OnInit {
       this.actualUser.apellido2 = lastName2;
       this.actualUser.fecha_nacimiento = birth;
       this.actualUser.nacionalidad = nationality;
-      this.actualUser.user = username;
 
       var result = this.apiService.put(`http://localhost:${this.apiService.PORT}/api/Usuarios/${this.actualUser.user}`, this.actualUser);
       result.subscribe(
@@ -175,7 +174,6 @@ export class ProfileAthleteComponent implements OnInit {
       lastName2.removeAttribute('disabled');
       birth.removeAttribute('disabled');
       nationality.removeAttribute('disabled');
-      username.removeAttribute('disabled');
       inputFile.hidden = false;  
   }
 
