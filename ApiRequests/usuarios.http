@@ -1,2 +1,8 @@
 # Obtener todos usuarios
 GET http://127.0.0.1:5001/api/Usuarios HTTP/1.2
+
+###
+
+GET http://127.0.0.1:5001/api/Usuarios/buscar/marlon/paola%20vega%20chacon HTTP/1.2
+
+Content-Type: application/json
