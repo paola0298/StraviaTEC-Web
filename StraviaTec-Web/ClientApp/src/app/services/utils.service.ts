@@ -40,4 +40,9 @@ export class UtilsService {
     document.getElementById(idContent).textContent = content;
   }
 
+  parseDate(dateTime:string):string {
+    const index = dateTime.indexOf('T');
+    return dateTime.substring(0, index);
+  }
+
 }
