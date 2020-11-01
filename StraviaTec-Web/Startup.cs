@@ -58,7 +58,7 @@ namespace StraviaTec_Web
                 app.UseSpaStaticFiles();
             }
 
-            app.UseCors(options => options.WithOrigins("*").AllowAnyMethod());
+            app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
             var webUploadsPath = Path.Combine(Environment.CurrentDirectory, "WebUploads");
 
