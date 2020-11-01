@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { Usuario } from '../models/user';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-athlete',
@@ -12,10 +13,11 @@ export class ProfileAthleteComponent implements OnInit {
 
   localUrl:string;
   update:boolean = true;
-  user = 'paola'; //obtener nombre de usuario actual
+  user = 'paola2'; //obtener nombre de usuario actual
   actualUser:Usuario;
 
-  constructor(private utilsService: UtilsService, private apiService:ApiService) { }
+  constructor(private utilsService: UtilsService, private apiService:ApiService,
+    private router:Router) { }
 
   ngOnInit(): void {
     (document.getElementById('profile-photo-input') as HTMLInputElement).hidden = true;
@@ -81,21 +83,36 @@ export class ProfileAthleteComponent implements OnInit {
 
   updateUser(name: string, lastName1: string, lastName2: string, birth: string, nationality: string, 
     username: string, inputFile: string) {
-      if (inputFile == '' || name == '' || lastName1 == '' || lastName2 == '' || birth == '' || 
+      if (name == '' || lastName1 == '' || lastName2 == '' || birth == '' || 
       nationality== '' || username == '') {
         this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
         return;
       }
       
+      if (inputFile == '') {
+        console.log('Imagen no actualizada');
+      }
       this.actualUser.nombre = name;
-
+      this.actualUser.apellido1 = lastName1;
+      this.actualUser.apellido2 = lastName2;
+      this.actualUser.fecha_nacimiento = birth;
+      this.actualUser.nacionalidad = nationality;
+      this.actualUser.user = username;
+      this.actualUser.foto = this.localUrl;
   }
 
   /**
    * Metodo para eliminar la cuenta de un usuario
    */
   deleteAccount() {
-
+    var result = this.apiService.delete(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios/${this.actualUser.user}`);
+    result.subscribe((value:any)=>{
+      this.router.navigate(['']);
+    }, (error:any)=>{
+      console.log(error.statusText);
+      console.log(error.status);
+      this.utilsService.showInfoModal('Error', 'No se ha podido eliminar su cuenta.', 'saveMsjLabel', 'msjText', 'saveMsj');
+    });
   }
 
   /**
