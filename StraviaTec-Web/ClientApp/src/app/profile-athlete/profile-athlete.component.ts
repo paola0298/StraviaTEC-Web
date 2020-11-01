@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../services/utils.service';
 import { Usuario } from '../models/user';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-profile-athlete',
@@ -11,19 +12,50 @@ export class ProfileAthleteComponent implements OnInit {
 
   localUrl:string;
   update:boolean = true;
+  user = 'paola'; //obtener nombre de usuario actual
+  actualUser:Usuario;
 
-  constructor(private utilsService: UtilsService) { }
+  constructor(private utilsService: UtilsService, private apiService:ApiService) { }
 
   ngOnInit(): void {
-    this.localUrl = 'https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/256x256/plain/user.png';
-    //obtener imagen del usuario registrado
     (document.getElementById('profile-photo-input') as HTMLInputElement).hidden = true;
+    this.loadData();
+  }
+
+  /**
+   * Metodo que se conecta al api para obtener la información de un usuario
+   */
+  loadData() {
+    var result = this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios/${this.user}`);
+    result.subscribe(
+      (value: Usuario)=>{
+        this.actualUser = new Usuario(value.user, value.password, value.nombre, value.apellido1, 
+          value.apellido2, this.utilsService.parseDate(value.fecha_nacimiento), value.nacionalidad, value.foto);
+        this.updateProfile();
+        console.log(value.fecha_nacimiento);
+      }, (error:any)=>{
+        console.log(error.statusText);
+        console.log(error.status);
+      });
+  }
+
+  /**
+   * Metodo para actualizar los datos en el perfil, visualmente
+   */
+  updateProfile() {
+    (document.getElementById('name') as HTMLInputElement).value = this.actualUser.nombre;
+    (document.getElementById('last-name1') as HTMLInputElement).value = this.actualUser.apellido1;
+    (document.getElementById('last-name2') as HTMLInputElement).value = this.actualUser.apellido2;
+    (document.getElementById('birth') as HTMLInputElement).value = this.actualUser.fecha_nacimiento;
+    (document.getElementById('nationality') as HTMLInputElement).value = this.actualUser.nacionalidad;
+    (document.getElementById('username') as HTMLInputElement).value = this.actualUser.user;
+    this.localUrl = this.actualUser.foto;
   }
 
   /**
    * Metodo para actualizar los datos de un usuario
    */
-  updateData() {
+  getData() {
     const profilePhoto = (document.getElementById('image') as HTMLInputElement);
     const name = (document.getElementById('name') as HTMLInputElement);
     const lastName1 = (document.getElementById('last-name1') as HTMLInputElement);
@@ -42,7 +74,27 @@ export class ProfileAthleteComponent implements OnInit {
       this.update = true;
       saveButton.textContent = 'Modificar mis datos';
       this.disableProfileEditable(name, lastName1, lastName2, birth, nationality, username, inputFile);
+      this.updateUser(name.value, lastName1.value, lastName2.value, birth.value, nationality.value, username.value, inputFile.value);
     }
+
+  }
+
+  updateUser(name: string, lastName1: string, lastName2: string, birth: string, nationality: string, 
+    username: string, inputFile: string) {
+      if (inputFile == '' || name == '' || lastName1 == '' || lastName2 == '' || birth == '' || 
+      nationality== '' || username == '') {
+        this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        return;
+      }
+      
+      this.actualUser.nombre = name;
+
+  }
+
+  /**
+   * Metodo para eliminar la cuenta de un usuario
+   */
+  deleteAccount() {
 
   }
 
@@ -60,12 +112,7 @@ export class ProfileAthleteComponent implements OnInit {
     }
   }
   
-  /**
-   * Metodo para eliminar la cuenta de un usuario
-   */
-  deleteAccount() {
-
-  }
+  
 
   /**
    * Metodo para hacer que el perfil del usuario se pueda editar
