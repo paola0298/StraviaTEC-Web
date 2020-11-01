@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../models/user'
-import { UtilsService } from '../services/utils.service'
+import { Usuario } from '../models/user';
+import { UtilsService } from '../services/utils.service';
+import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-athlete',
@@ -10,7 +12,9 @@ import { UtilsService } from '../services/utils.service'
 export class RegisterAthleteComponent implements OnInit {
   
   localUrl: any[];
-  constructor(private utilsService: UtilsService) { }
+  created:boolean = false;
+  constructor(private utilsService: UtilsService, private apiService:ApiService,
+    private router: Router) { }
 
   ngOnInit(): void { }
 
@@ -42,24 +46,41 @@ export class RegisterAthleteComponent implements OnInit {
 
     if (profilePhoto.value == '' || name.value == '' || lastName1.value == '' || lastName2.value == '' || birth.value == '' || 
       nationality.value == '' || username.value == '' || pass.value == '' || passConfirm.value == '') {
-        console.log('Completar todos los datos');
         this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
         return;
     } 
 
     if (pass.value !== passConfirm.value) {
-      console.log('Contrasenia no coincide');
       this.utilsService.showInfoModal('Error', 'La contraseña debe ser igual en ambos campos', 'saveMsjLabel', 'msjText', 'saveMsj');
       return;
     }
 
-    
-
     const user = new Usuario(username.value, pass.value, name.value, lastName1.value, lastName2.value,
-      birth.value, nationality.value, profilePhoto.value);
+      birth.value, nationality.value, this.localUrl.toString());
+    this.createAthlete(user);
 
-    // Llamar metodo que se conecte con el api para guardar un nuevo usuario
+  }
 
+  createAthlete(user:Usuario) {
+    var response = this.apiService.post(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios`, user);
+    response.subscribe(
+      (value:any) => {
+        this.utilsService.showInfoModal('Exito', 'Registro completado', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.created = true;
+        //Hacer que navegue al inicio de sesion
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        var codeError = error.status;
+        if (codeError == 500) {
+          this.utilsService.showInfoModal('Error', 'No se ha podido registrar', 'saveMsjLabel', 'msjText', 'saveMsj');
+          return;
+        } 
+        if (codeError == 409) {
+          this.utilsService.showInfoModal('Error', 'El usuario ya existe', 'saveMsjLabel', 'msjText', 'saveMsj');
+          return;
+        }
+      });
   }
 
    /**
@@ -68,5 +89,9 @@ export class RegisterAthleteComponent implements OnInit {
    */
   closeModal(id: string): void {
     document.getElementById(id).style.setProperty('display', 'none');
+    if (this.created) {
+      this.router.navigate(['']);
+      //navegar al inicio de sesion
+    }
   }
 }
