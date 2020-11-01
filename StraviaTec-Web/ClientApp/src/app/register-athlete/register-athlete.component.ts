@@ -56,7 +56,7 @@ export class RegisterAthleteComponent implements OnInit {
     }
 
     const user = new Usuario(username.value, pass.value, name.value, lastName1.value, lastName2.value,
-      birth.value, nationality.value, this.localUrl.toString());
+      birth.value, nationality.value, '');
     this.createAthlete(user);
 
   }
@@ -65,9 +65,26 @@ export class RegisterAthleteComponent implements OnInit {
     var response = this.apiService.post(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios`, user);
     response.subscribe(
       (value:any) => {
-        this.utilsService.showInfoModal('Exito', 'Registro completado', 'saveMsjLabel', 'msjText', 'saveMsj');
-        this.created = true;
-        //Hacer que navegue al inicio de sesion
+        var data = {
+          User: user.user,
+          Foto: this.localUrl.toString()
+        }
+        
+        var updatePhoto = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Foto`, data);
+        updatePhoto.subscribe(
+          (value:any)=>{
+            console.log('Foto actualizada correctamente');
+            this.utilsService.showInfoModal('Exito', 'Registro completado', 'saveMsjLabel', 'msjText', 'saveMsj');
+            this.created = true;
+          }, (error:any) => {
+            console.log('Error actualizando foto');
+            console.log(error);
+            console.log(error.statusText);
+            console.log(error.status);
+          });
+        
+        
+
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
