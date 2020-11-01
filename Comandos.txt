@@ -1,0 +1,6 @@
+# Actualizar los modelos del api con los de la BD
+dotnet ef dbcontext scaffold "<ConnectionString>" Npgsql.EntityFrameworkCore.PostgreSQL -o Models -n Models--force
+
+# Generar controlador de un modelo dado
+# dotnet tool install --global dotnet-aspnet-codegenerator
+dotnet-aspnet-codegenerator controller -name <Nombre Controlador> -api -m <Ruta a Modelo> -dc <Ruta a DbContext> -outDir Controllers -namespace Controllers

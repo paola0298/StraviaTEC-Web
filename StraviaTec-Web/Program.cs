@@ -16,14 +16,16 @@ namespace StraviaTec_Web
             var config = new ConfigurationBuilder()
                 .AddCommandLine(args)
                 .Build();
-            
+
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://127.0.0.1:5001", "http://0.0.0.0:5001")
+                .UseConfiguration(config)
+                //.UseUrls("http://127.0.0.1:61589", "http://0.0.0.0:61589")
+                //.UseUrls("http://localhost:61589")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
-            
+
             host.Run();
         }
     }

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StraviaTec_Web.Models;
 
 namespace StraviaTec_Web
 {
@@ -26,6 +27,8 @@ namespace StraviaTec_Web
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            var connection = "Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;";
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
