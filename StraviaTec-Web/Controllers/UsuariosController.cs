@@ -80,10 +80,6 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
-            var fotoPath = await FileHandler.SaveFileAsync(usuario.Foto, usuario.User);
-            
-            usuario.Foto = fotoPath;
-
             _context.USUARIO.Add(usuario);
             try
             {
