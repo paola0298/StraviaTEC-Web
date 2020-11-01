@@ -8,7 +8,7 @@ mediante solicitudes HTTP como GET, POST, PUT y DELETE */
   providedIn: 'root'
 })
 export class ApiService {
-  private PORT = 5001;
+  public PORT = 5001;
   private options = {
     headers : {
       'Content-Type': 'application/json'
