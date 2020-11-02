@@ -54,4 +54,19 @@ export class ApiService {
     console.log("Eliminando...")
     return this.http.delete(url, this.options);
   }
+
+   /**
+   * Solicitud HTTP POST para iniciar sesion
+   * @param id Nombre de usuario
+   * @param pass Contraseña
+   */
+  loginClient(id:string, pass:string) {
+    var url = `https://localhost:${this.PORT}/api/Login`;
+    var auth = {
+      id: id,
+      password: pass
+    }
+    return this.http.post(url, JSON.stringify(auth), this.options);
+  }
+
 }
