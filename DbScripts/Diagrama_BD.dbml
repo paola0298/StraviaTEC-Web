@@ -1,0 +1,137 @@
+table USUARIO as U {
+  User varchar(30) [pk]
+  Password varchar(64) [not null]
+  Nombre varchar(50) [not null]
+  Apellido1 varchar(50) [not null]
+  Apellido2 varchar(50) [not null]
+  Fecha_nacimiento date [not null]
+  Nacionalidad varchar(50) [not null]
+  Foto varchar(50) [null]
+  Es_organizador boolean [not null]
+}
+
+table USUARIO_AMIGO {
+  Id_usuario varchar(30) [not null, ref: > U.User]
+  Id_amigo varchar(30) [not null, ref: < U.User]
+}
+
+table EVENTO as E {
+  Id int [pk]
+  Id_tipo_evento int [not null, ref: > TE.Id]
+  Nombre varchar(50) [not null]
+  Es_privado boolean [not null]
+  Id_tipo_actividad int [not null, ref: > TA.Id]
+}
+
+table TIPO_EVENTO as TE {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+}
+
+table TIPO_ACTIVIDAD as TA {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+}
+
+table ACTIVIDAD as A {
+  Id int [pk]
+  Id_usuario varchar(50) [not null, ref: > U.User]
+  Id_tipo_actividad int [not null, ref: > TA.Id]
+  Id_recorrido int [not null, ref: - R.Id]
+  Duracion numeric(4,2) [not null]
+  Kilometros numeric(3,2) [not null]
+  Es_evento boolean [not null]
+  Id_evento int [not null, ref: > E.Id]
+}
+
+table RECORRIDO as R {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+  Fecha_hora datetime [not null]
+}
+
+table PUNTO as P {
+  Id int [pk]
+  Id_recorrido int [not null, ref: > R.Id]
+  Segmento int [not null]
+  Orden int [not null]
+  Latitud numeric(3,8) [not null]
+  Longitud numeric(3,8) [not null]
+  Tiempo date [not null]
+  Elevacion int [not null]
+}
+
+table GRUPO as G {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+  Id_admin varchar(30) [not null, ref: > U.User]
+}
+
+table USUARIO_GRUPO as UG {
+  Id int [pk]
+  Id_grupo int [not null, ref: > G.Id]
+  Id_usuario varchar(30) [not null, ref: > U.User]
+}
+
+table EVENTO_GRUPO as EG {
+  Id int [pk]
+  Id_evento int [not null, ref: > E.Id]
+  Id_grupo int [not null, ref: > G.Id]
+}
+
+table RETO as RT {
+  Id int [pk]
+  Id_evento int [not null, ref: - E.Id]
+  Id_tipo_reto int [not null, ref: > TR.Id]
+  Inicio date [not null]
+  Fin date [not null]
+  Objetivo numeric(4,2) [not null]
+}
+
+table TIPO_RETO as TR {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+}
+
+table INSCRIPCION_EVENTO {
+  Id int [pk]
+  Id_evento int [not null, ref: > E.Id]
+  Id_usuario varchar(30) [not null, ref: > U.User]
+}
+
+table CARRERA as C {
+  Id int [pk]
+  Id_recorrido int [not null, ref: - R.Id]
+  Id_evento int [not null, ref: - E.Id]
+  Nombre varchar(50) [not null]
+  Fecha date [not null]
+  Costo numeric(5,2) [not null]
+}
+
+table CATEGORIA_CARRERA as CC {
+  Id int [pk]
+  Id_carrera int [not null, ref: > C.Id]
+  Id_categoria int [not null, ref: > CA.Id]
+}
+
+table CATEGORIA as CA{
+  Id int [pk]
+  Nombre varchar(50) [not null]
+}
+
+table PATROCINADOR as PT {
+  Id int [pk]
+  Nombre varchar(50) [not null]
+}
+
+table PATROCINADOR_EVENTO {
+  Id int [pk]
+  Id_evento int [not null, ref: > E.Id]
+  Id_patrocinador int [not null, ref: > PT.Id]
+}
+
+table CUENTA_BANCARIA {
+  Id int [pk]
+  Id_carrera int [not null, ref: > C.Id]
+  Nombre varchar(50) [not null]
+}
