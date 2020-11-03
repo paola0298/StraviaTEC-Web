@@ -1,4 +1,6 @@
-REVOKE ALL PRIVILEGES ON DATABASE "StraviaTEC" TO USER "StraviaUser";
+\connect postgres;
+
+-- REVOKE ALL PRIVILEGES ON DATABASE "StraviaTEC" TO USER "StraviaUser";
 
 DROP DATABASE IF EXISTS "StraviaTEC";
 
