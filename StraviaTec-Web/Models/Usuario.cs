@@ -15,5 +15,14 @@ namespace StraviaTec_Web.Models
         public DateTime Fecha_nacimiento { get; set; }
         public string Nacionalidad { get; set; }
         public string Foto { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Usuario usr) {
+                return usr.User == this.User;
+            }
+
+            return false;
+        }
     }
 }
