@@ -40,7 +40,7 @@ namespace Controllers
                 return NotFound();
             }
 
-            return Ok(resultado.Except(res));
+            return Ok(resultado.Except(res).Where(p => !p.EsOrganizador));
         }
 
         // GET: api/Usuarios
