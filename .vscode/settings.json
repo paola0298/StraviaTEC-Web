@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "StraviaTEC",
+            "database": "StraviaTEC",
+            "username": "StraviaUser",
+            "password": "StraviaTEC_2020"
+        }
+    ]
+}

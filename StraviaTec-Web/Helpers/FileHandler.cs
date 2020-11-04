@@ -18,7 +18,7 @@ namespace StraviaTec_Web.Helpers
 
             try 
             {
-                var fileBytes = Convert.FromBase64String(file.Substring(file.IndexOf(",") + 1));
+                var fileBytes = Convert.FromBase64String(file[(file.IndexOf(",") + 1)..]);
 
                 if (file.Length == 0) return null;
 
@@ -26,10 +26,8 @@ namespace StraviaTec_Web.Helpers
                 string filePath = Path.Combine(uploads, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create)) 
                 {
-                    using (var memStream = new MemoryStream(fileBytes))
-                    {
-                        await memStream.CopyToAsync(stream);
-                    }
+                    using var memStream = new MemoryStream(fileBytes);
+                    await memStream.CopyToAsync(stream);
                 }
 
                 return $"{Host}{fileName}";

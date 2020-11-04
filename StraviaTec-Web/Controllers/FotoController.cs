@@ -20,7 +20,7 @@ namespace StraviaTec_Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadPhotoAsync(FotoUpload upload) {
             
-            var user = _context.USUARIO.FirstOrDefault(p => p.User == upload.User);
+            var user = _context.Usuario.FirstOrDefault(p => p.User == upload.User);
             if (user == null) {
                 return BadRequest();
             }
