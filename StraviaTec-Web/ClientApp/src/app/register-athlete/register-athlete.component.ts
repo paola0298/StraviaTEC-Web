@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class RegisterAthleteComponent implements OnInit {
   
   localUrl: any[];
+  userType = localStorage.getItem('userType');
   created:boolean = false;
   constructor(private utilsService: UtilsService, private apiService:ApiService,
     private router: Router) { }
@@ -44,6 +45,8 @@ export class RegisterAthleteComponent implements OnInit {
     const pass = (document.getElementById('pass') as HTMLInputElement);
     const passConfirm = (document.getElementById('passConfirm') as HTMLInputElement);
 
+    console.log(birth.value);
+
     if (profilePhoto.value == '' || name.value == '' || lastName1.value == '' || lastName2.value == '' || birth.value == '' || 
       nationality.value == '' || username.value == '' || pass.value == '' || passConfirm.value == '') {
         this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
@@ -57,6 +60,11 @@ export class RegisterAthleteComponent implements OnInit {
 
     const user = new Usuario(username.value, pass.value, name.value, lastName1.value, lastName2.value,
       birth.value, nationality.value, '');
+    if (this.userType == 'organizer') {
+      user.esOrganizador = true;
+    } else if (this.userType == 'athlete'){
+      user.esOrganizador = false;
+    }
     this.createAthlete(user);
 
   }
@@ -108,7 +116,6 @@ export class RegisterAthleteComponent implements OnInit {
     document.getElementById(id).style.setProperty('display', 'none');
     if (this.created) {
       this.router.navigate(['']);
-      //navegar al inicio de sesion
     }
   }
 }
