@@ -11,11 +11,11 @@
 
        
         <div class="col col-custom">
-          <button class="btn" [routerLink]="['/login-deportista']"><i class="fas fa-running"></i>   Deportista</button>
+          <button class="btn" (click)="setUserType(true)" [routerLink]="['/login-deportista']"><i class="fas fa-running"></i>   Deportista</button>
         </div>
 
         <div class="col col-custom">
-          <button class="btn" [routerLink]="['/menu-organizador']"><i class="fas fa-user-cog"></i>   Organizador</button>
+          <button class="btn" (click)="setUserType(false)" [routerLink]="['/login-deportista']"><i class="fas fa-user-cog"></i>   Organizador</button>
         </div>
 
       </div>

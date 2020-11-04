@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 
 })
 export class HomeComponent {
+
+  setUserType(athlete:boolean) {
+    if (athlete) {
+      window.localStorage.setItem('userType', 'athlete');
+    } else {
+      window.localStorage.setItem('userType', 'organizer');
+    }
+  }
 }
