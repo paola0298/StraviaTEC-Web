@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StraviaTec_Web.Models;
-using System.Linq;
 
 namespace Controllers
 {
@@ -23,8 +22,10 @@ namespace Controllers
         public async Task<IActionResult> GetBusquedaAsync(string username, string parametro) {
             var terminos = parametro.Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
             var Usuario = await _context.Usuario.FindAsync(username);
-            var res = new List<Usuario>();
-            res.Add(Usuario);
+            var res = new List<Usuario>
+            {
+                Usuario
+            };
             var resultado = new List<Usuario>();
             foreach(var term in terminos){
                 var temp = _context.Usuario.Where(u => u.Nombre.ToLower().Contains(term.ToLower()) || u.Apellido1.ToLower().Contains(term.ToLower())
