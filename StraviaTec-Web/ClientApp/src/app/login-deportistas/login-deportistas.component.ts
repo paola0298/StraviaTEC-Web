@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-deportistas.component.css']
 })
 export class LoginDeportistasComponent implements OnInit {
+  
+  userType = window.localStorage.getItem('userType');
 
   constructor(private utilsService:UtilsService, private apiService: ApiService,
     private router: Router) { }
@@ -16,18 +18,25 @@ export class LoginDeportistasComponent implements OnInit {
   ngOnInit() { }
 
   checkLogin(id:string, pass:string) {
-    var response = this.apiService.loginClient(id, pass);
+    var auth = {
+      id: id,
+      password: pass,
+      userType: this.userType
+    }
+
+    var response = this.apiService.post(`https://localhost:${this.apiService.PORT}/api/Login`, auth);
     response.subscribe(
       (value:any) => {
         var userId = value.id;
-        var client:boolean = value.client;
-
-        console.log(userId + " " + client);
-
-        if (client) {
-          window.localStorage.setItem("userId", userId);
+        window.localStorage.setItem('userId', userId);
+        if (this.userType == 'athlete') {
           this.router.navigate(['menu-deportista']);
+          return;
+        } 
+        if (this.userType == 'organizer') {
+          this.router.navigate(['menu-organizador']);
         }
+        
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
@@ -40,11 +49,6 @@ export class LoginDeportistasComponent implements OnInit {
 
         if (status == 409) {
           this.utilsService.showInfoModal("Error", "El usuario ya se encuentra registrado", "saveMsjLabel", "msjText", 'saveMsj');
-          return;
-        }
-
-        if (status == 500) {
-          this.utilsService.showInfoModal("Error", "Su solicitud de afiliación aún esta siendo verificada.", "saveMsjLabel", "msjText", 'saveMsj');
           return;
         }
       });
