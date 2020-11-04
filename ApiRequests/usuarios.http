@@ -1,8 +1,32 @@
 # Obtener todos usuarios
 GET http://127.0.0.1:5001/api/Usuarios HTTP/1.2
 
-###
+### Busqueda de usuarios
 
 GET http://127.0.0.1:5001/api/Usuarios/buscar/marlon/paola%20vega%20chacon HTTP/1.2
-
 Content-Type: application/json
+
+### Crear un usuario
+POST http://127.0.0.1:5001/api/Usuarios HTTP/2.0
+Content-Type: application/json
+
+{
+    "User": "pvill",
+    "Password": "DOSdeJUNIO",
+    "Nombre": "Paola",
+    "Apellido1": "Villegas",
+    "Apellido2": "Chacón",
+    "FechaNacimiento": "1998-06-02",
+    "Nacionalidad": "Costarricense",
+    "Foto": "",
+    "EsOrganizador": false
+}
+
+### Seguir a un usuario
+POST http://127.0.0.1:5001/api/Amigos HTTP/2.0
+Content-Type: application/json
+
+{
+    "User": "mvega",
+    "AmigoUser": "pvill"
+}
