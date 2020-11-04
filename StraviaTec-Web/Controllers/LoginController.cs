@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StraviaTec_Web.Models;
+using System.Linq;
 
 namespace StraviaTec_Web.Controllers
 {
@@ -16,6 +17,17 @@ namespace StraviaTec_Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> OnLoginAsync(LoginData auth) {
+            if (auth == null || string.IsNullOrWhiteSpace(auth.User) || string.IsNullOrWhiteSpace(auth.Password)) {
+                return BadRequest();
+            }
+
+            var user = _context.USUARIO.FirstOrDefault(p => p.User == auth.User);
+
+            if (user == null) {
+                return NotFound();
+            }
+
+            if (user.)
             
             //TODO Verificar login
             return Ok();
