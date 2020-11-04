@@ -4,9 +4,10 @@ export class Usuario {
     nombre: string;
     apellido1: string;
     apellido2: string;
-    fecha_nacimiento: string;
+    fechaNacimiento: string;
     nacionalidad: string;
     foto: string;
+    esOrganizador: boolean;
 
     constructor(
         User: string,
@@ -23,7 +24,7 @@ export class Usuario {
         this.nombre = Nombre;
         this.apellido1 = Apellido1;
         this.apellido2 = Apellido2;
-        this.fecha_nacimiento = Fecha_nacimiento;
+        this.fechaNacimiento = Fecha_nacimiento;
         this.nacionalidad = Nacionalidad;
         this.foto = Foto;
     }
