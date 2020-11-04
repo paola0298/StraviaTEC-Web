@@ -14,6 +14,7 @@ import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.compo
 import { LoginDeportistasComponent } from './login-deportistas/login-deportistas.component';
 import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
+import { AddFriendComponent } from './add-friend/add-friend.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.co
     ProfileAthleteComponent,
     LoginDeportistasComponent,
     MenuOrganizadorComponent,
-    GestionCarrerasComponent
+    GestionCarrerasComponent,
+    AddFriendComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -36,13 +38,12 @@ import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.co
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'register-user', component: RegisterAthleteComponent},
-      { path: 'profile', component: ProfileAthleteComponent},
-      { path: 'login-deportista', component: LoginDeportistasComponent},
-      { path: 'menu-organizador', component: MenuOrganizadorComponent},
-      { path: 'gestion-carreras', component: GestionCarrerasComponent},
-
-
+      { path: 'register-user', component: RegisterAthleteComponent },
+      { path: 'profile', component: ProfileAthleteComponent },
+      { path: 'login-deportista', component: LoginDeportistasComponent },
+      { path: 'menu-organizador', component: MenuOrganizadorComponent },
+      { path: 'gestion-carreras', component: GestionCarrerasComponent },
+      { path: 'add-friend', component: AddFriendComponent },
     ])
   ],
   providers: [],
