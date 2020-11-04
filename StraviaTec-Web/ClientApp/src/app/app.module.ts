@@ -11,6 +11,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { RegisterAthleteComponent } from './register-athlete/register-athlete.component';
 import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.component';
+import { LoginDeportistasComponent } from './login-deportistas/login-deportistas.component';
+import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
+import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.compo
     CounterComponent,
     FetchDataComponent,
     RegisterAthleteComponent,
-    ProfileAthleteComponent
+    ProfileAthleteComponent,
+    LoginDeportistasComponent,
+    MenuOrganizadorComponent,
+    GestionCarrerasComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,6 +38,11 @@ import { ProfileAthleteComponent } from './profile-athlete/profile-athlete.compo
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'register-user', component: RegisterAthleteComponent},
       { path: 'profile', component: ProfileAthleteComponent},
+      { path: 'login-deportista', component: LoginDeportistasComponent},
+      { path: 'menu-organizador', component: MenuOrganizadorComponent},
+      { path: 'gestion-carreras', component: GestionCarrerasComponent},
+
+
     ])
   ],
   providers: [],

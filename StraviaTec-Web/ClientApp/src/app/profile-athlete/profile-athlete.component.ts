@@ -23,7 +23,7 @@ export class ProfileAthleteComponent implements OnInit {
   ngOnInit(): void {
     (document.getElementById('profile-photo-input') as HTMLInputElement).hidden = true;
     // this.user = window.localStorage.getItem('username');
-    this.user = 'paola1';
+    this.user = window.localStorage.getItem('userId');
     this.loadData();
   }
 
@@ -35,9 +35,9 @@ export class ProfileAthleteComponent implements OnInit {
     result.subscribe(
       (value: Usuario)=>{
         this.actualUser = new Usuario(value.user, value.password, value.nombre, value.apellido1, 
-          value.apellido2, this.utilsService.parseDate(value.fecha_nacimiento), value.nacionalidad, value.foto);
+          value.apellido2, this.utilsService.parseDate(value.fechaNacimiento), value.nacionalidad, value.foto);
         this.updateProfile();
-        console.log(value.fecha_nacimiento);
+        console.log(value.fechaNacimiento);
       }, (error:any)=>{
         console.log(error.statusText);
         console.log(error.status);
@@ -51,7 +51,7 @@ export class ProfileAthleteComponent implements OnInit {
     (document.getElementById('name') as HTMLInputElement).value = this.actualUser.nombre;
     (document.getElementById('last-name1') as HTMLInputElement).value = this.actualUser.apellido1;
     (document.getElementById('last-name2') as HTMLInputElement).value = this.actualUser.apellido2;
-    (document.getElementById('birth') as HTMLInputElement).value = this.actualUser.fecha_nacimiento;
+    (document.getElementById('birth') as HTMLInputElement).value = this.actualUser.fechaNacimiento;
     (document.getElementById('nationality') as HTMLInputElement).value = this.actualUser.nacionalidad;
     (document.getElementById('username') as HTMLInputElement).value = this.actualUser.user;
     this.localUrl = this.actualUser.foto;
@@ -99,7 +99,7 @@ export class ProfileAthleteComponent implements OnInit {
       this.actualUser.nombre = name;
       this.actualUser.apellido1 = lastName1;
       this.actualUser.apellido2 = lastName2;
-      this.actualUser.fecha_nacimiento = birth;
+      this.actualUser.fechaNacimiento = birth;
       this.actualUser.nacionalidad = nationality;
 
       var result = this.apiService.put(`http://localhost:${this.apiService.PORT}/api/Usuarios/${this.actualUser.user}`, this.actualUser);

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
 
 namespace Controllers
@@ -101,6 +102,8 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario Usuario)
         {
+            Usuario.Password = Encryption.EncryptSha256(Usuario.Password);
+
             _context.Usuario.Add(Usuario);
             try
             {
