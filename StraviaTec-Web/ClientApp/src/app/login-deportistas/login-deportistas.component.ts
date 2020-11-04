@@ -19,18 +19,17 @@ export class LoginDeportistasComponent implements OnInit {
 
   checkLogin(id:string, pass:string) {
     var auth = {
-      id: id,
+      user: id,
       password: pass,
       userType: this.userType
     }
 
-    var response = this.apiService.post(`https://localhost:${this.apiService.PORT}/api/Login`, auth);
+    var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Login`, auth);
     response.subscribe(
       (value:any) => {
-        var userId = value.id;
-        window.localStorage.setItem('userId', userId);
+        window.localStorage.setItem('userId', id);
         if (this.userType == 'athlete') {
-          this.router.navigate(['menu-deportista']);
+          this.router.navigate(['profile']); //TODO cambiar a menu de deportista
           return;
         } 
         if (this.userType == 'organizer') {
