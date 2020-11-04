@@ -8,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class AddFriendComponent implements OnInit {
 
   constructor() { }
+  
+  athletes = [];
+  
 
   ngOnInit(): void {
+  }
+
+  getAthlete() {
+
   }
 
 }
