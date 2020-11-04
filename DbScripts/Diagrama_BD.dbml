@@ -12,7 +12,7 @@ table USUARIO as U {
 
 table USUARIO_AMIGO {
   Id_usuario varchar(30) [not null, ref: > U.User]
-  Id_amigo varchar(30) [not null, ref: < U.User]
+  Id_amigo varchar(30) [not null, ref: > U.User]
 }
 
 table EVENTO as E {
@@ -38,8 +38,8 @@ table ACTIVIDAD as A {
   Id_usuario varchar(50) [not null, ref: > U.User]
   Id_tipo_actividad int [not null, ref: > TA.Id]
   Id_recorrido int [not null, ref: - R.Id]
-  Duracion numeric(4,2) [not null]
-  Kilometros numeric(3,2) [not null]
+  Duracion numeric(5,1) [not null]
+  Kilometros numeric(5,1) [not null]
   Es_evento boolean [not null]
   Id_evento int [not null, ref: > E.Id]
 }
@@ -55,8 +55,8 @@ table PUNTO as P {
   Id_recorrido int [not null, ref: > R.Id]
   Segmento int [not null]
   Orden int [not null]
-  Latitud numeric(3,8) [not null]
-  Longitud numeric(3,8) [not null]
+  Latitud numeric(10,8) [not null]
+  Longitud numeric(10,8) [not null]
   Tiempo date [not null]
   Elevacion int [not null]
 }
@@ -85,7 +85,7 @@ table RETO as RT {
   Id_tipo_reto int [not null, ref: > TR.Id]
   Inicio date [not null]
   Fin date [not null]
-  Objetivo numeric(4,2) [not null]
+  Objetivo numeric(5) [not null]
 }
 
 table TIPO_RETO as TR {
