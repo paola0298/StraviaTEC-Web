@@ -1,35 +1,41 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 
-<div class="container">
-    <div class="row">
-        <h2>Buscar deportistas</h2>
-        <div class="input-group margin-bottom">
-            <input id="search-input" type="text" class="form-control" placeholder="Escriba el nombre del deportista">
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" (click)="searchAthlete()">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="list-group container" *ngFor="let athlete of athletes">
-            <a class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <div class="row">
-                        <div class="column margin-right">
-                            <img src= {{athlete.foto}}>
-                        </div>
-                        <div class="column">
-                            <h5 class="mb-1">{{ athlete.nombre }} {{ athlete.apellido1 }} {{ athlete.apellido2 }}</h5>
-                            <h6 class="mb-1"> {{ athlete.nacionalidad }}</h6>
-                            <h6 class="mb-1"> {{ athlete.user }}</h6>
-                            <button id="follow-btn" class="btn btn-primary button-margin" (click)=followFriend(athlete.user)>Seguir</button>
+<div class="primary-container">
+    <div class="card bg-light article-custom">
+        <article class="card-body">
+            <form class="container">
+                <div class="row">
+                    <h2>Buscar deportistas</h2>
+                    <div class="input-group margin-bottom">
+                        <input id="search-input" type="text" class="form-control" placeholder="Escriba el nombre del deportista">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" (click)="searchAthlete()">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </a>
             
-        </div>
+                    <div class="list-group container set-size">
+                        <a class="list-group-item list-group-item-action" *ngFor="let athlete of athletes">
+                            <div class="d-flex w-100 justify-content-between">
+                                <div class="row">
+                                    <div class="column margin-right">
+                                        <img src= {{athlete.foto}}>
+                                    </div>
+                                    <div class="column">
+                                        <h5 class="mb-1">{{ athlete.nombre }} {{ athlete.apellido1 }} {{ athlete.apellido2 }}</h5>
+                                        <h6 class="mb-1"> {{ athlete.nacionalidad }}</h6>
+                                        <h6 class="mb-1"> {{ athlete.user }}</h6>
+                                        <button id="follow-btn" class="btn btn-primary button-margin" (click)=followFriend(athlete.user)>Seguir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div>
+            </form>
+        </article>
     </div>
 </div>
 
