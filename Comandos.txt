@@ -1,5 +1,6 @@
 # Actualizar los modelos del api con los de la BD
-dotnet ef dbcontext scaffold "<ConnectionString>" Npgsql.EntityFrameworkCore.PostgreSQL -o Models -n Models--force
+# dotnet tool install --global dotnet-ef
+dotnet ef dbcontext scaffold "Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;" Npgsql.EntityFrameworkCore.PostgreSQL --context-dir Models --context AppDbContext --output-dir Models --force
 
 # Generar controlador de un modelo dado
 # dotnet tool install --global dotnet-aspnet-codegenerator
