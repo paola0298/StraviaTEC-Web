@@ -79,6 +79,7 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<InscripcionEvento>> PostInscripcionEvento(InscripcionEvento inscripcionEvento)
         {
+            inscripcionEvento.Estado = "pendiente";
             _context.InscripcionEvento.Add(inscripcionEvento);
             await _context.SaveChangesAsync();
 
