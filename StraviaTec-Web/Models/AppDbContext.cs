@@ -40,6 +40,7 @@ namespace StraviaTec_Web.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;");
             }
         }
@@ -97,8 +98,6 @@ namespace StraviaTec_Web.Models
                 entity.ToTable("CARRERA");
 
                 entity.Property(e => e.Costo).HasColumnType("numeric(5,2)");
-
-                entity.Property(e => e.Fecha).HasColumnType("date");
 
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
@@ -246,6 +245,10 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("INSCRIPCION_EVENTO");
 
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
                 entity.Property(e => e.IdUsuario)
@@ -320,8 +323,6 @@ namespace StraviaTec_Web.Models
 
                 entity.Property(e => e.Longitud).HasColumnType("numeric(10,8)");
 
-                entity.Property(e => e.Tiempo).HasColumnType("date");
-
                 entity.HasOne(d => d.IdRecorridoNavigation)
                     .WithMany(p => p.Punto)
                     .HasForeignKey(d => d.IdRecorrido)
@@ -333,9 +334,7 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("RECORRIDO");
 
-                entity.Property(e => e.FechaHora)
-                    .HasColumnName("Fecha_hora")
-                    .HasColumnType("date");
+                entity.Property(e => e.FechaHora).HasColumnName("Fecha_hora");
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
@@ -346,13 +345,9 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("RETO");
 
-                entity.Property(e => e.Fin).HasColumnType("date");
-
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
                 entity.Property(e => e.IdTipoReto).HasColumnName("Id_tipo_reto");
-
-                entity.Property(e => e.Inicio).HasColumnType("date");
 
                 entity.Property(e => e.Objetivo).HasColumnType("numeric(5,0)");
 
