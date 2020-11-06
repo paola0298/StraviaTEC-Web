@@ -11,7 +11,7 @@
                         <div class="form-group">
                             <label for="recorrido">  Cargar Recorrido
                             </label>
-                            <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadImage($event)">
+                            <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadRuta($event)">
                         </div>
                     </div>
 
@@ -66,12 +66,33 @@
                 <div class="form-group">
 
                 <button type="button" class="btnA btn-primary" [routerLink]="['/menu-organizador']">   Atrás</button>
-                
+                 
             </div>
             </form>
+
         </article>
-    </div> <!-- card.// -->
+    <!--/div> 
+       <div class="margin-div">
+                    <h2>Carreras registrados</h2>
+                    <div class="producer-table">
+                      <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th class="text-center align-middle" scope="col">Nombre</th>
+                              <th class="text-center align-middle" scope="col">Fecha</th>
+                              <th class="text-center align-middle" scope="col">Categoría</th>
+                              <th class="text-center align-middle" scope="col">Patrocinador</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngFor="let carrera of carreras; let i = index;">
+                            <tr>
+                            </tr>     
+                          </tbody>
+                    </table>
+                    </div-->   
+    <!-- card.// -->
 </div>
+
 <!--container end.//-->
 
 

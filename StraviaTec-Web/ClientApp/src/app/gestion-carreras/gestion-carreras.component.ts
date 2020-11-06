@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Carrera} from '../models/carrera';
+import { UtilsService } from '../services/utils.service';
+import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gestion-carreras',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionCarrerasComponent implements OnInit {
 
-  constructor() { }
+  localUrl: any[];
+  created:boolean = false;
+  constructor(private utilsService: UtilsService, private apiService:ApiService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
-
+  loadRuta(event:any) {
+    (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
+    if (event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        //me.modelvalue = reader.result;
+        console.log(reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
+  }
+}
 }
