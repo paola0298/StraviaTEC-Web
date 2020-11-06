@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./gestion-carreras.component.css']
 })
 export class GestionCarrerasComponent implements OnInit {
-
+  categorias = [];
+  actividad = [];
+  patrocinadores = [];
   localUrl: any[];
   created:boolean = false;
   constructor(private utilsService: UtilsService, private apiService:ApiService,
@@ -31,6 +33,8 @@ export class GestionCarrerasComponent implements OnInit {
       reader.onerror = function (error) {
         console.log('Error: ', error);
       };
+    } 
   }
-}
+
+
 }

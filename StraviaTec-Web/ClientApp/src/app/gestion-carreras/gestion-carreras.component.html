@@ -7,9 +7,9 @@
             <h4 class="card-title mt-3 text-center custom-margin">Crear una Carrera</h4>
             <form class="container">
                 <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <div class="form-group">
-                            <label for="recorrido">  Cargar Recorrido
+                            <label for = "recorrido">  Cargar Recorrido
                             </label>
                             <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadRuta($event)">
                         </div>
@@ -24,39 +24,65 @@
                                 <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
                             </div> <!-- form-group// -->
 
+                            <div class="form-group input-group col">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                </div>
+                                <input id="actividad" name="actividad" class="form-control" placeholder="Actividad"
+                                    type="text">
+                            </div> <!-- form-group// -->
+
+                            
+                        </div>
+
+                        <div class="form-row margin-bottom">
 
                             <div class="form-group input-group col">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                 </div>
-                                <input id="date" name="date" class="form-control" placeholder="Fecha"
+                                <input id="last-name2" name="last-name2" class="form-control" placeholder="Segundo Apellido"
+                                    type="text">
+                            </div> <!-- form-group// -->
+
+                            <div class="form-group input-group col">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fas fa-birthday-cake"></i> </span>
+                                </div>
+                                <input id="birth" name="birth" class="form-control" placeholder="Fecha de nacimiento"
                                     type="date">
-                            </div> <!-- form-group// -->                           
+                            </div> <!-- form-group// -->
+
+                            
+                        </div>
+
+                        <div class="form-row margin-bottom">
+
+                            <div class="form-group input-group col">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fas fa-globe"></i> </span>
+                                </div>
+                                <input id="nationality" name="nationality" class="form-control" placeholder="Nacionalidad"
+                                    type="text">
+                            </div> <!-- form-group// -->
+
+                            <div class="form-group input-group col">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-user-circle"></i> </span>
+                                </div>
+                                <input id="username" name="username" class="form-control" placeholder="Nombre de usuario"
+                                    type="text">
+                            </div> <!-- form-group// -->
+        
+                            
                         </div>
 
                         <div class="form-row margin-bottom">
                             <div class="form-group input-group col">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fas fa-pager"></i> </span>
+                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                 </div>
-                                <input id="categoria" name="categoria" class="form-control" placeholder="Categoría"
-                                    type="number">
-                            </div> <!-- form-group// -->
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-handshake"></i> </span>
-                                </div>
-                                <input id="patrocinador" name="Patrocinador" class="form-control" placeholder="Patrocinador"
-                                    type="number">
-                            </div> <!-- form-group// -->
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-money-check-alt"></i> </span>
-                                </div>
-                                <input id="Cuenta Bancaria" name="Cuenta Bancaria" class="form-control" placeholder="Cuenta Bancaria"
-                                    type="text">
+                                <input id="pass" class="form-control" placeholder="Crear contraseña" type="password">
                             </div> <!-- form-group// -->
                         </div>
                     </div>

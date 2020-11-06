@@ -73,13 +73,6 @@
     margin-bottom: 5px !important;
 }
 
-img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
 .margin-div {
     margin-bottom: 50px;
 }
