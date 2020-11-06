@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -15,6 +14,9 @@ import { LoginDeportistasComponent } from './login-deportistas/login-deportistas
 import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
+import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
+import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
+import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
     LoginDeportistasComponent,
     MenuOrganizadorComponent,
     GestionCarrerasComponent,
-    AddFriendComponent
+    AddFriendComponent,
+    GestionPatrocinadoresComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,6 +47,9 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
       { path: 'menu-organizador', component: MenuOrganizadorComponent },
       { path: 'gestion-carreras', component: GestionCarrerasComponent },
       { path: 'add-friend', component: AddFriendComponent },
+      { path: 'gestion-grupos', component: GestionGruposComponent },
+      { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
+      { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
     ])
   ],
   providers: [],
