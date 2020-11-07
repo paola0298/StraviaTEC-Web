@@ -19,6 +19,7 @@ export class GestionCarrerasComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    
   }
   loadRuta(event:any) {
     (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
@@ -35,6 +36,10 @@ export class GestionCarrerasComponent implements OnInit {
       };
     } 
   }
-
+/*
+  async getProvinces() {
+    this.patrocinadores = await this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Patrocinadores`);
+  }
+*/
 
 }
