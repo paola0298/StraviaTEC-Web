@@ -3,6 +3,8 @@ import { Carrera} from '../models/carrera';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
+import { Patrocinador } from '../models/patrocinador';
+
 
 @Component({
   selector: 'app-gestion-carreras',
@@ -10,11 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./gestion-carreras.component.css']
 })
 export class GestionCarrerasComponent implements OnInit {
-  categorias = [];
-  actividad = [];
-  patrocinadores = [];
   localUrl: any[];
   created:boolean = false;
+
   constructor(private utilsService: UtilsService, private apiService:ApiService,
     private router: Router) { }
 
@@ -36,10 +36,5 @@ export class GestionCarrerasComponent implements OnInit {
       };
     } 
   }
-/*
-  async getProvinces() {
-    this.patrocinadores = await this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Patrocinadores`);
-  }
-*/
-
+ 
 }
