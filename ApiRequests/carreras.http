@@ -1,0 +1,17 @@
+### Obtener todas las carreras
+GET http://127.0.0.1:5001/api/Carreras HTTP/2.0
+
+### Crear una carrera
+POST http://127.0.0.1:5001/api/
+
+###
+POST http://127.0.0.1:5001/api/Carreras HTTP/2.0
+Content-Type: application/json
+
+{
+    "IdRecorrido": 1,
+    "IdEvento": 1,
+    "Nombre": "Vuelta ciclistica en Varablanca",
+    "Fecha": "2021-06-02",
+    "Costo": 300
+}
