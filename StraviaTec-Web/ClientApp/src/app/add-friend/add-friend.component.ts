@@ -28,6 +28,10 @@ export class AddFriendComponent implements OnInit {
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
+        if (error.status == 404) {
+          this.utilsService.showInfoModal("Error", "No se han encontrado resultados", "saveMsjLabel", "msjText", 'saveMsj');
+          return;
+        }
       });
   }
 

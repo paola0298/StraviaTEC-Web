@@ -41,7 +41,7 @@ export class LoginDeportistasComponent implements OnInit {
         console.log(error.status);
 
         let status = error.status;
-        if (status == 400) {
+        if (status == 400 || status == 404) {
           this.utilsService.showInfoModal("Error", "Usuario y/o Contraseña incorrectos", "saveMsjLabel", "msjText", 'saveMsj');
           return;
         }
