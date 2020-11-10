@@ -7,7 +7,7 @@
             <h4 class="card-title mt-3 text-center custom-margin">Crear una Carrera</h4>
             <form class="container">
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <div class="form-group">
                             <label for = "recorrido">  Cargar Recorrido
                             </label>
@@ -29,7 +29,7 @@
                                     <span class="input-group-text"> <i class="fa fa-hiking"></i> </span>
                                 </div>
                                 <input id="actividad" name="actividad" class="form-control" placeholder="Actividad"
-                                    type="text">
+                                    type="number">
                             </div> <!-- form-group// -->
 
                             
@@ -42,7 +42,7 @@
                                     <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
                                 </div>
                                 <input id="categoria" name="categoria" class="form-control" placeholder="Categoria"
-                                    type="text">
+                                    type="number">
                             </div> <!-- form-group// -->
 
                             <div class="form-group input-group col">
@@ -63,7 +63,7 @@
                                     <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
                                 </div>
                                 <input id="patrocinador" name="patrocinador" class="patrocinador" placeholder="Patrocinador"
-                                    type="text">
+                                    type="number">
                             </div> <!-- form-group// -->
 
                             <div class="form-group input-group col">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" (click)="saveAthlete()">Crear carrera</button>
+                <button type="submit" class="btn btn-primary btn-block" (click)="saveCarrera()">Crear carrera</button>
                 
                 <div class="form-group">
 
@@ -97,25 +97,45 @@
             </form>
 
         </article>
-    <!--/div> 
+    </div> 
        <div class="margin-div">
-                    <h2>Carreras registrados</h2>
+                    <h2></h2>
                     <div class="producer-table">
+                        <h2>Carreras Registradas</h2>
+
                       <table class="table table-hover">
                           <thead>
                             <tr>
                               <th class="text-center align-middle" scope="col">Nombre</th>
+                              <th class="text-center align-middle" scope="col">Actividad</th>
                               <th class="text-center align-middle" scope="col">Fecha</th>
                               <th class="text-center align-middle" scope="col">Categoría</th>
                               <th class="text-center align-middle" scope="col">Patrocinador</th>
+                              <th class="text-center align-middle" scope="col">Costo</th>
+                              <th class="text-center align-middle" scope="col">Cuentas Bancarias</th>
+                              <!--th class="text-center align-middle" scope="col">Ruta</th-->
+
                             </tr>
                           </thead>
                           <tbody *ngFor="let carrera of carreras; let i = index;">
                             <tr>
+                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.nombre}}</td>
+                                <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.actividad}}</td>
+                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.fecha}}</td>
+                                <td (contextmenu)="onCarreraCick($event, carrera)" class="text-center align-middle">{{ carrera.categoria}}</td>
+                                <td (contextmenu)="onCarreaClick($event,carrera)" class="text-center align-middle">{{ carrera.patrocinador}}</td>
+                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.costo}}</td>
+                               <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.cuentaB}}</td>
+                               <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
                             </tr>     
                           </tbody>
                     </table>
-                    </div-->   
+                    </div>  
+
+                    <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
+                        <a class="dropdown-item btn btn-default" (click)="updateCarrera()">Actualizar</a>  
+                        <a class="dropdown-item btn" (click)="askUser()">Eliminar</a> 
+                    </div>
     <!-- card.// -->
 </div>
 
@@ -139,6 +159,8 @@
                 <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
                     (click)="closeModal('saveMsj')">Close</button>
             </div>
+              <!-- Modal footer -->
         </div>
+        
     </div>
 </div>
