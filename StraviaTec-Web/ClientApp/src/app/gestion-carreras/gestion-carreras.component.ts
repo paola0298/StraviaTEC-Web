@@ -24,26 +24,21 @@ export class GestionCarrerasComponent implements OnInit {
     this.loadCarreras();
   }
    loadRuta(event:any) {
-    (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
-    if (event.target.files && event.target.files[0]) {
-      let file = event.target.files[0];
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        let ruta = reader.result;
-        console.log(reader.result);
-        return ruta;
-      };
-      reader.onerror = function (error) {
-        console.log('Error: ', error);
-      };
+      (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
+      if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+            console.log(reader.result);
+            this.localUrl = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   loadCarreras() {
     console.log('Obteniendo todas las carreras');
     console.log('\n');
-    const response = this.apiService.get(`https://localhost:${this.apiService.PORT}/api/Carrera`)
+    const response = this.apiService.get(`http//localhost:${this.apiService.PORT}/api/Carreras`)
     response.subscribe(
       (value: Carrera[]) => {
         console.log('Carreras ' + value);
@@ -71,13 +66,13 @@ export class GestionCarrerasComponent implements OnInit {
     } 
 
     const carrera = new Carrera(nombre.value, actividad.valueAsNumber , fecha.value, cuentas.value, categoria.valueAsNumber,
-      patrocinador.valueAsNumber, costo.valueAsNumber, recorrido.value);
+      patrocinador.valueAsNumber, costo.valueAsNumber, this.localUrl.toString());
   
     this.createCarrera(carrera);
 
   }
   createCarrera(carrera: Carrera) {
-    var response = this.apiService.post(`https://localhost:${this.apiService.PORT}/api/Carrera`,carrera);
+    var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras`,carrera);
     response.subscribe(
       (value: Carrera) => {
         console.log('Producer ' + value);
