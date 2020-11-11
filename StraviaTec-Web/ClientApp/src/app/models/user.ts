@@ -8,6 +8,7 @@ export class Usuario {
     nacionalidad: string;
     foto: string;
     esOrganizador: boolean;
+    esAmigo: string;
 
     constructor(
         User: string,
