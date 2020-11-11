@@ -54,6 +54,4 @@ export class ApiService {
     console.log("Eliminando...")
     return this.http.delete(url, this.options);
   }
-
-  
 }
