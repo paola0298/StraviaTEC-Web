@@ -1,17 +1,46 @@
 ### Obtener todas las carreras
 GET http://127.0.0.1:5001/api/Carreras HTTP/2.0
 
-### Crear una carrera
-POST http://127.0.0.1:5001/api/
+### Obtener una carrera por id
+GET http://127.0.0.1:5001/api/Carreras/1 HTTP/2.0
 
-###
+### Eliminar una carrera por id
+DELETE http://127.0.0.1:5001/api/Carreras/1 HTTP/2.0
+
+### Crear una carrera
 POST http://127.0.0.1:5001/api/Carreras HTTP/2.0
 Content-Type: application/json
 
 {
-    "IdRecorrido": 1,
-    "IdEvento": 1,
     "Nombre": "Vuelta ciclistica en Varablanca",
     "Fecha": "2021-06-02",
-    "Costo": 300
+    "Costo": 3000,
+    "TipoActividad": 3,
+    "EsPrivado": false,
+    "ArchivoRecorrido": "TEST",
+    "Patrocinadores": [1],
+    "Grupos": [],
+    "CuentasBancarias": [
+        "IBAN1238912373"
+    ],
+    "Categorias": [3]
+}
+
+### Actualizar una carrera
+PUT http://127.0.0.1:5001/api/Carreras/2 HTTP/2.0
+Content-Type: application/json
+
+{
+    "Nombre": "Vuelta en Cartago",
+    "Fecha": "2021-01-11",
+    "Costo": 9500,
+    "TipoActividad": 1,
+    "EsPrivado": false,
+    "ArchivoRecorrido": "TEST",
+    "Patrocinadores": [3, 4],
+    "Grupos": [],
+    "CuentasBancarias": [
+        "IBAN1238912373"
+    ],
+    "Categorias": [3]
 }
