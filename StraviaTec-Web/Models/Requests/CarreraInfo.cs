@@ -13,6 +13,7 @@ namespace StraviaTec_Web.Models.Requests
         public string ArchivoRecorrido { get; set; }
 
         public List<int> Patrocinadores { get; set; }
+        public List<int> Grupos { get; set; }
         public List<string> CuentasBancarias { get; set; }
         public List<int> Categorias { get; set; }
 
