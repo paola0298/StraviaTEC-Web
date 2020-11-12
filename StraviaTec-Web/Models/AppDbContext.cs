@@ -40,6 +40,7 @@ namespace StraviaTec_Web.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;");
             }
         }
@@ -70,13 +71,13 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.Actividad)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("ACTIVIDAD_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdRecorridoNavigation)
                     .WithMany(p => p.Actividad)
                     .HasForeignKey(d => d.IdRecorrido)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("ACTIVIDAD_Id_recorrido_fkey");
 
                 entity.HasOne(d => d.IdTipoActividadNavigation)
@@ -88,7 +89,6 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Actividad)
                     .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ACTIVIDAD_Id_usuario_fkey");
             });
 
@@ -96,9 +96,7 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("CARRERA");
 
-                entity.Property(e => e.Costo).HasColumnType("numeric(5,2)");
-
-                entity.Property(e => e.Fecha).HasColumnType("date");
+                entity.Property(e => e.Costo).HasColumnType("numeric(7,2)");
 
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
@@ -111,13 +109,12 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.Carrera)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CARRERA_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdRecorridoNavigation)
                     .WithMany(p => p.Carrera)
                     .HasForeignKey(d => d.IdRecorrido)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("CARRERA_Id_recorrido_fkey");
             });
 
@@ -147,7 +144,6 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdCarreraNavigation)
                     .WithMany(p => p.CategoriaCarrera)
                     .HasForeignKey(d => d.IdCarrera)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CATEGORIA_CARRERA_Id_carrera_fkey");
 
                 entity.HasOne(d => d.IdCategoriaNavigation)
@@ -170,7 +166,6 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdCarreraNavigation)
                     .WithMany(p => p.CuentaBancaria)
                     .HasForeignKey(d => d.IdCarrera)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CUENTA_BANCARIA_Id_carrera_fkey");
             });
 
@@ -212,13 +207,11 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.EventoGrupo)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("EVENTO_GRUPO_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdGrupoNavigation)
                     .WithMany(p => p.EventoGrupo)
                     .HasForeignKey(d => d.IdGrupo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("EVENTO_GRUPO_Id_grupo_fkey");
             });
 
@@ -246,6 +239,14 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("INSCRIPCION_EVENTO");
 
+                entity.Property(e => e.ComprobantePago)
+                    .HasColumnName("Comprobante_pago")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
                 entity.Property(e => e.IdUsuario)
@@ -256,13 +257,11 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.InscripcionEvento)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("INSCRIPCION_EVENTO_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.InscripcionEvento)
                     .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("INSCRIPCION_EVENTO_Id_usuario_fkey");
             });
 
@@ -300,13 +299,11 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.PatrocinadorEvento)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PATROCINADOR_EVENTO_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdPatrocinadorNavigation)
                     .WithMany(p => p.PatrocinadorEvento)
                     .HasForeignKey(d => d.IdPatrocinador)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PATROCINADOR_EVENTO_Id_patrocinador_fkey");
             });
 
@@ -314,18 +311,17 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("PUNTO");
 
+                entity.Property(e => e.Elevacion).HasColumnType("numeric(5,1)");
+
                 entity.Property(e => e.IdRecorrido).HasColumnName("Id_recorrido");
 
                 entity.Property(e => e.Latitud).HasColumnType("numeric(10,8)");
 
                 entity.Property(e => e.Longitud).HasColumnType("numeric(10,8)");
 
-                entity.Property(e => e.Tiempo).HasColumnType("date");
-
                 entity.HasOne(d => d.IdRecorridoNavigation)
                     .WithMany(p => p.Punto)
                     .HasForeignKey(d => d.IdRecorrido)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("PUNTO_Id_recorrido_fkey");
             });
 
@@ -333,9 +329,7 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("RECORRIDO");
 
-                entity.Property(e => e.FechaHora)
-                    .HasColumnName("Fecha_hora")
-                    .HasColumnType("date");
+                entity.Property(e => e.FechaHora).HasColumnName("Fecha_hora");
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
@@ -346,20 +340,15 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("RETO");
 
-                entity.Property(e => e.Fin).HasColumnType("date");
-
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
                 entity.Property(e => e.IdTipoReto).HasColumnName("Id_tipo_reto");
-
-                entity.Property(e => e.Inicio).HasColumnType("date");
 
                 entity.Property(e => e.Objetivo).HasColumnType("numeric(5,0)");
 
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.Reto)
                     .HasForeignKey(d => d.IdEvento)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("RETO_Id_evento_fkey");
 
                 entity.HasOne(d => d.IdTipoRetoNavigation)
@@ -455,13 +444,11 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdAmigoNavigation)
                     .WithMany(p => p.UsuarioAmigoIdAmigoNavigation)
                     .HasForeignKey(d => d.IdAmigo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("USUARIO_AMIGO_Id_amigo_fkey");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.UsuarioAmigoIdUsuarioNavigation)
                     .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("USUARIO_AMIGO_Id_usuario_fkey");
             });
 
@@ -479,13 +466,11 @@ namespace StraviaTec_Web.Models
                 entity.HasOne(d => d.IdGrupoNavigation)
                     .WithMany(p => p.UsuarioGrupo)
                     .HasForeignKey(d => d.IdGrupo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("USUARIO_GRUPO_Id_grupo_fkey");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.UsuarioGrupo)
                     .HasForeignKey(d => d.IdUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("USUARIO_GRUPO_Id_usuario_fkey");
             });
 
