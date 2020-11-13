@@ -20,6 +20,7 @@ namespace StraviaTec_Web.Helpers
             CreateMap<EventoGrupo, EventoGrupoDto>();
             CreateMap<PatrocinadorEvento, PatrocinadorEventoDto>();
             CreateMap<CuentaBancaria, CuentaBancariaDto>();
+            CreateMap<TipoReto, TipoRetoDto>();
         }
     }
 }
