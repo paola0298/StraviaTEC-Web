@@ -21,33 +21,9 @@
                         </div>
                         <select class="form-control" id="activity">
                             <option selected="" value="Seleccione una actividad"> Seleccione una actividad</option>
-                            <option *ngFor="let actividad of actividades" value="{{actividad}}">{{ actividad }}</option>
+                            <option *ngFor="let actividad of actividades" value="{{actividad.nombre}}">{{ actividad.nombre }}</option>
                         </select>
                     </div> <!-- form-group// -->
-
-                    <div class="form-group input-group col">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
-                        </div>
-                        <select class="form-control" id="category">
-                            <option selected="" value="Seleccione una categoria"> Seleccione una categoria</option>
-                            <option *ngFor="let categoria of categorias" value="{{categoria}}">{{ categoria }}</option>
-                        </select>
-                    </div> <!-- form-group end.// -->
-
-                </div>
-
-                <div class="form-row">
-
-                    <div class="form-group input-group col">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
-                        </div>
-                        <select class="form-control" id="sponsor">
-                            <option selected="" value="Seleccione un patrocinador"> Seleccione un patrocinador</option>
-                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador}}">{{ patrocinador }}</option>
-                        </select>
-                    </div> <!-- form-group end.// -->
 
                     <div class="form-group input-group col">
                         <div class="input-group-prepend">
@@ -62,6 +38,33 @@
                         </div>
                         <input id="costo" name="costo" class="form-control" placeholder="Costo" type="number">
                     </div> <!-- form-group// -->
+                    
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
+                        </div>
+                        <select class="form-control" id="category" multiple>
+                            <option selected="" value="Seleccione una categoria"> Seleccione una categoria</option>
+                            <option *ngFor="let categoria of categorias" value="{{categoria.nombre}}">{{ categoria.nombre }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
+                        </div>
+                        <select class="form-control" id="sponsor" multiple>
+                            <option selected="" value="Seleccione un patrocinador"> Seleccione un patrocinador</option>
+                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.nombreComercial}}">{{ patrocinador.nombreComercial }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    
                 
                 </div>
 

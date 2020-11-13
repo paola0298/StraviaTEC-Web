@@ -16,10 +16,10 @@ export class GestionCarrerasComponent implements OnInit {
   localUrl: any[];
   created:boolean = false;
   carreras = [];
-  patrocinadores = ['Movistar'];
-  actividades = ['Ciclismo', 'Carrera', 'Caminata'];
-  categorias = ['Junior'];
-  grupos = ['Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2'];
+  patrocinadores = [];
+  actividades = [];
+  categorias = [];
+  grupos = [];
 
 
   constructor(private utilsService: UtilsService, private apiService:ApiService,
@@ -28,7 +28,51 @@ export class GestionCarrerasComponent implements OnInit {
   ngOnInit(): void {
     this.utilsService.configureContextMenu();
     this.loadCarreras();
+    this.loadActividades();
+    this.loadPatrocinadores();
+    this.loadCategorias();
     // TODO cargar patrocinadores, actividades y categorias
+  }
+
+  loadActividades() {
+    var result = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/tipos`);
+    result.subscribe(
+      (value:any) => {
+        this.actividades = value;
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+      }
+      );
+  }
+
+  loadPatrocinadores() {
+    var result = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/patrocinadores`);
+    result.subscribe(
+      (value:any) => {
+        this.patrocinadores = value;
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+      }
+      );
+  }
+
+  loadCategorias() {
+    var result = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/categorias`);
+    result.subscribe(
+      (value:any) => {
+        this.categorias = value;
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+      }
+      );
+
+  }
+
+  loadGrupos() {
+
   }
    loadRuta(event:any) {
       (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
