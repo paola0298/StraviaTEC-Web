@@ -1,1 +1,191 @@
-<p>gestion-retos works!</p>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+<div class="primary-container">
+    <hr>
+    <div class="card bg-light article-custom">
+        <article class="card-body mx-auto">
+            <h4 class="card-title mt-3 text-center custom-margin">Crear un Reto</h4>
+            <form class="container">
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
+                    </div> <!-- form-group// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                        </div>
+                        <input id="fecha-inicio" name="fecha-inicio" class="form-control" placeholder="Fecha" type="date">
+                    </div> <!-- form-group// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                        </div>
+                        <input id="fecha-fin" name="fecha-fin" class="form-control" placeholder="Fecha" type="date">
+                    </div> <!-- form-group// -->
+
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
+                        </div>
+                        <select class="form-control" id="tipoReto">
+                            <option selected="" value="Seleccione el tipo de reto"> Seleccione el tipo de reto</option>
+                            <option *ngFor="let tipoReto of tiposReto" value="{{tipoReto.nombre}}">{{ tipoReto.nombre }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-bullseye"></i> </span>
+                        </div>
+                        <input id="objetivo" name="objetivo" class="form-control" placeholder="Objetivo" type="text">
+                    </div> <!-- form-group// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-hiking"></i> </span>
+                        </div>
+                        <select class="form-control" id="activity">
+                            <option selected="" value="Seleccione una actividad"> Seleccione una actividad</option>
+                            <option *ngFor="let actividad of actividades" value="{{actividad.nombre}}">{{ actividad.nombre }}</option>
+                        </select>
+                    </div> <!-- form-group// -->                
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group input-group col-md-4">
+                        <label class="radio-inline padding-custom">
+                            <input id="reto-publico" type="radio" name="optradio" checked (click)="clearGroups()" >Público</label>
+                        <label class="radio-inline">
+                            <input id="reto-privado" type="radio" name="optradio" (click)="setGroups()">Privado</label>
+                    </div>
+
+                    <div id="groupsOption" style="display: none;" class="form-group input-group col-md-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
+                        </div>
+                        
+                        <select class="selectpicker" multiple id="groups">
+                            <option value="Seleccione los grupos" disabled> Seleccione los grupos</option>
+                            <option *ngFor="let grupo of grupos" value="{{grupo}}">{{ grupo }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
+                        </div>
+                        <select class="form-control" id="sponsor" multiple>
+                            <option value="Seleccione un patrocinador" disabled> Seleccione un patrocinador</option>
+                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.nombreComercial}}">{{ patrocinador.nombreComercial }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" (click)="saveReto()">Crear reto</button>
+            </form>
+
+            
+            <div class="margin-div">
+                <h2></h2>
+                <div class="race-table">
+                    <h2>Carreras Registradas</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle" scope="col">Nombre</th>
+                                <th class="text-center align-middle" scope="col">Fecha de inicio</th>
+                                <th class="text-center align-middle" scope="col">Fecha de finalización</th>
+                                <th class="text-center align-middle" scope="col">Tipo de reto</th>
+                                <th class="text-center align-middle" scope="col">Tipo de Actividad</th>
+                                <th class="text-center align-middle" scope="col">Privacidad del reto</th>
+                                <th class="text-center align-middle" scope="col">Grupos</th>
+                                <th class="text-center align-middle" scope="col">Patrocinadores</th>
+                                <!--th class="text-center align-middle" scope="col">Ruta</th-->
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let reto of retos; let i = index;">
+                            <tr>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.nombre}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.inicio}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.fin}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.idTipoReto}}</td>
+                                <td (contextmenu)="onRetoClick($event,carrera)" class="text-center align-middle">{{ reto.idActividad}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.publico}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.grupos}}</td>
+                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.patrocinadores}}</td>
+                                <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
+                            </tr>     
+                        </tbody>
+                    </table>
+                </div>  
+                
+                <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
+                    <a class="dropdown-item btn btn-default" (click)="updateReto()">Actualizar</a>  
+                    <a class="dropdown-item btn" (click)="askUser()">Eliminar</a> 
+                </div>
+            <!-- card.// -->
+        </div>
+
+        </article>
+    </div> 
+    
+    
+
+<!--container end.//-->
+
+
+<!-- The Modal -->
+<div class="modal" id="saveMsj">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="saveMsjLabel"></h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <a id="msjText"></a>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+                    (click)="closeModal('saveMsj')">Close</button>
+            </div>
+              <!-- Modal footer -->
+        </div>
+    </div>
+</div>
+
+<!-- The Option Modal -->
+<div class="modal" id="optionMsj">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="optionMsjLabel"></h4>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <a id="optionText"></a>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="deleteReto()">Si</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('optionMsj')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
