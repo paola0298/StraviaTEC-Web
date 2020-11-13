@@ -22,6 +22,7 @@ import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afi
 import { RaceSignupComponent } from './race-signup/race-signup.component';
 import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
+import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { RaceDetailComponent } from './race-detail/race-detail.component';
     RaceSignupComponent,
     AthleteMenuComponent,
     RaceDetailComponent,
+    GestionRetosComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,6 +67,8 @@ import { RaceDetailComponent } from './race-detail/race-detail.component';
       { path: 'race-signup', component: RaceSignupComponent},
       { path: 'athlete-menu', component: AthleteMenuComponent},
       { path: 'race-detail/:id', component: RaceDetailComponent },
+      { path: 'gestion-retos', component: GestionRetosComponent},
+      
     ])
   ],
   providers: [],

@@ -13,6 +13,7 @@ namespace StraviaTec_Web.Helpers
             CreateMap<TipoActividad, TipoActividadDto>();
             CreateMap<Patrocinador, PatrocinadorDto>();
             CreateMap<Categoria, CategoriaDto>();
+            CreateMap<TipoReto, TipoRetoDto>();
         }
     }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Carrera} from '../models/carrera';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from '../services/api.service';
-import { Router } from '@angular/router';
 import { Patrocinador } from '../models/patrocinador';
 
 
@@ -22,8 +21,7 @@ export class GestionCarrerasComponent implements OnInit {
   grupos = [];
 
 
-  constructor(private utilsService: UtilsService, private apiService:ApiService,
-    private router: Router) { }
+  constructor(private utilsService: UtilsService, private apiService:ApiService) { }
 
   ngOnInit(): void {
     this.utilsService.configureContextMenu();
@@ -74,6 +72,7 @@ export class GestionCarrerasComponent implements OnInit {
   loadGrupos() {
 
   }
+
    loadRuta(event:any) {
       (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
       if (event.target.files && event.target.files[0]) {
@@ -187,9 +186,6 @@ export class GestionCarrerasComponent implements OnInit {
    */
   closeModal(id: string): void {
     document.getElementById(id).style.setProperty('display', 'none');
-    if (this.created) {
-      this.router.navigate(['']);
-    }
   }
 }
   
