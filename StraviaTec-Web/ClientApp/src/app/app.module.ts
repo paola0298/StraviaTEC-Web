@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -15,8 +14,11 @@ import { LoginDeportistasComponent } from './login-deportistas/login-deportistas
 import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
-import { RaceSignupComponent } from './race-signup/race-signup.component';
-import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
+//import { RaceSignupComponent } from './race-signup/race-signup.component';
+//import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
+import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
+import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
+import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +33,9 @@ import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
     MenuOrganizadorComponent,
     GestionCarrerasComponent,
     AddFriendComponent,
-    RaceSignupComponent,
-    AthleteMenuComponent
+  //  RaceSignupComponent,
+  //  AthleteMenuComponent
+    GestionPatrocinadoresComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -48,8 +51,11 @@ import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
       { path: 'menu-organizador', component: MenuOrganizadorComponent },
       { path: 'gestion-carreras', component: GestionCarrerasComponent },
       { path: 'add-friend', component: AddFriendComponent },
-      { path: 'race-signup', component: RaceSignupComponent},
-      { path: 'athlete-menu', component: AthleteMenuComponent},
+   //   { path: 'race-signup', component: RaceSignupComponent},
+   //   { path: 'athlete-menu', component: AthleteMenuComponent},
+      { path: 'gestion-grupos', component: GestionGruposComponent },
+      { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
+      { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
     ])
   ],
   providers: [],

@@ -96,7 +96,7 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("CARRERA");
 
-                entity.Property(e => e.Costo).HasColumnType("numeric(7,2)");
+                entity.Property(e => e.Costo).HasColumnType("numeric(5,2)");
 
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 

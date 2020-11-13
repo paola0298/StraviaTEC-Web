@@ -21,29 +21,19 @@ namespace StraviaTec_Web.Helpers
     public static class ErrorMsg {
         
         public static string Get(int code) {
-            switch (code)
+            return code switch
             {
-                case ErrorCode.Ok:
-                    return "Ok";
-                case ErrorCode.Created:
-                    return "Created";
-                case ErrorCode.NoContent:
-                    return "No Content";
-                case ErrorCode.BadRequest:
-                    return "Bad Request";
-                case ErrorCode.Forbidden:
-                    return "Forbidden";
-                case ErrorCode.NotFound:
-                    return "Not Found";
-                case ErrorCode.Conflict:
-                    return "Conflict";
-                case ErrorCode.InternalServerError:
-                    return "Internal Server Error";
-                case ErrorCode.NotImplemented:
-                    return "Not Implemented";
-                default:
-                    return "Unknown";
-            }
+                ErrorCode.Ok => "Ok",
+                ErrorCode.Created => "Created",
+                ErrorCode.NoContent => "No Content",
+                ErrorCode.BadRequest => "Bad Request",
+                ErrorCode.Forbidden => "Forbidden",
+                ErrorCode.NotFound => "Not Found",
+                ErrorCode.Conflict => "Conflict",
+                ErrorCode.InternalServerError => "Internal Server Error",
+                ErrorCode.NotImplemented => "Not Implemented",
+                _ => "Unknown",
+            };
         }
     }
 }

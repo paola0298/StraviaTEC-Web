@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ControlContainer } from '@angular/forms';
 import { Usuario } from '../models/user';
 import { ApiService } from '../services/api.service';
 import { UtilsService } from '../services/utils.service';
@@ -15,19 +14,40 @@ export class AddFriendComponent implements OnInit {
   
   athletes: Usuario[] = [];
   user = window.localStorage.getItem('userId');
+  friends: Usuario[];
 
   ngOnInit(): void { }
 
   getAthletes(search: string) {
-    
     var result = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Usuarios/buscar/${this.user}/${search}`);
     result.subscribe(
       (value:Usuario[])=> {
-        this.athletes = value;
-        console.log(this.athletes.length);
+        var atletas = value;
+        var response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/amigos/${this.user}`); 
+        response.subscribe(
+          (value:Usuario[]) => {
+            this.friends = value;
+            atletas.forEach(element => {
+              var friend = this.friends.find(f => f.user == element.user);
+              if (friend != undefined) {
+                element.esAmigo = 'Siguiendo';
+              } else {
+                element.esAmigo = 'Seguir';
+              }
+            });
+            this.athletes = atletas;
+          }, (error:any) => {
+            console.log(error.statusText);
+            console.log(error.status);
+            console.log(error);
+          });
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
+        if (error.status == 404) {
+          this.utilsService.showInfoModal("Error", "No se han encontrado resultados", "saveMsjLabel", "msjText", 'saveMsj');
+          return;
+        }
       });
   }
 
@@ -41,19 +61,50 @@ export class AddFriendComponent implements OnInit {
     this.getAthletes(input.value);
   }
 
-  followFriend(userToAdd: string) {
+  followFriend(userToAdd: string, isFriend: string) {
     var friendInfo = {
       user : this.user,
       amigoUser : userToAdd,
     };
-    var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/amigos`, friendInfo);
+    var input = (document.getElementById('search-input') as HTMLInputElement).value;
+
+    if (isFriend == 'Seguir') {
+      var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/amigos`, friendInfo);
+      response.subscribe(
+        (value:any) => {
+          console.log("Amigo agregado..");
+          this.getAthletes(input);
+        }, (error:any) => {
+          console.log(error.statusText);
+          console.log(error.status);
+        }
+      );
+      
+        return;
+    }
+
+    var response = this.apiService.delete(`http://localhost:${this.apiService.PORT}/api/amigos/${this.user}/${userToAdd}`);
     response.subscribe(
       (value:any) => {
-        console.log("Amigo agregado..");
-        (document.getElementById('follow-btn') as HTMLButtonElement).textContent = 'Siguiendo';
+        console.log("Amigo eliminado..");
+        this.getAthletes(input);
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
+      }
+    );
+  }
+
+  getFriends() {
+    console.log("Getting friends of " + this.user);
+    var response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/amigos/${this.user}`); 
+    response.subscribe(
+      (value:Usuario[]) => {
+        this.friends = value;
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
       });
   }
 
