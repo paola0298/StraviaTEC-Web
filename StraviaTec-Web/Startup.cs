@@ -39,7 +39,10 @@ namespace StraviaTec_Web
             var connection = "Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;";
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
             
-            services.AddAutoMapper(options => options.AddProfile<StraviaTecProfile>());
+            services.AddAutoMapper(options => 
+            {
+                options.AddProfile<StraviaTecProfile>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
