@@ -40,5 +40,12 @@ namespace StraviaTec_Web.Controllers
             var categorias = _context.Categoria.Select(c => _mapper.Map<CategoriaDto>(c));
             return Ok(categorias);
         }
+
+        [HttpGet("retos")]
+        public IActionResult GetTiposReto() 
+        {
+            var retos = _context.TipoReto.Select(r => _mapper.Map<TipoRetoDto>(r));
+            return Ok(retos);
+        }
     }
 }
