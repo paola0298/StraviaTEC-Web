@@ -1,5 +1,5 @@
 ### Obtener todas las carreras
-GET http://127.0.0.1:5001/api/Carreras HTTP/2.0
+GET http://127.0.0.1:5001/api/Carreras/user/mvega HTTP/2.0
 
 ### Obtener una carrera por id
 GET http://127.0.0.1:5001/api/Carreras/1 HTTP/2.0
@@ -44,3 +44,4 @@ Content-Type: application/json
     ],
     "Categorias": [3]
 }
+
