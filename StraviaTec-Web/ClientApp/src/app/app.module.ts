@@ -19,6 +19,9 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
 import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
 import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
 import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
+import { RaceSignupComponent } from './race-signup/race-signup.component';
+import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
+import { RaceDetailComponent } from './race-detail/race-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,9 @@ import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afi
   //  RaceSignupComponent,
   //  AthleteMenuComponent
     GestionPatrocinadoresComponent,
+    RaceSignupComponent,
+    AthleteMenuComponent,
+    RaceDetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -56,6 +62,9 @@ import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afi
       { path: 'gestion-grupos', component: GestionGruposComponent },
       { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
       { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
+      { path: 'race-signup', component: RaceSignupComponent},
+      { path: 'athlete-menu', component: AthleteMenuComponent},
+      { path: 'race-detail/:id', component: RaceDetailComponent },
     ])
   ],
   providers: [],

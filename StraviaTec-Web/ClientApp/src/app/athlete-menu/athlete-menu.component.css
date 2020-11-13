@@ -1,0 +1,49 @@
+.primary-container {
+    width: 100vw;
+    height: 92vh;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: -15px;
+
+    background-image: url('https://cdn.pixabay.com/photo/2017/05/25/15/08/jogging-2343558_1280.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.article-custom {
+    width: 80%;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.custom-margin {
+    margin-bottom: 30px !important;
+}
+
+
+.btn {
+    border: darkgrey;
+    border-radius: 10%;
+    background-color:rgba(255, 255, 255, 0.9);
+    padding: 12px;
+    font-size: 30px; /* Set a font size */
+    cursor: pointer;
+}
+
+.row-custom {
+    margin-top: 60px !important;
+    margin: auto;
+    width: 80%;
+    padding: 10px;
+}
+
+.col-custom {
+    display: grid;
+}
+
