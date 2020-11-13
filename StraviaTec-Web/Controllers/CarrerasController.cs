@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
+using StraviaTec_Web.Models.Dtos;
+using StraviaTec_Web.Models.Requests;
 
 namespace Controllers
 {
@@ -14,22 +18,29 @@ namespace Controllers
     public class CarrerasController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CarrerasController(AppDbContext context)
+        public CarrerasController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Carreras
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Carrera>>> GetCarrera()
+        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetCarrera()
         {
-            return await _context.Carrera.ToListAsync();
+
+            var result = new List<CarreraDto>();
+
+            result.AddRange((await _context.Carrera.ToListAsync()).Select((c, i) => _mapper.Map<CarreraDto>(c)));
+            
+            return result;
         }
 
         // GET: api/Carreras/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Carrera>> GetCarrera(int id)
+        public async Task<ActionResult<CarreraDto>> GetCarrera(int id)
         {
             var carrera = await _context.Carrera.FindAsync(id);
 
@@ -38,37 +49,110 @@ namespace Controllers
                 return NotFound();
             }
 
-            return carrera;
+            var carreraDto = _mapper.Map<CarreraDto>(carrera);
+
+            return carreraDto;
         }
 
         // PUT: api/Carreras/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCarrera(int id, Carrera carrera)
-        {
-            if (id != carrera.Id)
+        public async Task<IActionResult> PutCarrera(int id, CarreraInfo carreraInfo)
+        {   
+            if (id <= 0 || carreraInfo == null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(carrera).State = EntityState.Modified;
+            var carrera = await _context.Carrera
+                .Where(c => c.Id == id)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.CuentaBancaria)
+                .FirstOrDefaultAsync();
 
-            try
+            if (carrera == null) 
             {
+                return NotFound();
+            }
+
+            // var evento = await _context.Evento.FindAsync(carrera.IdEvento);
+            var evento = await _context.Evento
+                .Where(e => e.Id == carrera.IdEvento)
+                .Include(e => e.PatrocinadorEvento)
+                .Include(e => e.EventoGrupo)
+                .FirstOrDefaultAsync();
+
+            if (evento == null)
+            {
+                return StatusCode(500);
+            }
+
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
+
+            carrera.Nombre = carreraInfo.Nombre;
+            carrera.Fecha = carreraInfo.Fecha;
+            carrera.Costo = carreraInfo.Costo;
+
+            _context.CategoriaCarrera.RemoveRange(carrera.CategoriaCarrera);
+            _context.CuentaBancaria.RemoveRange(carrera.CuentaBancaria);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var cat in carreraInfo.Categorias)
+            {
+                var categoria = new CategoriaCarrera
+                {
+                    IdCarrera = carrera.Id,
+                    IdCategoria = cat
+                };
+                await _context.CategoriaCarrera.AddAsync(categoria);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+
+            foreach (var cuenta in carreraInfo.CuentasBancarias)
             {
-                if (!CarreraExists(id))
+                var cuentaBancaria = new CuentaBancaria
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    IdCarrera = carrera.Id,
+                    Nombre = cuenta
+                };
+                await _context.CuentaBancaria.AddAsync(cuentaBancaria);
+                await _context.SaveChangesAsync();
             }
+
+            evento.Nombre = carreraInfo.Nombre;
+            evento.IdTipoActividad = carreraInfo.TipoActividad;
+            evento.EsPrivado = carreraInfo.EsPrivado;
+
+            _context.PatrocinadorEvento.RemoveRange(evento.PatrocinadorEvento);
+            _context.EventoGrupo.RemoveRange(evento.EventoGrupo);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var patrocinador in carreraInfo.Patrocinadores)
+            {
+                var patrocinadorData = new PatrocinadorEvento
+                {
+                    IdEvento = evento.Id,
+                    IdPatrocinador = patrocinador
+                };
+                await _context.PatrocinadorEvento.AddAsync(patrocinadorData);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var grupo in carreraInfo.Grupos)
+            {
+                var grupoEvento = new EventoGrupo
+                {
+                    IdEvento = evento.Id,
+                    IdGrupo = grupo
+                };
+                await _context.EventoGrupo.AddAsync(grupoEvento);
+                await _context.SaveChangesAsync();
+            }
+
+            await dbTransaction.CommitAsync();
 
             return NoContent();
         }
@@ -77,12 +161,129 @@ namespace Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Carrera>> PostCarrera(Carrera carrera)
+        public async Task<ActionResult<Carrera>> PostCarrera(CarreraInfo data)
         {
-            _context.Carrera.Add(carrera);
-            await _context.SaveChangesAsync();
+            /*
+            1. Crear entidad Recorrido.
+            2. Crear entidades Punto y asignales Id de Recorrido.
+            3. Crear entidad Evento y asignarle el Id de TipoEvento y el Id de TipoActividad.
+            4. Crear entidad Carrera y asignarle el Id de Evento y el Id de Recorrido.
+            5. Crear todas las entidades de PatrocinadorEvento y asignarles el Id de Evento y patrocinador.
+            6. Crear todas las entidades de EventoGrupo y asignarles el Id de Evento y grupo.
+            7. Crear todas las entidades de CategoriaCarrera y asignarles el Id de Carrera y categoria.
+            8. Crear todas las entidades de CuentaBancaria y asignarles el Id de Carrera y nombre.
+            */
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
 
-            return CreatedAtAction("GetCarrera", new { id = carrera.Id }, carrera);
+            try
+            {
+                var recorrido = new Recorrido 
+                {
+                    Nombre = data.Nombre,
+                    FechaHora = data.Fecha
+                };
+                await _context.Recorrido.AddAsync(recorrido);
+                await _context.SaveChangesAsync();
+
+                //DEBUG: cargar archivo gpx localmente
+
+                var recorridoData = await System.IO.File.ReadAllTextAsync("C:/Users/Marlo/Desktop/Lunch_Ride.gpx");
+                data.ArchivoRecorrido = Convert.ToBase64String(Encoding.UTF8.GetBytes(recorridoData));
+
+                //END_DEBUG
+
+                var puntos = GpxParser.Parse(data.ArchivoRecorrido, recorrido.Id);
+                await _context.Punto.AddRangeAsync(puntos);
+                await _context.SaveChangesAsync();
+
+                var idTipoEvento = (await _context.TipoEvento.FirstOrDefaultAsync(e => e.Nombre == "Carrera")).Id;
+                var evento = new Evento 
+                {
+                    IdTipoEvento = idTipoEvento,
+                    IdTipoActividad = data.TipoActividad,
+                    Nombre = data.Nombre,
+                    EsPrivado = data.EsPrivado
+                };
+                await _context.Evento.AddAsync(evento);
+                await _context.SaveChangesAsync();
+
+                var carrera = new Carrera
+                {
+                    IdRecorrido = recorrido.Id,
+                    IdEvento = evento.Id,
+                    Nombre = data.Nombre,
+                    Fecha = data.Fecha,
+                    Costo = data.Costo
+                };
+                await _context.Carrera.AddAsync(carrera);
+                await _context.SaveChangesAsync();
+
+                foreach (var patrocinador in data.Patrocinadores) 
+                {
+                    var patrocinadorEvento = new PatrocinadorEvento
+                    {
+                        IdEvento = evento.Id,
+                        IdPatrocinador = patrocinador
+                    };
+                    await _context.PatrocinadorEvento.AddAsync(patrocinadorEvento);
+                    await _context.SaveChangesAsync();
+                }
+
+                if (data.EsPrivado) 
+                {
+                    foreach (var grupo in data.Grupos)
+                    {
+                        var grupoEvento = new EventoGrupo
+                        {
+                            IdEvento = evento.Id,
+                            IdGrupo = grupo
+                        };
+                        await _context.EventoGrupo.AddAsync(grupoEvento);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                foreach (var categoria in data.Categorias) 
+                {
+                    var categoriaEvento = new CategoriaCarrera
+                    {
+                        IdCarrera = carrera.Id,
+                        IdCategoria = categoria
+                    };
+                    await _context.CategoriaCarrera.AddAsync(categoriaEvento);
+                    await _context.SaveChangesAsync();
+                }
+                
+
+                foreach (var cuenta in data.CuentasBancarias)
+                {
+                    var cuentaBancaria = new CuentaBancaria
+                    {
+                        IdCarrera = carrera.Id,
+                        Nombre = cuenta
+                    };
+                    await _context.CuentaBancaria.AddAsync(cuentaBancaria);
+                    await _context.SaveChangesAsync();
+                }
+
+                await dbTransaction.CommitAsync();
+
+                var response = new {
+                    carrera.Id,
+                    carrera.Nombre,
+                    carrera.Costo,
+                    carrera.CuentaBancaria,
+                    carrera.CategoriaCarrera
+                };
+
+                var carreraDto = _mapper.Map<CarreraDto>(carrera);
+                // return CreatedAtAction("GetCarrera", new { id = carrera.Id }, new { carrera.Id, carrera.Nombre, carrera.Costo });
+                return CreatedAtAction("GetCarrera", new { id = carrera.Id }, carreraDto);
+            
+            } catch (DbUpdateException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }      
         }
 
         // DELETE: api/Carreras/5
@@ -95,10 +296,13 @@ namespace Controllers
                 return NotFound();
             }
 
-            _context.Carrera.Remove(carrera);
+            var evento = await _context.Evento.FindAsync(carrera.IdEvento);
+
+            _context.Evento.Remove(evento);
+            // _context.Carrera.Remove(carrera);
             await _context.SaveChangesAsync();
 
-            return carrera;
+            return Ok();
         }
 
         private bool CarreraExists(int id)

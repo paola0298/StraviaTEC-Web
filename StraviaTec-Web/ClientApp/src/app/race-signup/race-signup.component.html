@@ -1,0 +1,21 @@
+<div class="container">
+
+    <h3>Carreras Disponibles</h3>
+    <p>
+        Selecciona una carrera para ver más información.
+    </p>
+
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action" *ngFor="let carrera of carreras; trackBy: trackByFn" 
+            href="/race-detail/{{ carrera.id }}">
+            <div class="d-flex w-100 justify-content-between">
+                <h5>{{ carrera.nombre }}</h5>
+                <p>Fecha: {{ carrera.fecha }}</p>
+            </div>
+            <p class="mb-1">
+                Costo inscripción: <strong>₡ {{ carrera.costo }}</strong>
+            </p>
+        </a>
+    </div>
+
+</div>

@@ -25,3 +25,11 @@ INSERT INTO "PATROCINADOR" ("Nombre_comercial", "Nombre_representante", "Tel_rep
     ('Visa', 'Representante Visa', '12345678', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F04%2FVisa.svg%2F1200px-Visa.svg.png&f=1&nofb=1'),
     ('McDonalds', 'Representante Mac', '12345678', 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.bhwt.org.uk%2Fwp-content%2Fuploads%2F2015%2F03%2FMcdonalds_Logo.jpg&f=1&nofb=1');
 
+INSERT INTO "TIPO_EVENTO" ("Nombre") VALUES
+    ('Carrera'),
+    ('Reto');
+
+INSERT INTO "TIPO_RETO" ("Nombre") VALUES
+    ('Fondo'),
+    ('Altitud');
+

@@ -12,7 +12,7 @@ namespace StraviaTec_Web.Models
         public decimal Latitud { get; set; }
         public decimal Longitud { get; set; }
         public DateTime Tiempo { get; set; }
-        public int Elevacion { get; set; }
+        public decimal Elevacion { get; set; }
 
         public virtual Recorrido IdRecorridoNavigation { get; set; }
     }

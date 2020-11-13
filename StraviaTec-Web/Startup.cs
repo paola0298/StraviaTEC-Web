@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
 
 namespace StraviaTec_Web
@@ -27,7 +29,8 @@ namespace StraviaTec_Web
         {
             services.AddCors();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -35,6 +38,11 @@ namespace StraviaTec_Web
             });
             var connection = "Host=localhost;Port=5432;Database=StraviaTEC;Username=StraviaUser;Password=StraviaTEC_2020;";
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+            
+            services.AddAutoMapper(options => 
+            {
+                options.AddProfile<StraviaTecProfile>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +78,8 @@ namespace StraviaTec_Web
                 FileProvider = new PhysicalFileProvider(webUploadsPath),
                 RequestPath = new PathString("/uploads")
             });
+
+            
 
             app.UseRouting();
 

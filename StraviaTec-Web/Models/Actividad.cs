@@ -13,7 +13,7 @@ namespace StraviaTec_Web.Models
         public decimal Duracion { get; set; }
         public decimal Kilometros { get; set; }
         public bool EsEvento { get; set; }
-        public int IdEvento { get; set; }
+        public int? IdEvento { get; set; }
 
         public virtual Evento IdEventoNavigation { get; set; }
         public virtual Recorrido IdRecorridoNavigation { get; set; }
