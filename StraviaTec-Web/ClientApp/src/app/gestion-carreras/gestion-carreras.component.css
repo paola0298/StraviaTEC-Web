@@ -42,7 +42,7 @@
     justify-content: center; */
 
     width: 100vw;
-    height: 72vh;
+    height: 60vw;
     position: relative;
     left: 50%;
     right: 50%;
@@ -75,5 +75,14 @@
 
 .margin-div {
     margin-bottom: 50px;
+}
+
+.race-table {
+    max-height: 300px !important;
+    overflow: auto;
+}
+
+.padding-custom {
+    padding-right: 10px;
 }
 
