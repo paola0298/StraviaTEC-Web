@@ -78,11 +78,6 @@ export class GestionRetosComponent implements OnInit {
       this.utilsService.showInfoModal('Error', 'Debe seleccionar los grupos que pueden tener acceso al reto.', 'saveMsjLabel', 'msjText', 'saveMsj');
       return;
     }
-
-
-
-
-
   }
 
   updateReto() {
