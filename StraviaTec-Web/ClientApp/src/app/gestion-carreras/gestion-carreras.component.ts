@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Patrocinador } from '../models/patrocinador';
 
 
+
 @Component({
   selector: 'app-gestion-carreras',
   templateUrl: './gestion-carreras.component.html',
@@ -15,13 +16,19 @@ export class GestionCarrerasComponent implements OnInit {
   localUrl: any[];
   created:boolean = false;
   carreras = [];
+  patrocinadores = ['Movistar'];
+  actividades = ['Ciclismo', 'Carrera', 'Caminata'];
+  categorias = ['Junior'];
+  grupos = ['Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2', 'Grupo 1', 'Grupo2'];
 
 
   constructor(private utilsService: UtilsService, private apiService:ApiService,
     private router: Router) { }
 
   ngOnInit(): void {
+    this.utilsService.configureContextMenu();
     this.loadCarreras();
+    // TODO cargar patrocinadores, actividades y categorias
   }
    loadRuta(event:any) {
       (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
@@ -71,6 +78,7 @@ export class GestionCarrerasComponent implements OnInit {
     this.createCarrera(carrera);
 
   }
+
   createCarrera(carrera: Carrera) {
     var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras`,carrera);
     response.subscribe(
@@ -87,7 +95,49 @@ export class GestionCarrerasComponent implements OnInit {
         console.log(carrera);
       });
   }
-     /**
+
+  getCarrera(id: number) {
+
+  }
+
+  deleteRace() {
+
+  }
+
+  updateCarrera() {
+
+  }
+
+  clearGroups() {
+    console.log("Publico seleccionado");
+    document.getElementById('groupsOption').style.display = 'none'; 
+  }
+
+  setGroups() {
+    console.log("Privado seleccionado");
+    document.getElementById('groupsOption').style.display = 'flex'; 
+  }
+
+  /**
+   *Metodo que se llama cuando se presiona click derecho en el item de la tabla
+   * @param event Evento de click derecho
+   * @param race Carrera seleccionada
+   */
+  onCarreraClick(event: any, race: Carrera): boolean {
+    this.utilsService.showContextMenu(event);
+    this.getCarrera(1); // todo obtener la carrera seleccionada
+    return false;
+  }
+
+  /**
+   * Metodo para mostrar al usuario un modal para tomar una decision de si o no
+   */
+  askUser() {
+    this.utilsService.showInfoModal('Eliminar', 'Esta seguro que desea eliminar la carrera',
+    'optionMsjLabel', 'optionText', 'optionMsj');
+  }
+  
+  /**
    * Metodo para cerrar un modal
    * @param id Id del modal a cerrar
    */

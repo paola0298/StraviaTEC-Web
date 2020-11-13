@@ -7,117 +7,127 @@
             <h4 class="card-title mt-3 text-center custom-margin">Crear una Carrera</h4>
             <form class="container">
                 <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <div class="form-group">
-                            <label for = "recorrido">  Cargar Recorrido
-                            </label>
-                            <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadRuta($event)">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                         </div>
-                    </div>
+                        <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
+                    </div> <!-- form-group// -->
 
-                    <div class="form-group col-md-8">
-                        <div class="form-row margin-bottom">
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                                </div>
-                                <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
-                            </div> <!-- form-group// -->
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-hiking"></i> </span>
-                                </div>
-                                <input id="actividad" name="actividad" class="form-control" placeholder="Actividad"
-                                    type="number">
-                            </div> <!-- form-group// -->
-
-                            
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-hiking"></i> </span>
                         </div>
+                        <select class="form-control" id="activity">
+                            <option selected="" value="Seleccione una actividad"> Seleccione una actividad</option>
+                            <option *ngFor="let actividad of actividades" value="{{actividad}}">{{ actividad }}</option>
+                        </select>
+                    </div> <!-- form-group// -->
 
-                        <div class="form-row margin-bottom">
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
-                                </div>
-                                <input id="categoria" name="categoria" class="form-control" placeholder="Categoria"
-                                    type="number">
-                            </div> <!-- form-group// -->
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
-                                </div>
-                                <input id="fecha" name="fecha" class="form-control" placeholder="Fecha"
-                                    type="date">
-                            </div> <!-- form-group// -->
-
-                            
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
                         </div>
+                        <select class="form-control" id="category">
+                            <option selected="" value="Seleccione una categoria"> Seleccione una categoria</option>
+                            <option *ngFor="let categoria of categorias" value="{{categoria}}">{{ categoria }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
 
-                        <div class="form-row margin-bottom">
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
-                                </div>
-                                <input id="patrocinador" name="patrocinador" class="patrocinador" placeholder="Patrocinador"
-                                    type="number">
-                            </div> <!-- form-group// -->
-
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-money-bill-wave-alt"></i> </span>
-                                </div>
-                                <input id="costo" name="costo" class="form-control" placeholder="Costo"
-                                    type="number">
-                            </div> <!-- form-group// -->
-        
-                            
-                        </div>
-
-                        <div class="form-row margin-bottom">
-                            <div class="form-group input-group col">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"> <i class="fa fa-money-check-alt"></i> </span>
-                                </div>
-                                <input id="cuentaB"name="cuentaB" class="form-control" placeholder="Cuenta Bancaria" type="text">
-                            </div> <!-- form-group// -->
-                        </div>
-                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" (click)="saveCarrera()">Crear carrera</button>
-                
-                <div class="form-group">
 
-                <button type="button" class="btnA btn-primary" [routerLink]="['/menu-organizador']">   Atrás</button>
-                 
-            </div>
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
+                        </div>
+                        <select class="form-control" id="sponsor">
+                            <option selected="" value="Seleccione un patrocinador"> Seleccione un patrocinador</option>
+                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador}}">{{ patrocinador }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                        </div>
+                        <input id="fecha" name="fecha" class="form-control" placeholder="Fecha" type="date">
+                    </div> <!-- form-group// -->
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-money-bill-wave-alt"></i> </span>
+                        </div>
+                        <input id="costo" name="costo" class="form-control" placeholder="Costo" type="number">
+                    </div> <!-- form-group// -->
+                
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-money-check-alt"></i> </span>
+                        </div>
+                        <input id="cuentaB"name="cuentaB" class="form-control" placeholder="Cuenta Bancaria" type="text">
+                    </div> <!-- form-group// -->
+
+                    <div class="form-group col-md-4">
+                        <label class="float-md-right" for="recorrido">  Cargar Recorrido </label>
+                    </div>
+                    
+
+                    <div class="form-group col-md-4">
+                        <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadRuta($event)">
+                    </div> <!-- form-group// -->
+               
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group input-group col-md-4">
+                        <label class="radio-inline padding-custom">
+                            <input type="radio" name="optradio" checked (click)="clearGroups()" >Público</label>
+                        <label class="radio-inline">
+                            <input type="radio" name="optradio" (click)="setGroups()">Privado</label>
+                    </div>
+
+                    <div id="groupsOption" style="display: none;" class="form-group input-group col-md-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fas fa-handshake"></i> </span>
+                        </div>
+                        
+                        <select class="selectpicker" multiple id="groups">
+                            <option selected="" value="Seleccione los grupos"> Seleccione los grupos</option>
+                            <option *ngFor="let grupo of grupos" value="{{grupo}}">{{ grupo }}</option>
+                        </select>
+                    </div> <!-- form-group end.// -->
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" (click)="saveCarrera()">Crear carrera</button>
             </form>
 
-        </article>
-    </div> 
-       <div class="margin-div">
-                    <h2></h2>
-                    <div class="producer-table">
-                        <h2>Carreras Registradas</h2>
-
-                      <table class="table table-hover">
-                          <thead>
+            
+            <div class="margin-div">
+                <h2></h2>
+                <div class="race-table">
+                    <h2>Carreras Registradas</h2>
+                    <table class="table table-hover">
+                        <thead>
                             <tr>
-                              <th class="text-center align-middle" scope="col">Nombre</th>
-                              <th class="text-center align-middle" scope="col">Actividad</th>
-                              <th class="text-center align-middle" scope="col">Fecha</th>
-                              <th class="text-center align-middle" scope="col">Categoría</th>
-                              <th class="text-center align-middle" scope="col">Patrocinador</th>
-                              <th class="text-center align-middle" scope="col">Costo</th>
-                              <th class="text-center align-middle" scope="col">Cuentas Bancarias</th>
-                              <!--th class="text-center align-middle" scope="col">Ruta</th-->
-
+                                <th class="text-center align-middle" scope="col">Nombre</th>
+                                <th class="text-center align-middle" scope="col">Actividad</th>
+                                <th class="text-center align-middle" scope="col">Fecha</th>
+                                <th class="text-center align-middle" scope="col">Categoría</th>
+                                <th class="text-center align-middle" scope="col">Patrocinador</th>
+                                <th class="text-center align-middle" scope="col">Costo</th>
+                                <th class="text-center align-middle" scope="col">Cuentas Bancarias</th>
+                                <!--th class="text-center align-middle" scope="col">Ruta</th-->
                             </tr>
-                          </thead>
-                          <tbody *ngFor="let carrera of carreras; let i = index;">
+                        </thead>
+                        <tbody *ngFor="let carrera of carreras; let i = index;">
                             <tr>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.nombre}}</td>
                                 <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.actividad}}</td>
@@ -125,19 +135,24 @@
                                 <td (contextmenu)="onCarreraCick($event, carrera)" class="text-center align-middle">{{ carrera.categoria}}</td>
                                 <td (contextmenu)="onCarreaClick($event,carrera)" class="text-center align-middle">{{ carrera.patrocinador}}</td>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.costo}}</td>
-                               <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.cuentaB}}</td>
-                               <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
+                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.cuentaB}}</td>
+                                <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
                             </tr>     
-                          </tbody>
+                        </tbody>
                     </table>
-                    </div>  
+                </div>  
+                
+                <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
+                    <a class="dropdown-item btn btn-default" (click)="updateCarrera()">Actualizar</a>  
+                    <a class="dropdown-item btn" (click)="askUser()">Eliminar</a> 
+                </div>
+            <!-- card.// -->
+        </div>
 
-                    <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
-                        <a class="dropdown-item btn btn-default" (click)="updateCarrera()">Actualizar</a>  
-                        <a class="dropdown-item btn" (click)="askUser()">Eliminar</a> 
-                    </div>
-    <!-- card.// -->
-</div>
+        </article>
+    </div> 
+    
+    
 
 <!--container end.//-->
 
@@ -161,6 +176,26 @@
             </div>
               <!-- Modal footer -->
         </div>
-        
     </div>
 </div>
+
+<!-- The Option Modal -->
+<div class="modal" id="optionMsj">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="optionMsjLabel"></h4>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <a id="optionText"></a>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="deleteRace()">Si</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('optionMsj')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
