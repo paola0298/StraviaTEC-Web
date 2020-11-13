@@ -1,0 +1,8 @@
+### Obtener todos los tipos de actividad
+GET http://127.0.0.1:5001/api/InfoEvento/tipos HTTP/2.0
+
+### Obtener todos los Patrocinadores
+GET http://127.0.0.1:5001/api/InfoEvento/patrocinadores HTTP/2.0
+
+### Obtener todos las categorias
+GET http://127.0.0.1:5001/api/InfoEvento/categorias HTTP/2.0
