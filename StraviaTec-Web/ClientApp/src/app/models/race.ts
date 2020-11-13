@@ -1,10 +1,10 @@
 export class Race {
-    Id: number;
-    IdRecorrido: number;
-    IdEvento: number;
-    Nombre: string;
-    Fecha: string;
-    Costo: number;
+    id: number;
+    idRecorrido: number;
+    idEvento: number;
+    nombre: string;
+    fecha: string;
+    costo: number;
     
     constructor(
         Id: number,
@@ -14,11 +14,11 @@ export class Race {
         Fecha: string,
         Costo: number
     ){
-        this.Id = Id;
-        this.IdRecorrido = IdRecorrido;
-        this.IdEvento = IdEvento;
-        this.Nombre = Nombre;
-        this.Fecha = Fecha;
-        this.Costo = Costo;
+        this.id = Id;
+        this.idRecorrido = IdRecorrido;
+        this.idEvento = IdEvento;
+        this.nombre = Nombre;
+        this.fecha = Fecha;
+        this.costo = Costo;
     }
 }
