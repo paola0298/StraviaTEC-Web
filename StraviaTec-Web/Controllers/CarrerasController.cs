@@ -27,15 +27,58 @@ namespace Controllers
         }
 
         // GET: api/Carreras
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetCarrera()
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetCarrera(string id)
         {
+            var user = await _context.Usuario
+                .Where(u => u.User == id)
+                .Include(u => u.UsuarioGrupo)
+                .FirstOrDefaultAsync();
 
-            var result = new List<CarreraDto>();
-
-            result.AddRange((await _context.Carrera.ToListAsync()).Select((c, i) => _mapper.Map<CarreraDto>(c)));
+            if (user == null)
+                return BadRequest();
             
-            return result;
+            var visibles = _context.Carrera
+                .Include(c => c.CuentaBancaria)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => !c.IdEventoNavigation.EsPrivado)
+                .ToList();
+
+            var privados = _context.Carrera
+                .Include(c => c.CuentaBancaria)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => c.IdEventoNavigation.EsPrivado);
+
+            foreach (var carrera in privados)
+            {
+                var evento = carrera.IdEventoNavigation;
+                foreach (var grupo in evento.EventoGrupo)
+                {
+                    if (!UserInGroup(grupo.IdGrupoNavigation, user))
+                        continue;
+                    visibles.Append(carrera);
+                }
+            }
+
+
+
+            return Ok(visibles.Select(c => _mapper.Map<CarreraDto>(c)));
+        }
+
+        private bool UserInGroup(Grupo group, Usuario user) 
+        {
+            var usersInGroup = _context.UsuarioGrupo
+                .Where(g => g.IdGrupo == group.Id);
+
+            return usersInGroup.Any(g => g.IdUsuario == user.User);
         }
 
         // GET: api/Carreras/5
