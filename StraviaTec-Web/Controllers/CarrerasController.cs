@@ -85,7 +85,15 @@ namespace Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CarreraDto>> GetCarrera(int id)
         {
-            var carrera = await _context.Carrera.FindAsync(id);
+            var carrera = await _context.Carrera
+                .Include(c => c.CuentaBancaria)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
 
             if (carrera == null)
             {
