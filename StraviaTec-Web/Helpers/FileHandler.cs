@@ -8,12 +8,24 @@ using Microsoft.AspNetCore.Http;
 
 namespace StraviaTec_Web.Helpers
 {
+    public enum StorageLocation
+    {
+        ImageUploads,
+        InscriptionUploads,
+    }
     public static class FileHandler
     {
         public static string Host => "http://127.0.0.1:5001/uploads/";
 
-        public static async Task<string> SaveFileAsync(string file, string name) 
+        public static async Task<string> SaveFileAsync(string file, string name, StorageLocation location) 
         {
+            string fileSuffix = location switch
+            {
+                StorageLocation.ImageUploads => "-pic.png",
+                StorageLocation.InscriptionUploads => "-voucher.png",
+                _ => "-doc.png",
+            };
+            
             var uploads = Path.Combine(Environment.CurrentDirectory, "WebUploads");
 
             try 
@@ -22,7 +34,7 @@ namespace StraviaTec_Web.Helpers
 
                 if (file.Length == 0) return null;
 
-                var fileName = $"{name}-pic.png";
+                var fileName = $"{name}{fileSuffix}";
                 string filePath = Path.Combine(uploads, fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create)) 
                 {
