@@ -10,7 +10,9 @@ namespace StraviaTec_Web.Models
         public string IdUsuario { get; set; }
         public string Estado { get; set; }
         public string ComprobantePago { get; set; }
+        public int? IdCategoriaCarrera { get; set; }
 
+        public virtual CategoriaCarrera IdCategoriaCarreraNavigation { get; set; }
         public virtual Evento IdEventoNavigation { get; set; }
         public virtual Usuario IdUsuarioNavigation { get; set; }
     }
