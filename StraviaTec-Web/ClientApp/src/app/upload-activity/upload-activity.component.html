@@ -1,3 +1,106 @@
 <div class="container">
+    <form action="/api/Actividad" method="POST">
+        <div class="row">
+            <div class="form-group">
+                <h3>Cargar actividad</h3>
+            </div>
+        </div>
     
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="date">Fecha realizada</label>
+                    <input type="date" name="fecha" id="fecha" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora">Hora de inicio</label>
+                    <input type="time" name="hora" id="hora" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="kilometraje">Kilometraje</label>
+                    <input type="number" name="kilometraje" id="kilometraje" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="duracion">Duración de la actividad</label>
+                    <input type="number" name="duracion" id="duracion" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo-actividad">Tipo de actividad</label>
+                    <select name="tipo-actividad" id="tipo-actividad" class="form-control" required>
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="recorrido">Archivo de recorrido (GPX)</label>
+                    <input type="file" name="recorrido" id="recorrido" accept=".gpx" (change)="recorridoChanged($event)" class="form-control-file" required>
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <h5>Es completitud de un evento?</h5>
+        </div>
+    
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <input type="radio" name="es-evento" id="evento-no" value="false" (click)="esEventoChanged($event)" class="form-check-input" checked>
+                <label for="evento-1" class="form-check-label">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" name="es-evento" id="evento-si" value="true" (click)="esEventoChanged($event)" class="form-check-input" >
+                <label for="evento-1" class="form-check-label">Si</label>
+            </div>
+        </div>
+        
+        <div class="row" id="evento-select" style="display: none;">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="evento">Tipo de evento</label>
+                    <select name="evento" id="evento" (change)="onEventoTypeChange($event)" class="form-control">
+                        <option value="">Selecciona</option>
+                        <option value="carrera">Carrera</option>
+                        <option value="reto">Reto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group" id="carrera-select" style="display: none;">
+                    <label for="carreras">Carrera</label>
+                    <select name="carreras" id="carreras" class="form-control">
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
+                <div class="form-group" id="reto-select" style="display: none;">
+                    <label for="retos">Reto</label>
+                    <select name="retos" id="retos" class="form-control">
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+        <button type="submit" (click)="addActividad($event)" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+<div class="modal fade" tabindex="-1" id="errorModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="error-msg">
+
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Aceptar</button>
+            </div>
+        </div>
+    </div>
 </div>
