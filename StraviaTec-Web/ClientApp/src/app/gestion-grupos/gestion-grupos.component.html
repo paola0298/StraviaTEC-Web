@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+<div class="primary-container">
+    <hr>
+    <div class="card bg-light article-custom">
+        <article class="card-body mx-auto">
+            <h4 class="card-title mt-3 text-center custom-margin">Crear un Grupo</h4>
+            <form class="container">
+                <div class="form-row">
+
+                    <div class="form-group input-group col">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
+                    </div> <!-- form-group// -->
+
+                </div>
+                <div class="form-row">
+                        <!-- form-group end.// -->
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" (click)="saveGrupo()">Crear grupo</button>
+            </form>
+
+            
+            <div class="margin-div">
+                <h2></h2>
+                <div class="race-table">
+                    <h2>Grupos Registrados</h2>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle" scope="col">Nombre</th>
+                                <th class="text-center align-middle" scope="col">Administrador</th>
+                             
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let grupo of grupos; let i = index;">
+                            <tr>
+                                <td (contextmenu)="onCarreraClick($event, grupo)" class="text-center align-middle">{{ grupo.nombre}}</td>
+                                <td (contextmenu)="onCarreaClick($event, grupo)" class="text-center align-middle">{{ grupo.idAdmin}}</td>    
+                           </tr>     
+                        </tbody>
+                    </table>
+                </div>  
+                
+                <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
+                    <a class="dropdown-item btn btn-default" (click)="updateGrupo()">Actualizar</a>  
+                    <a class="dropdown-item btn" (click)="askUser()">Eliminar</a> 
+                </div>
+            <!-- card.// -->
+        </div>
+
+        </article>
+    </div> 
+    
+    
+
+<!--container end.//-->
+
+
+<!-- The Modal -->
+<div class="modal" id="saveMsj">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="saveMsjLabel"></h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <a id="msjText"></a>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+                    (click)="closeModal('saveMsj')">Close</button>
+            </div>
+              <!-- Modal footer -->
+        </div>
+    </div>
+</div>
+
+<!-- The Option Modal -->
+<div class="modal" id="optionMsj">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="optionMsjLabel"></h4>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <a id="optionText"></a>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="deleteGroup()">Si</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('optionMsj')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

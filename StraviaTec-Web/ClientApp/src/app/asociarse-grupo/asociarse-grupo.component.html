@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+
+<div class="primary-container">
+    <div class="card bg-light article-custom">
+        <article class="card-body">
+            <form class="container">
+                <div class="row">
+                    <h2>Buscar grupos</h2>
+                    <div class="input-group margin-bottom">
+                        <input id="search-input" type="text" class="form-control" placeholder="Escriba el nombre del grupo">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" (click)="searchGroup()">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+            
+                    <div class="list-group container set-size">
+                        <a class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <div class="row row-cols-2">
+                                    <div class="col" *ngFor="let grupo of grupos">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="mb-1">{{ grupo.nombre }}</h5>
+                                                <h6 class="mb-1"> Administrador: {{ grupo.idAdmin }}</h6>
+                                            </div>
+                                            <div class="col">
+                                                <button id="follow-btn" class="btn btn-primary button-margin" (click)=joinGroup(grupo.asociado,grupo.id,grupo.idAdmin,grupo.nombre)>{{grupo.asociado}}</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>                    
+                    </div>
+                </div>
+            </form>
+        </article>
+    </div>
+</div>
+
+<!--Modal to open when error-->
+<div class="modal fade" id="saveMsj" tabindex="-1" role="dialog" aria-labelledby="saveMsjLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+          <h4 class="modal-title" id="saveMsjLabel"></h4> <!--El texto se coloca en script-->
+        </div>
+        <div class="modal-body">
+          <a class="custom-close" id="msjText"></a>  <!--El texto se coloca en script-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('saveMsj')">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <!--Modal-->
+<div class="modal fade" id="selectMsj" tabindex="-1" role="dialog" aria-labelledby="selectMsjLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+          <h4 class="modal-title" id="selectMsjLabel"></h4> <!--El texto se coloca en script-->
+        </div>
+        <div class="modal-body">
+          <a class="custom-close custom-color" id="selectmsjText"></a>  <!--El texto se coloca en script-->
+          <div class="form-group input-group col">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-pager"></i> </span>
+            </div>
+            <select class="form-control" id="nuevoAdmin">
+                <option selected="" value="Seleccione el nuevo administrador"> Seleccione el nuevo administrador</option>
+                <option *ngFor="let user of usuariosGrupo" value="{{user.nombre}} {{user.apellido1}} {{user.apellido2}} {{user.user}}">{{user.nombre}} {{user.apellido1}} {{user.apellido2}} {{user.user}}</option>
+            </select>
+        </div> <!-- form-group end.// -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('selectMsj')">Cerrar</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="remove()">Salir del grupo</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
