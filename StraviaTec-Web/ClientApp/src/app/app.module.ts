@@ -24,6 +24,7 @@ import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
 import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.component';
+import { UploadActivityComponent } from './upload-activity/upload-activity.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.compo
     RaceDetailComponent,
     GestionRetosComponent,
     AsociarseGrupoComponent,
+    UploadActivityComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -71,7 +73,7 @@ import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.compo
       { path: 'race-detail/:id', component: RaceDetailComponent },
       { path: 'gestion-retos', component: GestionRetosComponent},
       { path: 'asociarse-grupo', component: AsociarseGrupoComponent},
-       
+      { path: 'upload-activity', component: UploadActivityComponent },
       
     ])
   ],
