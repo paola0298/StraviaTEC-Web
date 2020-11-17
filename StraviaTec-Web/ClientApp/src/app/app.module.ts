@@ -23,6 +23,7 @@ import { RaceSignupComponent } from './race-signup/race-signup.component';
 import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
 import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
+import { UploadActivityComponent } from './upload-activity/upload-activity.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
     AthleteMenuComponent,
     RaceDetailComponent,
     GestionRetosComponent,
+    UploadActivityComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -68,6 +70,7 @@ import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
       { path: 'athlete-menu', component: AthleteMenuComponent},
       { path: 'race-detail/:id', component: RaceDetailComponent },
       { path: 'gestion-retos', component: GestionRetosComponent},
+      { path: 'upload-activity', component: UploadActivityComponent },
       
     ])
   ],
