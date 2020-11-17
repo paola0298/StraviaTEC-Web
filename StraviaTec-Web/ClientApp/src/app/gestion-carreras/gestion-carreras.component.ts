@@ -3,7 +3,8 @@ import { Carrera} from '../models/carrera';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from '../services/api.service';
 import { Patrocinador } from '../models/patrocinador';
-
+import { Race } from '../models/race';
+import * as $ from 'jquery';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { Patrocinador } from '../models/patrocinador';
 export class GestionCarrerasComponent implements OnInit {
   localUrl: any[];
   created:boolean = false;
-  carreras = [];
+  carreras: Race[] = [];
   patrocinadores = [];
   actividades = [];
   categorias = [];
@@ -66,31 +67,30 @@ export class GestionCarrerasComponent implements OnInit {
         console.log(error.status);
       }
       );
-
   }
 
   loadGrupos() {
-
+    //TODO: Cargar grupos de la carrera
   }
 
-   loadRuta(event:any) {
-      (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
-      if (event.target.files && event.target.files[0]) {
-        var reader = new FileReader();
-        reader.onload = (event: any) => {
-            console.log(reader.result);
-            this.localUrl = event.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
+  loadRuta(event:any) {
+    // (document.getElementById('recorrido') as HTMLInputElement).setAttribute('hidden', 'true');
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event: any) => {
+          // console.log(reader.result);
+          this.localUrl = event.target.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   loadCarreras() {
     console.log('Obteniendo todas las carreras');
     console.log('\n');
-    const response = this.apiService.get(`http//localhost:${this.apiService.PORT}/api/Carreras`)
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Carreras/all`)
     response.subscribe(
-      (value: Carrera[]) => {
+      (value: Race[]) => {
         console.log('Carreras ' + value);
         this.carreras = value;
       }, (error: any) => {
@@ -101,28 +101,49 @@ export class GestionCarrerasComponent implements OnInit {
 
   saveCarrera() {
     const nombre = (document.getElementById('name') as HTMLInputElement);
-    const actividad = (document.getElementById('actividad') as HTMLInputElement);
-    const categoria = (document.getElementById('categoria') as HTMLInputElement);
+    const actividad = (document.getElementById('activity') as HTMLSelectElement);
+    const categoria = (document.getElementById('category') as HTMLSelectElement);
     const fecha = (document.getElementById('fecha') as HTMLInputElement);
-    const patrocinador = (document.getElementById('patrocinador') as HTMLInputElement);
+    const patrocinador = (document.getElementById('sponsor') as HTMLSelectElement);
     const costo = (document.getElementById('costo') as HTMLInputElement);
-    const cuentas = (document.getElementById('cuentaB') as HTMLInputElement);
+    const cuenta = (document.getElementById('cuentaB') as HTMLInputElement);
     const recorrido = (document.getElementById('recorrido') as HTMLInputElement);
+    let privado = this.getCheckedRadio('optradio');
 
     if (nombre.value == '' || actividad.value == null || categoria.value == '' || fecha.value == '' || patrocinador.value == '' || 
-      costo.value == '' || cuentas.value == '' || recorrido.value == '') {
+      costo.value == '' || cuenta.value == '' || recorrido.value == '') {
         this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
         return;
     } 
 
-    const carrera = new Carrera(nombre.value, actividad.valueAsNumber , fecha.value, cuentas.value, categoria.valueAsNumber,
-      patrocinador.valueAsNumber, costo.valueAsNumber, this.localUrl.toString());
+    let carreraInfo = {
+      Nombre: nombre.value,
+      Fecha: fecha.value,
+      Costo: costo.value,
+      TipoActividad: actividad.value,
+      EsPrivado: privado,
+      ArchivoRecorrido: this.localUrl.toString(),
+      Patrocinadores: $('#sponsor').val(),
+      Grupos: [],
+      CuentasBancarias: [cuenta.value],
+      Categorias: $('#category').val()
+    };
+    // const carrera = new Carrera(nombre.value, actividad.valueAsNumber , fecha.value, cuentas.value, categoria.valueAsNumber,
+    //   patrocinador.valueAsNumber, costo.valueAsNumber, this.localUrl.toString());
   
-    this.createCarrera(carrera);
+    console.log(carreraInfo);
+    this.createCarrera(carreraInfo);
 
   }
 
-  createCarrera(carrera: Carrera) {
+  getCheckedRadio (name: string) {
+    var elements = document.getElementsByName(name) as NodeListOf<HTMLInputElement>;
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].checked) return elements[i].value;
+    }
+  }
+
+  createCarrera(carrera: any) {
     var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras`,carrera);
     response.subscribe(
       (value: Carrera) => {

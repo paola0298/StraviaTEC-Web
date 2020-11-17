@@ -21,7 +21,7 @@
                         </div>
                         <select class="form-control" id="activity">
                             <option selected="" value="Seleccione una actividad"> Seleccione una actividad</option>
-                            <option *ngFor="let actividad of actividades" value="{{actividad.nombre}}">{{ actividad.nombre }}</option>
+                            <option *ngFor="let actividad of actividades" value="{{actividad.id}}">{{ actividad.nombre }}</option>
                         </select>
                     </div> <!-- form-group// -->
 
@@ -50,7 +50,7 @@
                         </div>
                         <select class="form-control" id="category" multiple>
                             <option selected="" value="Seleccione una categoria"> Seleccione una categoria</option>
-                            <option *ngFor="let categoria of categorias" value="{{categoria.nombre}}">{{ categoria.nombre }}</option>
+                            <option *ngFor="let categoria of categorias" value="{{categoria.id}}">{{ categoria.nombre }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
 
@@ -60,7 +60,7 @@
                         </div>
                         <select class="form-control" id="sponsor" multiple>
                             <option selected="" value="Seleccione un patrocinador"> Seleccione un patrocinador</option>
-                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.nombreComercial}}">{{ patrocinador.nombreComercial }}</option>
+                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.id}}">{{ patrocinador.nombreComercial }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
 
@@ -83,18 +83,18 @@
                     
 
                     <div class="form-group col-md-4">
-                        <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control" (change)="loadRuta($event)">
+                        <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control-file" (change)="loadRuta($event)">
                     </div> <!-- form-group// -->
                
                 </div>
 
                 <div class="form-row">
 
-                    <div class="form-group input-group col-md-4">
+                    <div class="form-group input-group col-md-4" id="privado-group">
                         <label class="radio-inline padding-custom">
-                            <input type="radio" name="optradio" checked (click)="clearGroups()" >Público</label>
+                            <input type="radio" name="optradio" checked (click)="clearGroups()" value="false">Público</label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio" (click)="setGroups()">Privado</label>
+                            <input type="radio" name="optradio" (click)="setGroups()" value="true">Privado</label>
                     </div>
 
                     <div id="groupsOption" style="display: none;" class="form-group input-group col-md-4">
@@ -133,12 +133,30 @@
                         <tbody *ngFor="let carrera of carreras; let i = index;">
                             <tr>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.nombre}}</td>
-                                <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.actividad}}</td>
+                                <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.idTipoActividad }}</td>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.fecha}}</td>
-                                <td (contextmenu)="onCarreraCick($event, carrera)" class="text-center align-middle">{{ carrera.categoria}}</td>
-                                <td (contextmenu)="onCarreaClick($event,carrera)" class="text-center align-middle">{{ carrera.patrocinador}}</td>
+                                <td (contextmenu)="onCarreraCick($event, carrera)" class="text-center align-middle">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let cat of carrera.categoriaCarrera">
+                                            {{cat.id}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td (contextmenu)="onCarreaClick($event,carrera)" class="text-center align-middle">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let pat of carrera.patrocinadorEvento">
+                                            {{pat.id}}
+                                        </li>
+                                    </ul>
+                                </td>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.costo}}</td>
-                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.cuentaB}}</td>
+                                <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let cuenta of carrera.cuentaBancaria">
+                                            {{cuenta.nombre}}
+                                        </li>
+                                    </ul>
+                                </td>
                                 <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
                             </tr>     
                         </tbody>
