@@ -1,0 +1,17 @@
+### Obtener todos los grupos
+GET http://127.0.0.1:5001/api/Grupos HTTP/2.0
+
+### Obtener un grupo por id
+GET http://127.0.0.1:5001/api/Grupos/1 HTTP/2.0
+
+### Eliminar un grupo por id
+DELETE http://127.0.0.1:5001/api/Grupos/1 HTTP/2.0
+
+### Crear un grupo
+POST http://127.0.0.1:5001/api/Grupos HTTP/2.0
+Content-Type: application/json
+
+{
+    "Nombre": "Grupo7",
+    "IdAdmin": "paola"
+}
