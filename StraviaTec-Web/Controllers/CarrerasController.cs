@@ -67,10 +67,31 @@ namespace Controllers
                     visibles.Append(carrera);
                 }
             }
-
-
-
             return Ok(visibles.Select(c => _mapper.Map<CarreraDto>(c)));
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAllCarreras()
+        {
+            // var carreras = _context.Carrera.FromSqlInterpolated($@"
+            //     SELECT ""Id"", ""IdRecorrido"", ""IdEvento"", ""Nombre"", ""Fecha"", ""Costo"" 
+            //     FROM ""CARRERA"";")
+            //     .Include(c => c.CuentaBancaria)
+            //     .Include(c => c.CategoriaCarrera)
+            //     .Include(c => c.IdEventoNavigation)
+            //         .ThenInclude(e => e.PatrocinadorEvento)
+            //     .Include(c => c.IdEventoNavigation)
+            //         .ThenInclude(e => e.EventoGrupo);
+
+            var carreras = _context.Carrera
+                .Include(c => c.CuentaBancaria)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo);
+
+            return Ok(carreras.Select(c => _mapper.Map<CarreraDto>(c)));
         }
 
         private bool UserInGroup(Grupo group, Usuario user) 
@@ -237,10 +258,8 @@ namespace Controllers
                 await _context.SaveChangesAsync();
 
                 //DEBUG: cargar archivo gpx localmente
-
-                var recorridoData = await System.IO.File.ReadAllTextAsync("C:/Users/Marlo/Desktop/Lunch_Ride.gpx");
-                data.ArchivoRecorrido = Convert.ToBase64String(Encoding.UTF8.GetBytes(recorridoData));
-
+                // var recorridoData = await System.IO.File.ReadAllTextAsync("C:/Users/Marlo/Desktop/Lunch_Ride.gpx");
+                // data.ArchivoRecorrido = Convert.ToBase64String(Encoding.UTF8.GetBytes(recorridoData));
                 //END_DEBUG
 
                 var puntos = GpxParser.Parse(data.ArchivoRecorrido, recorrido.Id);
