@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StraviaTec_Web.Models;
 using StraviaTec_Web.Models.Dtos;
 
@@ -27,6 +29,19 @@ namespace StraviaTec_Web.Controllers
             return Ok(tipos);
         }
 
+        [HttpGet("tipo/{id}")]
+        public async Task<IActionResult> GetTipoActividad(int id) 
+        {
+            var tipo = await _context.TipoActividad
+                .Where(t => t.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (tipo == null)
+                return NotFound();
+
+            return Ok(tipo);
+        }
+
         [HttpGet("patrocinadores")]
         public IActionResult GetPatrocinadores()
         {
@@ -34,11 +49,64 @@ namespace StraviaTec_Web.Controllers
             return Ok(patrocinadores);
         }
 
+        [HttpGet("patrocinadores/{eventoId}")]
+        public async Task<IActionResult> GetPatrocinadoresAsync(int eventoId)
+        {
+            var evento = await _context.Evento
+                .Where(e => e.Id == eventoId)
+                .Include(e => e.PatrocinadorEvento)
+                    .ThenInclude(p => p.IdPatrocinadorNavigation)
+                .FirstOrDefaultAsync();
+
+            var patrocinadores = new List<Patrocinador>();
+
+            foreach (var patro in evento.PatrocinadorEvento)
+            {
+                patrocinadores.Add(patro.IdPatrocinadorNavigation);
+            }
+
+            return Ok(patrocinadores.Select(p => _mapper.Map<PatrocinadorDto>(p)));
+        }
+
         [HttpGet("categorias")]
         public IActionResult GetCategorias() 
         {
             var categorias = _context.Categoria.Select(c => _mapper.Map<CategoriaDto>(c));
             return Ok(categorias);
+        }
+
+        [HttpGet("categorias/{carreraId}")]
+        public async Task<IActionResult> GetCategoriasAsync(int carreraId) 
+        {
+            var carrera = await _context.Carrera
+                .Where(c => c.Id == carreraId)
+                .Include(c => c.CategoriaCarrera)
+                    .ThenInclude(cat => cat.IdCategoriaNavigation)
+                .FirstOrDefaultAsync();
+
+            if (carrera == null)
+                return NotFound();
+
+            var categorias = new List<Categoria>();
+            
+            foreach (var cat in carrera.CategoriaCarrera)
+            {
+                categorias.Add(cat.IdCategoriaNavigation);
+            }
+ 
+            return Ok(categorias.Select(cat => _mapper.Map<Categoria, CategoriaDto>(cat)));
+        }
+
+        [HttpGet("cuentas/{carreraId}")]
+        public IActionResult GetCuentas(int carreraId)
+        {
+            var cuentas = _context.CuentaBancaria
+                .Where(c => c.IdCarrera == carreraId);
+
+            if (cuentas == null || cuentas.Count() == 0)
+                return NotFound();
+
+            return Ok(cuentas.Select(c => _mapper.Map<CuentaBancariaDto>(c)));
         }
 
         [HttpGet("retos")]

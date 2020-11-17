@@ -24,7 +24,9 @@ export class RaceSignupComponent implements OnInit {
   }
 
   async loadRaces() {
-    var response = this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Carreras`);
+    var userId = window.localStorage.getItem('userId');
+    console.log('current user: ' + userId);
+    var response = this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Carreras/user/${userId}`);
     response.subscribe((value: Race[]) => {
       console.log(value);
       this.carreras = value;
