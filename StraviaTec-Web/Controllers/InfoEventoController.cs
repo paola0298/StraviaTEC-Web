@@ -47,5 +47,6 @@ namespace StraviaTec_Web.Controllers
             var retos = _context.TipoReto.Select(r => _mapper.Map<TipoRetoDto>(r));
             return Ok(retos);
         }
+
     }
 }
