@@ -1,1 +1,94 @@
-<p>race-detail works!</p>
+<div class="container">
+    <div class="row">
+        <div class="form-group flex-grow-1 mt-lg-2">
+            <h3>{{ carrera.nombre }}</h3>
+        </div>
+        <div class="form-group mt-lg-2">
+            <button type="button" class="btn btn-primary" id="inscribirseButton" data-toggle="modal" data-target="#inscripcionModal">
+                Inscribirse al evento
+            </button>
+        </div>
+    </div>
+    
+    <div class="row mt-lg-4">
+        <div class="col-6">
+            <h5>Detalles del evento</h5>
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Fecha: <strong>{{ carrera.fecha }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Costo de inscripción: <strong>₡ {{ carrera.costo }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Tipo de actividad: <strong id="tipoActividad"></strong>
+                        </li>
+                        <li class="list-group-item">
+                            Categorías
+                            <ul class="list-group list-group-flush" id="categorias-container"></ul>
+                        </li>
+                        <li class="list-group-item">
+                            Cuentas bancarias
+                            <ul class="list-group list-group-flush" id="cuentas-container"></ul>
+                        </li>
+                        <li class="list-group-item">
+                            Patrocinadores
+                            <ul class="list-group list-group-flush" id="patrocinadores-container"></ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <h5>Vista previa del recorrido</h5>
+            <div class="form-row  mt-lg-4">
+                <div class="col-3">
+                    <h6>Distancia</h6>
+                </div>
+                <div class="col-3">
+                    <h6>Duración</h6>
+                </div>
+            </div>
+            <div class="row mb-lg-4">
+                <div class="col-3">
+                    <span id="distance"></span>
+                </div>
+                <div class="col-3">
+                    <span id="duration"></span>
+                </div>
+            </div>
+
+            <div id="leaflet-map" style="height: 400px; background-color: lightgray;"></div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" id="inscripcionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Inscripción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Para realizar la inscripción debes pagar el costo de inscripción a una de las cuentas.
+                </p>
+                
+                <label for="comprobante-pago">Sube el comprobante de pago aquí</label>
+                <input type="file" id="comprobante-pago" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onInscribirse()">
+                    Aceptar
+                    <span class="spinner-border spinner-border-sm" style="display: none;" id="loading-indicator" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

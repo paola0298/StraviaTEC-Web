@@ -77,6 +77,7 @@ namespace StraviaTec_Web.Controllers
                 return Ok(amigos);
             } catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return StatusCode(500);
             }
         }

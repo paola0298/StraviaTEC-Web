@@ -108,5 +108,64 @@ namespace StraviaTec_Web.Helpers
                 return null;
             }
         }
+
+        public static double PointsToDistanceInKm(List<Punto> points)
+        {
+            // points.OrderBy((punto) => punto.Orden);
+            points.Sort(new PuntoComparator());
+
+            Punto lastPoint;
+            double totalDistance = 0.0;
+            var size = points.Count();
+            
+            for (int i = 1; i < size; i++)
+            {
+                lastPoint = points[i - 1];
+                var currentPoint = points[i];
+
+                totalDistance += ComputeDistanceInKm(lastPoint.Latitud, currentPoint.Latitud, lastPoint.Longitud, currentPoint.Longitud);
+            }
+
+            return totalDistance;
+        }
+
+        public static double GetTotalTime(List<Punto> points)
+        {
+            if (points.Count() == 0)
+                return 0.0;
+
+            points.OrderBy((punto) => punto.Orden);
+
+            var first = points.First();
+            var last = points.Last();
+            
+            var initialTime = first.Tiempo;
+            var finalTime = last.Tiempo;
+
+            TimeSpan duration = finalTime - initialTime;
+            
+            return duration.TotalMinutes;
+        }
+
+        private static double ComputeDistanceInKm(decimal lat1, decimal lat2, decimal lng1, decimal lng2)
+        {
+            var earthRadiusInKm = 6371;
+            var dLat = DegreeToRad(lat2 - lat1);
+            var dLng = DegreeToRad(lng2 - lng1);
+            lat1 = DegreeToRad(lat1);
+            lat2 = DegreeToRad(lat2);
+
+            var a1 = Math.Sin((double) dLat / 2);
+            var b1 = Math.Sin((double) dLng / 2);
+            var a = a1 * a1 + b1 * b1 * Math.Cos((double) lat1) * Math.Cos((double) lat2);
+            var b = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var c = earthRadiusInKm * b;
+            return c;
+        }
+
+        private static decimal DegreeToRad(decimal degrees)
+        {
+            return degrees * ((decimal) Math.PI / 180);
+        }
     }
 }

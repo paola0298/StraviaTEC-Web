@@ -24,7 +24,7 @@ namespace StraviaTec_Web.Controllers
             if (user == null) {
                 return BadRequest();
             }
-            var fotoPath = await FileHandler.SaveFileAsync(upload.Foto, upload.User);
+            var fotoPath = await FileHandler.SaveFileAsync(upload.Foto, upload.User, StorageLocation.ImageUploads);
             user.Foto = fotoPath;
 
             _context.Entry(user).State = EntityState.Modified;

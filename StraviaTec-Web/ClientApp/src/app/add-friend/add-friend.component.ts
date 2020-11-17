@@ -79,7 +79,6 @@ export class AddFriendComponent implements OnInit {
           console.log(error.status);
         }
       );
-      
         return;
     }
 

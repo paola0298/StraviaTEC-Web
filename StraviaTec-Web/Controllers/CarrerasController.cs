@@ -85,7 +85,15 @@ namespace Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CarreraDto>> GetCarrera(int id)
         {
-            var carrera = await _context.Carrera.FindAsync(id);
+            var carrera = await _context.Carrera
+                .Include(c => c.CuentaBancaria)
+                .Include(c => c.CategoriaCarrera)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
 
             if (carrera == null)
             {
@@ -236,6 +244,9 @@ namespace Controllers
                 //END_DEBUG
 
                 var puntos = GpxParser.Parse(data.ArchivoRecorrido, recorrido.Id);
+
+                //TODO: calcular kilometraje de los puntos
+
                 await _context.Punto.AddRangeAsync(puntos);
                 await _context.SaveChangesAsync();
 
@@ -326,7 +337,7 @@ namespace Controllers
             } catch (DbUpdateException ex)
             {
                 return StatusCode(500, ex.Message);
-            }      
+            }
         }
 
         // DELETE: api/Carreras/5
@@ -351,6 +362,34 @@ namespace Controllers
         private bool CarreraExists(int id)
         {
             return _context.Carrera.Any(e => e.Id == id);
+        }
+
+        [HttpPost("inscripcion")]
+        public async Task<IActionResult> InscripcionAsync(InscripcionCarrera info)
+        {
+            if (!CarreraExists(info.IdCarrera))
+                return BadRequest();
+
+            if (!_context.Usuario.Any(u => u.User == info.User))
+                return BadRequest();
+
+            var carrera = await _context.Carrera
+                .Where(c => c.Id == info.IdCarrera)
+                .Include(c => c.IdEventoNavigation)
+                .FirstOrDefaultAsync();
+            
+            var inscripcion = new InscripcionEvento
+            {
+                IdEvento = carrera.IdEvento,
+                ComprobantePago = await FileHandler.SaveFileAsync(info.ComprobantePago, info.User + info.IdCarrera, StorageLocation.InscriptionUploads),
+                Estado = "pendiente",
+                IdUsuario =  info.User
+            };
+
+            await _context.InscripcionEvento.AddAsync(inscripcion);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
