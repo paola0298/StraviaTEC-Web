@@ -131,6 +131,27 @@ namespace Controllers
 
         }
 
+        [HttpGet("usuarios/{idGrupo}")]
+        public async Task<ActionResult<Usuario>> GetUsuariosGrupo(int idGrupo) {
+            
+            try {
+                var usuarios = new List<Usuario>();
+                var search = _context.UsuarioGrupo.AsNoTracking().Where(u => u.IdGrupo == idGrupo).ToList();
+
+                foreach (var grupo in search) {
+                    var user = await _context.Usuario.FirstOrDefaultAsync(u => u.User == grupo.IdUsuario);
+                    if (user == null) continue;
+
+                    usuarios.Add(user);
+                }
+
+                return Ok(usuarios);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
         // DELETE: api/UsuarioGrupo/5
         [HttpDelete("{idGrupo}/{idUsuario}")]
         public async Task<ActionResult<UsuarioGrupo>> DeleteUsuarioGrupo(int idGrupo, string idUsuario)

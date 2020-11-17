@@ -45,3 +45,7 @@ img {
     overflow: hidden;
     overflow-y: scroll;
 }
+
+.custom-color {
+    color: red;
+}
