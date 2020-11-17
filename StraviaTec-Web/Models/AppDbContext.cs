@@ -96,7 +96,7 @@ namespace StraviaTec_Web.Models
             {
                 entity.ToTable("CARRERA");
 
-                entity.Property(e => e.Costo).HasColumnType("numeric(5,2)");
+                entity.Property(e => e.Costo).HasColumnType("numeric(7,2)");
 
                 entity.Property(e => e.IdEvento).HasColumnName("Id_evento");
 
@@ -253,6 +253,11 @@ namespace StraviaTec_Web.Models
                     .IsRequired()
                     .HasColumnName("Id_usuario")
                     .HasMaxLength(30);
+
+                entity.HasOne(d => d.IdCategoriaCarreraNavigation)
+                    .WithMany(p => p.InscripcionEvento)
+                    .HasForeignKey(d => d.IdCategoriaCarrera)
+                    .HasConstraintName("INSCRIPCION_EVENTO_IdCategoriaCarrera_fkey");
 
                 entity.HasOne(d => d.IdEventoNavigation)
                     .WithMany(p => p.InscripcionEvento)

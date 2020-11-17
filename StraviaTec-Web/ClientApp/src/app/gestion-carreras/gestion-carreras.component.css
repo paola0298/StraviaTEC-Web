@@ -86,3 +86,7 @@
     padding-right: 10px;
 }
 
+#recorrido {
+    max-width: auto;
+    overflow: hidden;
+}
