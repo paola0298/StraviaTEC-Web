@@ -22,16 +22,22 @@ namespace Controllers
 
         // GET: api/Grupos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Grupo>>> GetGrupo()
+        public async Task<ActionResult> GetGrupo()
         {
-            return await _context.Grupo.ToListAsync();
+            var grupos = await _context.Grupo.FromSqlInterpolated(
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO""").ToListAsync();
+            return Ok(grupos);
+            // return await _context.Grupo.ToListAsync();
         }
 
         // GET: api/Grupos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Grupo>> GetGrupo(int id)
         {
-            var grupo = await _context.Grupo.FindAsync(id);
+            // var grupo = await _context.Grupo.FindAsync(id);
+            var grupo = await _context.Grupo.FromSqlInterpolated(
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").FirstOrDefaultAsync();
+
 
             if (grupo == null)
             {
@@ -79,10 +85,15 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Grupo>> PostGrupo(Grupo grupo)
         {
-            _context.Grupo.Add(grupo);
+            // _context.Grupo.FromSqlInterpolated($"INSERT INTO \"GRUPO\" (\"Nombre\", \"Id_admin\") VALUES ({grupo.Nombre}, {grupo.IdAdmin});");
+            await _context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO \"GRUPO\" (\"Nombre\", \"Id_admin\") VALUES ({grupo.Nombre}, {grupo.IdAdmin})");
+            var grupoA = await _context.Grupo.FromSqlInterpolated(
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Nombre"" = {grupo.Nombre} AND ""Id_admin"" = {grupo.IdAdmin}").FirstOrDefaultAsync();
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO ""USUARIO_GRUPO"" (""Id_grupo"", ""Id_usuario"") VALUES ({grupoA.Id}, {grupo.IdAdmin})");
+            // _context.Grupo.Add(grupo);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGrupo", new { id = grupo.Id }, grupo);
+            return Ok(grupoA);
         }
 
         // DELETE: api/Grupos/5
