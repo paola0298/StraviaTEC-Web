@@ -43,7 +43,7 @@ export class GestionGruposComponent implements OnInit {
         return;
     } 
 
-    const grupo = new Grupo(nombre.value, admin.valueAsNumber);
+    const grupo = new Grupo(nombre.value, admin.value);
   
     this.createGrupo(grupo);
 
