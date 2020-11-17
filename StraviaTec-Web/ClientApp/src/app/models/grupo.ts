@@ -1,11 +1,13 @@
 export class Grupo {
+    id: number
     nombre: string;
-    idAdmin: number;
+    idAdmin: string;
+    asociado: string;
 
 
     constructor(
         Nombre: string,
-        IdAdmin: number,
+        IdAdmin: string,
      
     ){
         this.nombre = Nombre;
