@@ -65,14 +65,13 @@ namespace Controllers
                 WHERE ""Id"" = {grupo.Id}
             ");
 
-            var groupExists = _context.Grupo.FromSqlInterpolated($@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").Any();
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!groupExists)
+                if (!GrupoExists(id))
                 {
                     return NotFound();
                 }
@@ -123,7 +122,8 @@ namespace Controllers
 
         private bool GrupoExists(int id)
         {
-            return _context.Grupo.Any(e => e.Id == id);
+            return _context.Grupo.FromSqlInterpolated($@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").Any();
+            // return _context.Grupo.Any(e => e.Id == id);
         }
     }
 }
