@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
 
 namespace Controllers
@@ -62,8 +63,7 @@ namespace Controllers
             await _context.Database.ExecuteSqlInterpolatedAsync($@"
                 UPDATE ""GRUPO""
                 SET ""Nombre"" = {grupo.Nombre}, ""Id_admin"" = {grupo.IdAdmin}
-                WHERE ""Id"" = {grupo.Id}
-            ");
+                WHERE ""Id"" = {grupo.Id}");
 
             try
             {
@@ -90,13 +90,21 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Grupo>> PostGrupo(Grupo grupo)
         {
+            if (grupo == null || string.IsNullOrWhiteSpace(grupo.IdAdmin) || string.IsNullOrWhiteSpace(grupo.Nombre)) {
+                 return BadRequest(new ErrorInfo(ErrorCode.BadRequest, "El id del admin y nombre del grupo no pueden ser null."));
+            }
+
             // _context.Grupo.FromSqlInterpolated($"INSERT INTO \"GRUPO\" (\"Nombre\", \"Id_admin\") VALUES ({grupo.Nombre}, {grupo.IdAdmin});");
             await _context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO \"GRUPO\" (\"Nombre\", \"Id_admin\") VALUES ({grupo.Nombre}, {grupo.IdAdmin})");
             var grupoA = await _context.Grupo.FromSqlInterpolated(
                 $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Nombre"" = {grupo.Nombre} AND ""Id_admin"" = {grupo.IdAdmin}").FirstOrDefaultAsync();
             await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO ""USUARIO_GRUPO"" (""Id_grupo"", ""Id_usuario"") VALUES ({grupoA.Id}, {grupo.IdAdmin})");
             // _context.Grupo.Add(grupo);
-            await _context.SaveChangesAsync();
+            try {
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateException) {
+                return StatusCode(500);
+            }
 
             return Ok(grupoA);
         }
