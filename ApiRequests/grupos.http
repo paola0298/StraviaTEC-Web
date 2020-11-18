@@ -5,7 +5,7 @@ GET http://127.0.0.1:5001/api/Grupos HTTP/2.0
 GET http://127.0.0.1:5001/api/Grupos/1 HTTP/2.0
 
 ### Eliminar un grupo por id
-DELETE http://127.0.0.1:5001/api/Grupos/8 HTTP/2.0
+DELETE http://127.0.0.1:5001/api/Grupos/3 HTTP/2.0
 
 ### Crear un grupo
 POST http://127.0.0.1:5001/api/Grupos HTTP/2.0
@@ -17,11 +17,11 @@ Content-Type: application/json
 }
 
 ### Actualizar un grupo
-PUT http://127.0.0.1:5001/api/Grupos/2 HTTP/2.0
+PUT http://127.0.0.1:5001/api/Grupos/5 HTTP/2.0
 Content-Type: application/json
 
 {
-    "Id": 2,
+    "Id": 5,
     "Nombre": "GrupoModificado",
     "IdAdmin": "paola"
 }
