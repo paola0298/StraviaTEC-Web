@@ -1,17 +1,17 @@
 import { Patrocinador } from "./patrocinador";
 
 export class Reto {
+    id: number;
     nombre: string;
     inicio: string;
     fin: string;
     objetivo: number;
+    objetivoCompletado: number;
     idTipoReto: number;
     idActividad: number;
     patrocinadores: Patrocinador[];
     grupos: string[];
     publico: boolean;
-    nombreReto: string;
-    nombreActividad: string;
 
     constructor(
         nombre: string,
