@@ -26,7 +26,8 @@ namespace Controllers
         public async Task<ActionResult<IEnumerable<UsuarioGrupo>>> GetUsuarioGrupo()
         {
             var usuarioGrupo = await _context.UsuarioGrupo.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" FROM ""USUARIO_GRUPO""").ToListAsync();
+                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" 
+                FROM ""USUARIO_GRUPO""").ToListAsync();
             // return await _context.UsuarioGrupo.ToListAsync();
             return usuarioGrupo;
         }
@@ -37,7 +38,9 @@ namespace Controllers
         {
             // var usuarioGrupo = await _context.UsuarioGrupo.FindAsync(id);
             var usuarioGrupo = await _context.UsuarioGrupo.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {id}").FirstOrDefaultAsync();
+                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" 
+                FROM ""USUARIO_GRUPO"" 
+                WHERE ""Id"" = {id}").FirstOrDefaultAsync();
             
             if (usuarioGrupo == null)
             {
@@ -93,8 +96,14 @@ namespace Controllers
             if (usuarioGrupo == null || string.IsNullOrWhiteSpace(usuarioGrupo.IdUsuario)) 
                 return BadRequest(new ErrorInfo(ErrorCode.BadRequest, "El id del usuario y id del grupo no pueden ser null."));
 
-            var userExist = _context.Usuario.FromSqlInterpolated($@"SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {usuarioGrupo.IdUsuario}").Any();
-            var groupExist = _context.Grupo.FromSqlInterpolated($@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {usuarioGrupo.IdGrupo}").Any();
+            var userExist = _context.Usuario.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" 
+                FROM ""USUARIO_GRUPO"" 
+                WHERE ""Id"" = {usuarioGrupo.IdUsuario}").Any();
+            var groupExist = _context.Grupo.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Nombre"", ""Id_admin"" 
+                FROM ""GRUPO"" 
+                WHERE ""Id"" = {usuarioGrupo.IdGrupo}").Any();
             // var userExist = await _context.Usuario.AnyAsync(u => u.User == usuarioGrupo.IdUsuario);
             // var groupExist = await _context.Grupo.AnyAsync(g => g.Id == usuarioGrupo.IdGrupo);
 
@@ -103,7 +112,9 @@ namespace Controllers
 
 
             // await _context.UsuarioGrupo.AddAsync(usuarioGrupo);
-            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO ""USUARIO_GRUPO"" (""Id_grupo"", ""Id_usuario"") VALUES ({usuarioGrupo.IdGrupo}, {usuarioGrupo.IdUsuario})");
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                INSERT INTO ""USUARIO_GRUPO"" (""Id_grupo"", ""Id_usuario"") 
+                VALUES ({usuarioGrupo.IdGrupo}, {usuarioGrupo.IdUsuario})");
             
             try {
                 await _context.SaveChangesAsync();
@@ -217,7 +228,8 @@ namespace Controllers
                 return BadRequest(new ErrorInfo(ErrorCode.BadRequest, "El usuario no pertence al grupo dado."));
 
             // _context.UsuarioGrupo.Remove(usuarioGrupo);
-            await _context.Database.ExecuteSqlInterpolatedAsync($@"DELETE FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {usuarioGrupo.Id}");
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                DELETE FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {usuarioGrupo.Id}");
             
             try {
                 await _context.SaveChangesAsync();
@@ -230,7 +242,9 @@ namespace Controllers
 
         private bool UsuarioGrupoExists(int id)
         {
-            return _context.UsuarioGrupo.FromSqlInterpolated($@"SELECT ""Id"", ""Id_grupo"", ""Id_usuario"" FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {id}").Any();
+            return _context.UsuarioGrupo.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_grupo"", ""Id_usuario"" 
+                FROM ""USUARIO_GRUPO"" WHERE ""Id"" = {id}").Any();
             // return _context.UsuarioGrupo.Any(e => e.Id == id);
         }
     }
