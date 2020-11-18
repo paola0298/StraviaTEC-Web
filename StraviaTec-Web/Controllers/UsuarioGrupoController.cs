@@ -97,9 +97,9 @@ namespace Controllers
                 return BadRequest(new ErrorInfo(ErrorCode.BadRequest, "El id del usuario y id del grupo no pueden ser null."));
 
             var userExist = _context.Usuario.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_usuario"", ""Id_grupo"" 
-                FROM ""USUARIO_GRUPO"" 
-                WHERE ""Id"" = {usuarioGrupo.IdUsuario}").Any();
+                SELECT ""User"", ""Password"", ""Nombre"", ""Apellido1"", ""Apellido2"", ""Fecha_nacimiento"", ""Nacionalidad"", ""Foto"", ""Es_organizador"" 
+                FROM ""USUARIO"" 
+                WHERE ""User"" = {usuarioGrupo.IdUsuario}").Any();
             var groupExist = _context.Grupo.FromSqlInterpolated($@"
                 SELECT ""Id"", ""Nombre"", ""Id_admin"" 
                 FROM ""GRUPO"" 
