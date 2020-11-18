@@ -1,0 +1,5 @@
+### Obtener los grupos de un usuario
+GET http://127.0.0.1:5001/api/UsuarioGrupo/grupo/paola2 HTTP/2.0
+
+### Obtener los usuarios de un grupo
+GET http://127.0.0.1:5001/api/UsuarioGrupo/usuarios/4 HTTP/2.0
