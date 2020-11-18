@@ -37,7 +37,8 @@ namespace Controllers
         {
             // var grupo = await _context.Grupo.FindAsync(id);
             var grupo = await _context.Grupo.FromSqlInterpolated(
-                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").FirstOrDefaultAsync();
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" 
+                FROM ""GRUPO"" WHERE ""Id"" = {id}").FirstOrDefaultAsync();
 
 
             if (grupo == null)
