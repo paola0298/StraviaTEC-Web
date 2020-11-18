@@ -58,15 +58,21 @@ namespace Controllers
                 return BadRequest();
             }
 
-            _context.Entry(grupo).State = EntityState.Modified;
+            // _context.Entry(grupo).State = EntityState.Modified;
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                UPDATE ""GRUPO""
+                SET ""Nombre"" = {grupo.Nombre}, ""Id_admin"" = {grupo.IdAdmin}
+                WHERE ""Id"" = {grupo.Id}
+            ");
 
+            var groupExists = _context.Grupo.FromSqlInterpolated($@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").Any();
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GrupoExists(id))
+                if (!groupExists)
                 {
                     return NotFound();
                 }
@@ -100,13 +106,16 @@ namespace Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Grupo>> DeleteGrupo(int id)
         {
-            var grupo = await _context.Grupo.FindAsync(id);
+            // var grupo = await _context.Grupo.FindAsync(id);
+            var grupo = await _context.Grupo.FromSqlInterpolated(
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" FROM ""GRUPO"" WHERE ""Id"" = {id}").FirstOrDefaultAsync();
             if (grupo == null)
             {
                 return NotFound();
             }
 
-            _context.Grupo.Remove(grupo);
+            // _context.Grupo.Remove(grupo);
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"DELETE FROM ""GRUPO"" WHERE ""Id"" = {id}");
             await _context.SaveChangesAsync();
 
             return grupo;
