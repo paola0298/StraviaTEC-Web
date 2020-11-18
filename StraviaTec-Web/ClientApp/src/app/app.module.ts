@@ -26,6 +26,7 @@ import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.component';
 import { UploadActivityComponent } from './upload-activity/upload-activity.component';
 import { DetalleRetoComponent } from './detalle-reto/detalle-reto.component';
+import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { DetalleRetoComponent } from './detalle-reto/detalle-reto.component';
     AsociarseGrupoComponent,
     UploadActivityComponent,
     DetalleRetoComponent,
+    EventoInscritoComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -77,7 +79,7 @@ import { DetalleRetoComponent } from './detalle-reto/detalle-reto.component';
       { path: 'asociarse-grupo', component: AsociarseGrupoComponent},
       { path: 'upload-activity', component: UploadActivityComponent },
       { path: 'detalle-reto', component: DetalleRetoComponent},
-      
+      { path: 'evento-inscrito', component: EventoInscritoComponent},
       
     ])
   ],

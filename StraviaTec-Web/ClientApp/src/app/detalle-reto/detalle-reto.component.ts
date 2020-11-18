@@ -10,6 +10,7 @@ import { ApiService } from '../services/api.service';
 export class DetalleRetoComponent implements OnInit {
 
   reto: Reto;
+  idReto = window.localStorage.getItem('id-evento');
 
   constructor(private apiService: ApiService) { }
 

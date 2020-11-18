@@ -1,0 +1,17 @@
+<div class="container">
+
+    <h3>Eventos inscritos</h3>
+    <p>
+        Seleccione un evento para ver más información.
+    </p>
+
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action" *ngFor="let evento of eventos; trackBy: trackByFn" (click)="details(evento.tipoEvento)">
+            <div class="d-flex w-100 justify-content-between">
+                <h5>{{ evento.nombre }}</h5>
+                <p>{{ evento.tipoEvento }}</p>
+            </div>
+        </a>
+    </div>
+
+</div>
