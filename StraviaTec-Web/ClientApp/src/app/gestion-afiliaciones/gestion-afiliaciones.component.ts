@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import { UtilsService } from '../services/utils.service';
 
 @Component({
   selector: 'app-gestion-afiliaciones',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestionAfiliacionesComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private ApiService: ApiService,
+    private utilsService: UtilsService) { }
 
   ngOnInit(): void {
+    //this.queryInscripciones();
+    this.utilsService.configureContextMenu();
   }
 
+  
+ 
 }
