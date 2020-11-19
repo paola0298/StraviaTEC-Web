@@ -326,7 +326,6 @@ namespace Controllers
                     await _context.CategoriaCarrera.AddAsync(categoriaEvento);
                     await _context.SaveChangesAsync();
                 }
-                
 
                 foreach (var cuenta in data.CuentasBancarias)
                 {
@@ -341,16 +340,7 @@ namespace Controllers
 
                 await dbTransaction.CommitAsync();
 
-                var response = new {
-                    carrera.Id,
-                    carrera.Nombre,
-                    carrera.Costo,
-                    carrera.CuentaBancaria,
-                    carrera.CategoriaCarrera
-                };
-
                 var carreraDto = _mapper.Map<CarreraDto>(carrera);
-                // return CreatedAtAction("GetCarrera", new { id = carrera.Id }, new { carrera.Id, carrera.Nombre, carrera.Costo });
                 return CreatedAtAction("GetCarrera", new { id = carrera.Id }, carreraDto);
             
             } catch (DbUpdateException ex)
