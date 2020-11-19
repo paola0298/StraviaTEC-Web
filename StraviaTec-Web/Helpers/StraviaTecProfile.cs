@@ -13,6 +13,11 @@ namespace StraviaTec_Web.Helpers
             //Insertar mapeo de datos de una clase a otra
             CreateMap<Carrera, CarreraDto>().IncludeMembers(c => c.IdEventoNavigation);
             CreateMap<Evento, CarreraDto>(MemberList.None);
+
+            // CreateMap<Reto, RetoDto>().IncludeMembers(r => r.IdEventoNavigation);
+            // CreateMap<Evento, RetoDto>(MemberList.None);
+            // CreateMap<TipoReto, TipoRetoDto>();
+
             CreateMap<TipoActividad, TipoActividadDto>();
             CreateMap<Patrocinador, PatrocinadorDto>();
             CreateMap<Categoria, CategoriaDto>();
