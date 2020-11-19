@@ -42,9 +42,11 @@ namespace Controllers
             };
             await _context.Evento.AddAsync(evento);
             await _context.SaveChangesAsync();
-            
+
             //Crea entidad tipoReto
-            var tipoReto =  new TipoReto{};
+            var tipoReto =  new TipoReto{
+                Nombre = data.Nombre,
+            };
             await _context.TipoReto.AddAsync(tipoReto);
             await _context.SaveChangesAsync();
             //Crea entidad Reto
@@ -89,8 +91,6 @@ namespace Controllers
 
  
         }
-
-
 
         private bool RetoExists(int id)
         {
