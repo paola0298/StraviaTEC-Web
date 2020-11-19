@@ -11,13 +11,13 @@ POST http://127.0.0.1:5001/api/Usuarios HTTP/2.0
 Content-Type: application/json
 
 {
-    "User": "pvill",
-    "Password": "DOSdeJUNIO",
-    "Nombre": "Paola",
-    "Apellido1": "Villegas",
-    "Apellido2": "Chacón",
-    "FechaNacimiento": "1998-06-02",
-    "Nacionalidad": "Costarricense",
+    "User": "mvega",
+    "Password": "ONCEdeENERO",
+    "Nombre": "Marlon",
+    "Apellido1": "Vega",
+    "Apellido2": "Chinchilla",
+    "FechaNacimiento": "1999-01-11",
+    "Nacionalidad": "Salvadoreño",
     "Foto": "",
     "EsOrganizador": false
 }
