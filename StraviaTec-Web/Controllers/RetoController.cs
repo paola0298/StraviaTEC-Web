@@ -35,14 +35,7 @@ namespace Controllers
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
              try
             {
-            //Crea entidad tipoReto
-            var tipoReto =  new TipoReto{
-                Nombre = data.Nombre,
-            };
-            await _context.TipoReto.AddAsync(tipoReto);
-            await _context.SaveChangesAsync();
-            Console.WriteLine(tipoReto.Id);
-            Console.WriteLine(tipoReto.Nombre);
+           
             //Crea entidad Evento
             var idTipoEvento = (await _context.TipoEvento.FirstOrDefaultAsync(e => e.Nombre == "Reto")).Id;
             var evento = new Evento{
@@ -51,22 +44,32 @@ namespace Controllers
                 Nombre = data.Nombre,
                 EsPrivado = data.EsPrivado
             };
+            Console.WriteLine(evento.IdTipoEvento);
             Console.WriteLine(evento.IdTipoActividad);
+            Console.WriteLine(evento.Nombre);
+            Console.WriteLine(evento.EsPrivado);
+
             await _context.Evento.AddAsync(evento);
             await _context.SaveChangesAsync();
 
             //Crea entidad Reto
             var reto = new Reto{
                 IdEvento = evento.Id,
-                IdTipoReto = tipoReto.Id,
+                IdTipoReto = data.IdTipoReto,
                 Inicio = data.Inicio,
                 Fin = data.Fin,
                 Objetivo = data.Objetivo,
             };
+            Console.WriteLine(reto.IdEvento);
+            Console.WriteLine(reto.IdTipoReto);
+            Console.WriteLine(reto.Inicio);
+            Console.WriteLine(reto.Fin);
+            Console.WriteLine(reto.Objetivo);
+
             await _context.Reto.AddAsync(reto);
             await _context.SaveChangesAsync();
 
-            //Entidades patrocinador y grupos si es privado
+           //Entidades patrocinador y grupos si es privado
            foreach (var patrocinador in data.Patrocinadores) 
                 {
                     var patrocinadorEvento = new PatrocinadorEvento
@@ -74,6 +77,7 @@ namespace Controllers
                         IdEvento = evento.Id,
                         IdPatrocinador = patrocinador
                     };
+            Console.WriteLine(patrocinadorEvento.IdPatrocinador);
                     await _context.PatrocinadorEvento.AddAsync(patrocinadorEvento);
                     await _context.SaveChangesAsync();
                 }
@@ -100,25 +104,27 @@ namespace Controllers
             }
         }
 
-
-        // DELETE: api/Reto
+        // DELETE: api/Reto/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Carrera>> DeleteReto(int id)
+        public async Task<ActionResult<Reto>> DeleteReto(int id)
         {
+            Console.WriteLine(id);
             var reto = await _context.Reto.FindAsync(id);
             if (reto == null)
             {
                 return NotFound();
             }
-
+            Console.WriteLine(reto.IdEvento);
             var evento = await _context.Evento.FindAsync(reto.IdEvento);
-
+            Console.WriteLine(evento.Nombre);
             _context.Evento.Remove(evento);
+            // _context.Carrera.Remove(carrera);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
 
+     
         private bool RetoExists(int id)
         {
             return _context.Reto.Any(e => e.Id == id);

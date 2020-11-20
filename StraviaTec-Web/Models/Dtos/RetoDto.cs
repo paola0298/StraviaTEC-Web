@@ -15,8 +15,5 @@ namespace StraviaTec_Web.Models.Dtos
         public decimal Objetivo { get; set; }
         public int Actividad {get;set;}
         public bool EsPrivado{get;set;}
-        public ICollection<PatrocinadorEventoDto> PatrocinadorEvento { get; set; }
-        public ICollection<EventoGrupoDto> EventoGrupo { get; set; }
-        public ICollection<TipoRetoDto> TipoRetos{get; set;}
     }
 }
