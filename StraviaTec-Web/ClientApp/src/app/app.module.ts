@@ -14,10 +14,7 @@ import { LoginDeportistasComponent } from './login-deportistas/login-deportistas
 import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
-//import { RaceSignupComponent } from './race-signup/race-signup.component';
-//import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
-import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
 import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
 import { RaceSignupComponent } from './race-signup/race-signup.component';
 import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
@@ -39,8 +36,6 @@ import { UploadActivityComponent } from './upload-activity/upload-activity.compo
     MenuOrganizadorComponent,
     GestionCarrerasComponent,
     AddFriendComponent,
-  //  RaceSignupComponent,
-  //  AthleteMenuComponent
     GestionPatrocinadoresComponent,
     RaceSignupComponent,
     AthleteMenuComponent,
@@ -63,9 +58,6 @@ import { UploadActivityComponent } from './upload-activity/upload-activity.compo
       { path: 'menu-organizador', component: MenuOrganizadorComponent },
       { path: 'gestion-carreras', component: GestionCarrerasComponent },
       { path: 'add-friend', component: AddFriendComponent },
-   //   { path: 'race-signup', component: RaceSignupComponent},
-   //   { path: 'athlete-menu', component: AthleteMenuComponent},
-      { path: 'gestion-grupos', component: GestionGruposComponent },
       { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
       { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
       { path: 'race-signup', component: RaceSignupComponent},
