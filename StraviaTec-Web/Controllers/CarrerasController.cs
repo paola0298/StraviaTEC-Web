@@ -386,7 +386,11 @@ namespace Controllers
                 .Where(c => c.Id == info.IdCarrera)
                 .Include(c => c.IdEventoNavigation)
                 .FirstOrDefaultAsync();
-            
+
+            if (carrera == null) {
+                return BadRequest();
+            }
+
             var inscripcion = new InscripcionEvento
             {
                 IdEvento = carrera.IdEvento,
