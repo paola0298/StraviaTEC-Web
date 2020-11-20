@@ -32,6 +32,17 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<Reto>> PostReto(RetoInfo data)
         {
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
+             try
+            {
+            //Crea entidad tipoReto
+            var tipoReto =  new TipoReto{
+                Nombre = data.Nombre,
+            };
+            await _context.TipoReto.AddAsync(tipoReto);
+            await _context.SaveChangesAsync();
+            Console.WriteLine(tipoReto.Id);
+            Console.WriteLine(tipoReto.Nombre);
             //Crea entidad Evento
             var idTipoEvento = (await _context.TipoEvento.FirstOrDefaultAsync(e => e.Nombre == "Reto")).Id;
             var evento = new Evento{
@@ -40,15 +51,10 @@ namespace Controllers
                 Nombre = data.Nombre,
                 EsPrivado = data.EsPrivado
             };
+            Console.WriteLine(evento.IdTipoActividad);
             await _context.Evento.AddAsync(evento);
             await _context.SaveChangesAsync();
 
-            //Crea entidad tipoReto
-            var tipoReto =  new TipoReto{
-                Nombre = data.Nombre,
-            };
-            await _context.TipoReto.AddAsync(tipoReto);
-            await _context.SaveChangesAsync();
             //Crea entidad Reto
             var reto = new Reto{
                 IdEvento = evento.Id,
@@ -85,11 +91,32 @@ namespace Controllers
                         await _context.SaveChangesAsync();
                     }
                 }
-
+                await dbTransaction.CommitAsync();
                  var retoDto = _mapper.Map<RetoDto>(reto);
                 return CreatedAtAction("GetReto", new { id = reto.Id }, retoDto);
+                } catch (DbUpdateException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
- 
+
+        // DELETE: api/Reto
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Carrera>> DeleteReto(int id)
+        {
+            var reto = await _context.Reto.FindAsync(id);
+            if (reto == null)
+            {
+                return NotFound();
+            }
+
+            var evento = await _context.Evento.FindAsync(reto.IdEvento);
+
+            _context.Evento.Remove(evento);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         private bool RetoExists(int id)
