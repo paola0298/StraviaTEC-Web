@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StraviaTec_Web.Models;
+using StraviaTec_Web.Models.Requests;
 
 namespace Controllers
 {
@@ -101,9 +102,44 @@ namespace Controllers
             return reto;
         }
 
+        [HttpPost("inscripcion")]
+        public async Task<IActionResult> InscripcionAsync(InscripcionReto info) {
+            if (!RetoExists(info.IdReto)) {
+                return BadRequest();
+            }
+
+            var userExist = _context.Usuario.FromSqlInterpolated($@"
+                SELECT ""User"", ""Password"", ""Nombre"", ""Apellido1"", ""Apellido2"", ""Fecha_nacimiento"", ""Nacionalidad"", ""Foto"", ""Es_organizador"" 
+                FROM ""USUARIO"" 
+                WHERE ""User"" = {info.User}").Any();
+            
+            if (!userExist) {
+                return BadRequest();
+            }
+
+            var reto = await _context.Reto.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo"" 
+                FROM ""RETO"" WHERE ""Id"" = {info.IdReto}").FirstOrDefaultAsync();
+
+            if (reto == null) {
+                return BadRequest();
+            }
+
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                INSERT INTO ""INSCRIPCION_EVENTO"" (""Id_evento"", ""Id_usuario"", ""Estado"") 
+                VALUES ({reto.IdEvento}, {info.User}, 'aprobado')");
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         private bool RetoExists(int id)
         {
-            return _context.Reto.Any(e => e.Id == id);
+            return _context.Reto.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo"" 
+                FROM ""RETO"" WHERE ""Id"" = {id}").Any();
+            // return _context.Reto.Any(e => e.Id == id);
         }
     }
 }
