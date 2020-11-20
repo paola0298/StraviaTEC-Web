@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Patrocinador } from '../models/patrocinador';
 import { Reto } from '../models/reto';
 import { ApiService } from '../services/api.service';
@@ -10,7 +10,6 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./reto-detalle.component.css'],
 })
 export class RetoDetalleComponent implements OnInit {
-
   // TODO Obtener retos reales esperar a que esté listo backend, descomentar código cuando esto pase
   // reto: Reto;
 
@@ -37,7 +36,11 @@ export class RetoDetalleComponent implements OnInit {
     true
   );
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     const retoId = this.route.snapshot.params.id;
@@ -56,24 +59,33 @@ export class RetoDetalleComponent implements OnInit {
   }
 
   loadExtraInfo() {
-    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idActividad}`)
+    this.apiService
+      .get(
+        `http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idActividad}`
+      )
       .subscribe((info: any) => {
         document.getElementById('tipoActividad').innerText = info.nombre;
-    });
+      });
 
-    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/patrocinadores/${this.reto.id}`)
+    this.apiService
+      .get(
+        `http://localhost:${this.apiService.PORT}/api/InfoEvento/patrocinadores/${this.reto.id}`
+      )
       .subscribe((info: any) => {
         const container = document.getElementById('patrocinadores-container');
         this.createPatrocinador(container, info);
       });
 
-    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/retos/${this.reto.idTipoReto}`)
-    .subscribe((info: any) => {
-      document.getElementById('tipoReto').innerText = info.nombre;
-    });
+    this.apiService
+      .get(
+        `http://localhost:${this.apiService.PORT}/api/InfoEvento/retos/${this.reto.idTipoReto}`
+      )
+      .subscribe((info: any) => {
+        document.getElementById('tipoReto').innerText = info.nombre;
+      });
   }
 
-  createPatrocinador (container: any, items: any) {
+  createPatrocinador(container: any, items: any) {
     for (let i = 0; i < items.length; i++) {
       const item = document.createElement('li');
       item.classList.add('list-group-item');
@@ -87,7 +99,12 @@ export class RetoDetalleComponent implements OnInit {
       item.appendChild(img);
 
       const representante = document.createElement('p');
-      representante.innerText = 'Representante: ' + items[i].nombreRepresentante + '\n' + 'Teléfono: ' + items[i].telRepresentante;
+      representante.innerText =
+        'Representante: ' +
+        items[i].nombreRepresentante +
+        '\n' +
+        'Teléfono: ' +
+        items[i].telRepresentante;
       item.appendChild(representante);
 
       container.appendChild(item);
@@ -104,13 +121,18 @@ export class RetoDetalleComponent implements OnInit {
       IdReto: this.reto.id,
     };
 
-    this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Reto/inscripcion`, data)
+    this.apiService
+      .post(
+        `http://localhost:${this.apiService.PORT}/api/Reto/inscripcion`,
+        data
+      )
       .subscribe(() => {
-        const button = document.getElementById('inscribirseButton') as HTMLButtonElement;
-        button.innerText = 'Inscripción pendiente';
+        const button = document.getElementById(
+          'inscribirseButton'
+        ) as HTMLButtonElement;
         button.disabled = true;
-
         document.getElementById('closeButton').click();
+        this.router.navigate(['athlete-menu']);
       });
   }
 }
