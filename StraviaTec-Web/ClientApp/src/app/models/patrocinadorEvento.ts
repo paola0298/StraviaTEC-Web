@@ -2,6 +2,7 @@ export class PatrocinadorEvento {
     id: number;
     idEvento: number;
     idPatrocinador: number;
+    nombreComercial: string;
 
     constructor(
         id: number,
