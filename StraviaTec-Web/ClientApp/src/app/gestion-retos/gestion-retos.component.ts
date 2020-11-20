@@ -29,7 +29,7 @@ export class GestionRetosComponent implements OnInit {
     this.loadTiposReto();
 
     let pat = new Patrocinador(1, 'Movistar', 'Movistar', '1', '1');
-    let reto = new Reto('nombre', '2020-12-01', '2020-12-15', 50, 1, 1, [pat], ['1', '2'], false);
+    let reto = new Reto(1, 'nombre', '2020-12-01', '2020-12-15', 50, 1, 1, [pat], ['1', '2'], false);
     reto.nombreReto = 'Fondo';
     reto.nombreActividad = 'Correr';
     this.retos.push(reto);
