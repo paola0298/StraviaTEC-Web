@@ -46,6 +46,7 @@ export class GestionGruposComponent implements OnInit {
     const grupo = new Grupo(nombre.value, this.user);
     console.log(grupo);
     if (this.updating) {
+      this.actualGroup.nombre = nombre.value;
       this.updateGroupApi(nombre);
       return;
     }
