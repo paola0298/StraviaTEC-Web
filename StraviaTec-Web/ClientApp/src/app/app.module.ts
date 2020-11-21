@@ -21,6 +21,8 @@ import { RaceDetailComponent } from './race-detail/race-detail.component';
 import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.component';
 import { UploadActivityComponent } from './upload-activity/upload-activity.component';
+import { DetalleRetoComponent } from './detalle-reto/detalle-reto.component';
+import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.component';
 import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
 import { RetosDisponiblesComponent } from './retos-disponibles/retos-disponibles.component';
 import { RetoDetalleComponent } from './reto-detalle/reto-detalle.component';
@@ -46,6 +48,8 @@ import { AffiliationsComponent } from './affiliations/affiliations.component';
     GestionRetosComponent,
     AsociarseGrupoComponent,
     UploadActivityComponent,
+    DetalleRetoComponent,
+    EventoInscritoComponent,
     GestionGruposComponent,
     RetosDisponiblesComponent,
     RetoDetalleComponent,
@@ -72,6 +76,8 @@ import { AffiliationsComponent } from './affiliations/affiliations.component';
       { path: 'gestion-retos', component: GestionRetosComponent},
       { path: 'asociarse-grupo', component: AsociarseGrupoComponent},
       { path: 'upload-activity', component: UploadActivityComponent },
+      { path: 'detalle-reto', component: DetalleRetoComponent},
+      { path: 'evento-inscrito', component: EventoInscritoComponent},
       { path: 'gestion-grupos', component: GestionGruposComponent },
       { path: 'retos-disponibles', component: RetosDisponiblesComponent },
       { path: 'reto-detalle/:id', component: RetoDetalleComponent },

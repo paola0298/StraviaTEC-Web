@@ -1,0 +1,34 @@
+<div class="primary-container">
+    <div class="card bg-light article-custom">
+        <article class="card-body">
+            <div class="container">
+                <h3>Eventos inscritos</h3>
+                <p>
+                    Seleccione un evento para ver más información.
+                </p>
+            
+                <h5>Retos</h5>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" *ngFor="let reto of retos; trackBy: trackByFn" (click)="detailsReto(reto)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>{{ reto.nombre }}</h5>
+                            <p> Tipo actividad: {{ reto.nombreActividad }} </p>
+                            <p> Tipo reto: {{ reto.nombreTipoReto }} </p>
+                        </div>
+                    </a>
+                </div>
+            
+                <br>
+                <h5>Carreras</h5>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action" *ngFor="let carrera of carreras; trackBy: trackByFn" (click)="detailsCarrera(carrera)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5>{{ carrera.nombre }}</h5>
+                        </div>
+                    </a>
+                </div>
+            
+            </div>
+        </article>
+    </div>
+</div>

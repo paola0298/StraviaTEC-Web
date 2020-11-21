@@ -47,7 +47,7 @@ export class GestionRetosComponent implements OnInit {
 
   getReto(id:number) {
     console.log("Obteniendo reto");
-    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`)
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`);
     response.subscribe(
       (value: Reto) => {
         value.inicio = this.utilsService.parseDate(value.inicio);
@@ -58,7 +58,6 @@ export class GestionRetosComponent implements OnInit {
         console.log(error.status);
         console.log(error);
       });
-
   }
 
   saveReto() {

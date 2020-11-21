@@ -115,6 +115,23 @@ namespace Controllers
             return retoDto;
         }
 
+        [HttpGet("inscritos/{username}")]
+        public async Task<ActionResult<RetoDto>> GetRetosInscrito(string username) {
+
+            var retosUsuario = await _context.Reto.FromSqlInterpolated($@"
+                SELECT ""RETO"".""Id"", ""RETO"".""Id_evento"", ""RETO"".""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo""
+                FROM ""RETO""
+                JOIN ""INSCRIPCION_EVENTO"" ON ""INSCRIPCION_EVENTO"".""Id_evento"" = ""RETO"".""Id_evento""
+                JOIN ""EVENTO"" ON ""RETO"".""Id_evento"" = ""EVENTO"".""Id"" 
+                JOIN ""TIPO_EVENTO"" ON ""EVENTO"".""Id_tipo_evento"" = ""TIPO_EVENTO"".""Id""
+                WHERE ""Id_usuario"" = {username} AND ""TIPO_EVENTO"".""Nombre"" = 'Reto'
+                ").Include(r => r.IdEventoNavigation).ToListAsync();
+
+            var retos = _mapper.Map<List<RetoDto>>(retosUsuario); 
+            
+            return Ok(retos);
+
+        }
          // PUT: api/Carreras/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
