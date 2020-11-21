@@ -49,6 +49,19 @@ namespace Controllers
             return grupo;
         }
 
+        [HttpGet("user/{idUser}")]
+        public async Task<ActionResult<Grupo>> GetUserGrupo(string idUser)
+        {
+            var grupos = await _context.Grupo.FromSqlInterpolated(
+                $@"SELECT ""Id"", ""Nombre"", ""Id_admin"" 
+                FROM ""GRUPO""
+                WHERE ""Id_admin"" = {idUser}
+                ").ToListAsync();
+            
+            return Ok(grupos);
+
+        }
+
         // PUT: api/Grupos/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

@@ -14,11 +14,7 @@ import { LoginDeportistasComponent } from './login-deportistas/login-deportistas
 import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.component';
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
-//import { RaceSignupComponent } from './race-signup/race-signup.component';
-//import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
-import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
-import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
 import { RaceSignupComponent } from './race-signup/race-signup.component';
 import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
@@ -27,6 +23,8 @@ import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.compo
 import { UploadActivityComponent } from './upload-activity/upload-activity.component';
 import { DetalleRetoComponent } from './detalle-reto/detalle-reto.component';
 import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.component';
+import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
+import { AffiliationsComponent } from './affiliations/affiliations.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +39,6 @@ import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.compo
     MenuOrganizadorComponent,
     GestionCarrerasComponent,
     AddFriendComponent,
-  //  RaceSignupComponent,
-  //  AthleteMenuComponent
     GestionPatrocinadoresComponent,
     RaceSignupComponent,
     AthleteMenuComponent,
@@ -52,6 +48,8 @@ import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.compo
     UploadActivityComponent,
     DetalleRetoComponent,
     EventoInscritoComponent,
+    GestionGruposComponent,
+    AffiliationsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -67,10 +65,6 @@ import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.compo
       { path: 'menu-organizador', component: MenuOrganizadorComponent },
       { path: 'gestion-carreras', component: GestionCarrerasComponent },
       { path: 'add-friend', component: AddFriendComponent },
-   //   { path: 'race-signup', component: RaceSignupComponent},
-   //   { path: 'athlete-menu', component: AthleteMenuComponent},
-      { path: 'gestion-grupos', component: GestionGruposComponent },
-      { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
       { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
       { path: 'race-signup', component: RaceSignupComponent},
       { path: 'athlete-menu', component: AthleteMenuComponent},
@@ -80,6 +74,8 @@ import { EventoInscritoComponent } from './evento-inscrito/evento-inscrito.compo
       { path: 'upload-activity', component: UploadActivityComponent },
       { path: 'detalle-reto', component: DetalleRetoComponent},
       { path: 'evento-inscrito', component: EventoInscritoComponent},
+      { path: 'gestion-grupos', component: GestionGruposComponent },
+      { path: 'affiliations', component: AffiliationsComponent},
       
     ])
   ],
