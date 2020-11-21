@@ -77,7 +77,7 @@ namespace Controllers
             return usersInGroup.Any(g => g.IdUsuario == user.User);
         }
 
-        // GET: api/Reto/all
+        // GET: api/Reto
         [HttpGet]
         public IActionResult GetAllRetos()
         {
