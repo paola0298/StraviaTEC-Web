@@ -15,7 +15,6 @@ import { MenuOrganizadorComponent } from './menu-organizador/menu-organizador.co
 import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.component';
 import { AddFriendComponent } from './add-friend/add-friend.component';
 import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
-import { GestionAfiliacionesComponent } from './gestion-afiliaciones/gestion-afiliaciones.component';
 import { RaceSignupComponent } from './race-signup/race-signup.component';
 import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
@@ -23,6 +22,7 @@ import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.component';
 import { UploadActivityComponent } from './upload-activity/upload-activity.component';
 import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.component';
+import { AffiliationsComponent } from './affiliations/affiliations.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +45,7 @@ import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.componen
     AsociarseGrupoComponent,
     UploadActivityComponent,
     GestionGruposComponent,
+    AffiliationsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -60,7 +61,6 @@ import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.componen
       { path: 'menu-organizador', component: MenuOrganizadorComponent },
       { path: 'gestion-carreras', component: GestionCarrerasComponent },
       { path: 'add-friend', component: AddFriendComponent },
-      { path: 'gestion-afiliaciones', component: GestionAfiliacionesComponent },
       { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
       { path: 'race-signup', component: RaceSignupComponent},
       { path: 'athlete-menu', component: AthleteMenuComponent},
@@ -69,6 +69,7 @@ import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.componen
       { path: 'asociarse-grupo', component: AsociarseGrupoComponent},
       { path: 'upload-activity', component: UploadActivityComponent },
       { path: 'gestion-grupos', component: GestionGruposComponent },
+      { path: 'affiliations', component: AffiliationsComponent},
       
     ])
   ],
