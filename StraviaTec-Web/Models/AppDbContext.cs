@@ -254,6 +254,8 @@ namespace StraviaTec_Web.Models
                     .HasColumnName("Id_usuario")
                     .HasMaxLength(30);
 
+                entity.Property(e => e.Progreso).HasColumnType("numeric(5,0)");
+
                 entity.HasOne(d => d.IdCategoriaCarreraNavigation)
                     .WithMany(p => p.InscripcionEvento)
                     .HasForeignKey(d => d.IdCategoriaCarrera)

@@ -75,11 +75,20 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Para realizar la inscripción debes pagar el costo de inscripción a una de las cuentas.
+                    Para realizar la inscripción debes seleccionar una categoría y pagar el costo de inscripción a una de las cuentas.
                 </p>
+
+                <div class="form-group">
+                    <label for="categoria-usuario">Categoría a participar</label>
+                    <select name="categoria-usuario" id="categoria-usuario" class="form-control">
+                        <option value="">Selecciona</option>
+                    </select>
+                </div>
                 
-                <label for="comprobante-pago">Sube el comprobante de pago aquí</label>
-                <input type="file" id="comprobante-pago" class="form-control">
+                <div class="form-group">
+                    <label for="comprobante-pago">Sube el comprobante de pago aquí</label>
+                    <input type="file" id="comprobante-pago" class="form-control-file">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -3,6 +3,10 @@ import { Reto } from '../models/reto';
 import { UtilsService } from '../services/utils.service';
 import { ApiService } from '../services/api.service';
 import { Patrocinador } from '../models/patrocinador';
+import { Grupo } from '../models/grupo';
+import { PatrocinadorEvento } from '../models/patrocinadorEvento';
+import { NOMEM } from 'dns';
+import { EventoGrupo } from '../models/eventoGrupo';
 
 @Component({
   selector: 'app-gestion-retos',
@@ -13,7 +17,7 @@ export class GestionRetosComponent implements OnInit {
 
   constructor(private utilsService: UtilsService, private apiService:ApiService) { }
 
-  retos = [];
+  retos:Reto[] = [];
   patrocinadores = [];
   actividades = [];
   tiposReto = [];
@@ -24,25 +28,36 @@ export class GestionRetosComponent implements OnInit {
   ngOnInit(): void {
     this.utilsService.configureContextMenu();
     this.loadRetos();
-    this.loadActividades();
-    this.loadPatrocinadores();
-    this.loadTiposReto();
-
-    let pat = new Patrocinador(1, 'Movistar', 'Movistar', '1', '1');
-    let reto = new Reto(1, 'nombre', '2020-12-01', '2020-12-15', 50, 1, 1, [pat], ['1', '2'], false);
-    reto.nombreReto = 'Fondo';
-    reto.nombreActividad = 'Correr';
-    this.retos.push(reto);
-    this.actualReto = reto;
   }
 
   loadRetos() {
-    console.log('Cargando retos');
+    console.log('Obteniendo todos los retos');
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto`)
+    response.subscribe(
+      (value: Reto[]) => {
+        this.retos = value;  
+        this.loadActividades();
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      });
 
   }
 
   getReto(id:number) {
     console.log("Obteniendo reto");
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`);
+    response.subscribe(
+      (value: Reto) => {
+        value.inicio = this.utilsService.parseDate(value.inicio);
+        value.fin = this.utilsService.parseDate(value.fin);
+        this.actualReto = value;
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      });
   }
 
   saveReto() {
@@ -50,26 +65,16 @@ export class GestionRetosComponent implements OnInit {
     const name = document.getElementById('name') as HTMLInputElement;
     const fechaInicio = document.getElementById('fecha-inicio') as HTMLInputElement;
     const fechaFin = document.getElementById('fecha-fin') as HTMLInputElement;
-    const tipoReto = document.getElementById('tipoReto') as HTMLSelectElement;
     const objetivo = document.getElementById('objetivo') as HTMLInputElement;
-    const actividad = document.getElementById('activity') as HTMLSelectElement;
     const publico = document.getElementById('reto-publico') as HTMLInputElement;
     const privado = document.getElementById('reto-privado') as HTMLInputElement;
+    const actividad = document.getElementById('activity') as HTMLSelectElement;
     const groups = document.getElementById('groups') as HTMLSelectElement;
+    const tipoReto = document.getElementById('tipoReto') as HTMLSelectElement;
     const patrocinador = document.getElementById('sponsor') as HTMLSelectElement;
 
-    // console.log('Public ' + publico.checked);
-    // console.log('Privado ' + privado.checked);
-    // let pat = patrocinador.selectedOptions; 
-    // let out = '';
-    // for (let i=0; i<pat.length; i++) {
-    //   console.log(pat[i].value);
-    //   console.log(pat[i].label);
-    // }
-
-    // console.log(patrocinador.selectedOptions.length);
-
-    if (name.value == '' || fechaInicio.value == '' || fechaFin.value == '' || tipoReto.value == 'Seleccione el tipo de reto' || objetivo.value == '' || actividad.value == 'Seleccione una actividad' || patrocinador.selectedOptions.length == 0) {
+    if (name.value == '' || fechaInicio.value == '' || fechaFin.value == '' || tipoReto.value == 'Seleccione el tipo de reto' 
+      || objetivo.value == '' || actividad.value == 'Seleccione una actividad' || patrocinador.selectedOptions.length == 0) {
       this.utilsService.showInfoModal('Error', 'Por favor complete todos los campos.', 'saveMsjLabel', 'msjText', 'saveMsj');
       return;
     }
@@ -78,35 +83,117 @@ export class GestionRetosComponent implements OnInit {
       this.utilsService.showInfoModal('Error', 'Debe seleccionar los grupos que pueden tener acceso al reto.', 'saveMsjLabel', 'msjText', 'saveMsj');
       return;
     }
+
+    let retoInfo;
+
+    if (privado.checked) {
+      retoInfo = {
+        Nombre: name.value,
+        Inicio: fechaInicio.value,
+        Fin: fechaFin.value,
+        Objetivo: objetivo.value,
+        IdTipoReto: tipoReto.value,
+        IdActividad: actividad.value,
+        Patrocinadores: $('#sponsor').val(),
+        Grupos: $('#groups').val(),
+        EsPrivado: privado.checked
+      };
+    } else {
+      retoInfo = {
+        Nombre: name.value,
+        Inicio: fechaInicio.value,
+        Fin: fechaFin.value,
+        Objetivo: objetivo.value,
+        IdTipoReto: tipoReto.value,
+        IdActividad: actividad.value,
+        Patrocinadores: $('#sponsor').val(),
+        Grupos: [],
+        EsPrivado: privado.checked
+      };
+    }
+
+    if (this.updating) {
+      retoInfo.id = this.actualReto.id;
+      this.updateRetoApi(retoInfo, [name, fechaInicio, fechaFin, objetivo], [actividad, groups, tipoReto, patrocinador]);
+    } else {
+      this.saveRetoApi(retoInfo, [name, fechaInicio, fechaFin, objetivo], [actividad, groups, tipoReto, patrocinador]);
+    }
+  }
+  saveRetoApi(retoInfo: any, htmlElements: HTMLInputElement[], selectElements: HTMLSelectElement[]) {
+    console.log(retoInfo);
+    var response = this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Reto`, retoInfo);
+    response.subscribe(
+      (value: any) => {
+        console.log(value);
+        this.loadRetos();
+        this.utilsService.showInfoModal('Exito', 'Nuevo reto guardado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.utilsService.cleanField(htmlElements, selectElements,
+          ['Seleccione una actividad', 'Seleccione los grupos', 'Seleccione el tipo de reto','Seleccione un patrocinador']);
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+        if (error.status === 409) {
+          this.utilsService.showInfoModal('Error', 'El reto ya existe', 'saveMsjLabel', 'msjText', 'saveMsj');
+        }
+      });
+  }
+  updateRetoApi(retoInfo: any, htmlElements: HTMLInputElement[], selectElements: HTMLSelectElement[]) {
+    console.log(retoInfo);
+    var response = this.apiService.put(`http://localhost:${this.apiService.PORT}/api/Reto/${retoInfo.id}`, retoInfo);
+    response.subscribe(
+      (value:any) => {
+        this.loadRetos();
+        this.utilsService.showInfoModal('Exito', 'Reto actualizado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.utilsService.cleanField(htmlElements, selectElements,
+          ['Seleccione una actividad', 'Seleccione los grupos', 'Seleccione el tipo de reto','Seleccione un patrocinador']);
+        this.updating = false;
+        (document.getElementById('saveButton') as HTMLButtonElement).textContent = 'Crear reto';
+      }, (error: any) => {
+      console.log(error.statusText);
+      console.log(error.status);
+    });
   }
 
   updateReto() {
     console.log('Actualizando retos');
+    (document.getElementById('saveButton') as HTMLButtonElement).textContent = 'Actualizar reto';
     this.updating = true;
+    this.setActivityName();
+    this.setSponsorName();
+    this.setTipoRetoName();
 
-    let publico = this.actualReto.publico;
+    let privado = this.actualReto.esPrivado;
 
-    if (publico) {
+    if (!privado) {
       (document.getElementById('reto-publico') as HTMLInputElement).checked = true;
       this.clearGroups();
     } else {
       (document.getElementById('reto-privado') as HTMLInputElement).checked = true;
       this.setGroups();
+      this.setGroupsName();
     }
 
     (document.getElementById('name') as HTMLInputElement).value = this.actualReto.nombre;
     (document.getElementById('fecha-inicio') as HTMLInputElement).value = this.actualReto.inicio;
     (document.getElementById('fecha-fin') as HTMLInputElement).value = this.actualReto.fin;
-    (document.getElementById('tipoReto') as HTMLSelectElement).value = this.actualReto.nombreReto;
     (document.getElementById('objetivo') as HTMLInputElement).value = this.actualReto.objetivo.toString();
-    (document.getElementById('activity') as HTMLSelectElement).value = this.actualReto.nombreActividad;
-    (document.getElementById('groups') as HTMLSelectElement);
-    (document.getElementById('sponsor') as HTMLSelectElement);
-
   }
 
   deleteReto() {
     console.log('Eliminando reto');
+    document.getElementById('optionMsj').style.setProperty('display', 'none');
+    var response = this.apiService.delete(`http://localhost:${this.apiService.PORT}/api/Reto/${this.actualReto.id}`);
+    response.subscribe(
+      (value: any) => {
+        this.utilsService.showInfoModal('Exito', 'Reto eliminado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.loadRetos();
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        this.utilsService.showInfoModal('Error', 'Hubo un problema al eliminar el reto.', 'saveMsjLabel', 'msjText', 'saveMsj');
+      });
+
   }
 
   clearGroups() {
@@ -126,7 +213,7 @@ export class GestionRetosComponent implements OnInit {
    */
   onRetoClick(event: any, reto: Reto): boolean {
     this.utilsService.showContextMenu(event);
-    this.getReto(1); // todo obtener el id actual del reto seleccionado
+    this.getReto(reto.id); // todo obtener el id actual del reto seleccionado
     return false;
   }
 
@@ -134,7 +221,7 @@ export class GestionRetosComponent implements OnInit {
    * Metodo para mostrar al usuario un modal para tomar una decision de si o no
    */
   askUser() {
-    this.utilsService.showInfoModal('Eliminar', 'Esta seguro que desea eliminar la carrera',
+    this.utilsService.showInfoModal('Eliminar', 'Esta seguro que desea eliminar el reto',
     'optionMsjLabel', 'optionText', 'optionMsj');
   }
   
@@ -151,6 +238,7 @@ export class GestionRetosComponent implements OnInit {
     result.subscribe(
       (value:any) => {
         this.actividades = value;
+        this.loadPatrocinadores();
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
@@ -163,6 +251,7 @@ export class GestionRetosComponent implements OnInit {
     result.subscribe(
       (value:any) => {
         this.patrocinadores = value;
+        this.loadTiposReto();
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
@@ -175,6 +264,7 @@ export class GestionRetosComponent implements OnInit {
     result.subscribe(
       (value:any) => {
         this.tiposReto = value;
+        this.loadGrupos();
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
@@ -184,7 +274,84 @@ export class GestionRetosComponent implements OnInit {
   }
 
   loadGrupos() {
-    console.log('Cargando grupos');
+    var response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Grupos`);
+    response.subscribe(
+      (value:Grupo[]) => {
+        this.grupos = value;
+        console.log('grupos size ' + this.grupos.length);
+        this.getNombres();
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      });
+  }
+  getNombres() {
+    this.retos.forEach(reto => {
+      var idActividad = reto.idTipoActividad;
+      var name = this.actividades.find(a => a.id == idActividad).nombre;
+      var tipoReto = this.tiposReto.find(r => r.id == reto.idTipoReto).nombre;
+      reto.nombreTipoReto = tipoReto;
+      reto.nombreActividad = name;
+      reto.inicio = this.utilsService.parseDate(reto.inicio);
+      reto.fin = this.utilsService.parseDate(reto.fin);
+      this.getSponsorNames(reto.patrocinadorEvento);
+      this.getGroupsNames(reto.eventoGrupo);
+    })
+  }
+  getGroupsNames(eventoGrupo: EventoGrupo[]) {
+    eventoGrupo.forEach(grupo => {
+      var id = grupo.idGrupo;
+      var name = this.grupos.find(g => g.id == id).nombre;
+      grupo.nombreGrupo = name;
+    });
   }
 
+  getSponsorNames(patrocinadorEvento: PatrocinadorEvento[]) {
+    patrocinadorEvento.forEach(patrocinador => {
+      var idP = patrocinador.idPatrocinador;
+      var name = this.patrocinadores.find(p => p.id == idP).nombreComercial;
+      patrocinador.nombreComercial = name;
+    });
+  }
+
+  getCheckedRadio (name: string) {
+    var elements = document.getElementsByName(name) as NodeListOf<HTMLInputElement>;
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].checked) return elements[i].value;
+    }
+  }
+
+  setMultiValues(selectName: string, selectValues: any) {
+    const select = (document.getElementById(selectName) as HTMLSelectElement).options;
+  
+    for (var i = 0; i < select.length; i++) {
+      /* Parse value to integer */
+      const value = Number.parseInt(select[i].value);
+      /* If option value contained in values, set selected attribute */
+      if (selectValues.indexOf(value) !== -1) {
+        select[i].setAttribute('selected', 'selected');
+      }
+      /* Otherwise ensure no selected attribute on option */
+      else {
+        select[i].removeAttribute('selected');
+      }
+    }
+  }
+
+  setGroupsName() {
+    this.setMultiValues('groups', this.actualReto.eventoGrupo.map(g => g.idGrupo));
+  }
+
+  setSponsorName() {
+    this.setMultiValues('sponsor', this.actualReto.patrocinadorEvento.map(p => p.idPatrocinador));
+  }
+
+  setActivityName() {
+    this.setMultiValues('activity', [this.actualReto.idTipoActividad]);
+  }
+
+  setTipoRetoName() {
+    this.setMultiValues('tipoReto', [this.actualReto.idTipoReto]);
+  }
 }

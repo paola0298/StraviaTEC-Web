@@ -379,27 +379,44 @@ namespace Controllers
             if (!CarreraExists(info.IdCarrera))
                 return BadRequest();
 
-            if (!_context.Usuario.Any(u => u.User == info.User))
+            var usuarioExists = _context.Usuario.FromSqlInterpolated($@"
+                SELECT ""User"" FROM ""USUARIO""
+                WHERE ""User"" = {info.User}
+                ").Any();
+
+            // if (!_context.Usuario.Any(u => u.User == info.User))
+            if (!usuarioExists)
                 return BadRequest();
 
-            var carrera = await _context.Carrera
-                .Where(c => c.Id == info.IdCarrera)
+            var carrera = await _context.Carrera.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_recorrido"", ""Id_evento"", ""Nombre"", ""Fecha"", ""Costo"" FROM ""CARRERA""
+                WHERE ""Id"" = {info.IdCarrera}
+                ")
                 .Include(c => c.IdEventoNavigation)
                 .FirstOrDefaultAsync();
+            
+            // var carrera = await _context.Carrera
+            //     .Where(c => c.Id == info.IdCarrera)
+            //     .Include(c => c.IdEventoNavigation)
+            //     .FirstOrDefaultAsync();
+            
+            
+            var comprobante = await FileHandler.SaveFileAsync(info.ComprobantePago, info.User + info.IdCarrera, StorageLocation.InscriptionUploads);
 
-            if (carrera == null) {
-                return BadRequest();
-            }
+            // var inscripcion = new InscripcionEvento
+            // {
+            //     IdEvento = carrera.IdEvento,
+            //     ComprobantePago = comprobante,
+            //     Estado = "pendiente",
+            //     IdUsuario =  info.User
+            // };
 
-            var inscripcion = new InscripcionEvento
-            {
-                IdEvento = carrera.IdEvento,
-                ComprobantePago = await FileHandler.SaveFileAsync(info.ComprobantePago, info.User + info.IdCarrera, StorageLocation.InscriptionUploads),
-                Estado = "pendiente",
-                IdUsuario =  info.User
-            };
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                INSERT INTO ""INSCRIPCION_EVENTO"" (""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera"") VALUES
+                ({carrera.IdEvento}, {info.User}, {"pendiente"}, {comprobante}, {info.IdCategoriaCarrera})
+            ");
 
-            await _context.InscripcionEvento.AddAsync(inscripcion);
+            // await _context.InscripcionEvento.AddAsync(inscripcion);
             await _context.SaveChangesAsync();
 
             return Ok();

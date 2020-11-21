@@ -39,7 +39,7 @@
                         </div>
                         <select class="form-control" id="tipoReto">
                             <option selected="" value="Seleccione el tipo de reto"> Seleccione el tipo de reto</option>
-                            <option *ngFor="let tipoReto of tiposReto" value="{{tipoReto.nombre}}">{{ tipoReto.nombre }}</option>
+                            <option *ngFor="let tipoReto of tiposReto" value="{{tipoReto.id}}">{{ tipoReto.nombre }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
 
@@ -56,7 +56,7 @@
                         </div>
                         <select class="form-control" id="activity">
                             <option selected="" value="Seleccione una actividad"> Seleccione una actividad</option>
-                            <option *ngFor="let actividad of actividades" value="{{actividad.nombre}}">{{ actividad.nombre }}</option>
+                            <option *ngFor="let actividad of actividades" value="{{actividad.id}}">{{ actividad.nombre }}</option>
                         </select>
                     </div> <!-- form-group// -->                
                 </div>
@@ -78,7 +78,7 @@
                         
                         <select class="selectpicker" multiple id="groups">
                             <option value="Seleccione los grupos" disabled> Seleccione los grupos</option>
-                            <option *ngFor="let grupo of grupos" value="{{grupo}}">{{ grupo }}</option>
+                            <option *ngFor="let grupo of grupos" value="{{grupo.id}}">{{ grupo.nombre }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
 
@@ -88,13 +88,13 @@
                         </div>
                         <select class="form-control" id="sponsor" multiple>
                             <option value="Seleccione un patrocinador" disabled> Seleccione un patrocinador</option>
-                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.nombreComercial}}">{{ patrocinador.nombreComercial }}</option>
+                            <option *ngFor="let patrocinador of patrocinadores" value="{{patrocinador.id}}">{{ patrocinador.nombreComercial }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
 
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block" (click)="saveReto()">Crear reto</button>
+                <button id="saveButton" type="submit" class="btn btn-primary btn-block" (click)="saveReto()">Crear reto</button>
             </form>
 
             
@@ -118,14 +118,26 @@
                         </thead>
                         <tbody *ngFor="let reto of retos; let i = index;">
                             <tr>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.nombre}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.inicio}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.fin}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.idTipoReto}}</td>
-                                <td (contextmenu)="onRetoClick($event,carrera)" class="text-center align-middle">{{ reto.idActividad}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.publico}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.grupos}}</td>
-                                <td (contextmenu)="onRetoClick($event, carrera)" class="text-center align-middle">{{ reto.patrocinadores}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.nombre}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.inicio}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.fin}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.nombreTipoReto}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.nombreActividad}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">{{ reto.esPrivado}}</td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let gru of reto.eventoGrupo">
+                                            {{gru.nombreGrupo}}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td (contextmenu)="onRetoClick($event, reto)" class="text-center align-middle">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item" *ngFor="let pat of reto.patrocinadorEvento">
+                                            {{pat.nombreComercial}}
+                                        </li>
+                                    </ul>
+                                </td>
                                 <!--td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.recorrido}}</td-->
                             </tr>     
                         </tbody>

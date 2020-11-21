@@ -2,6 +2,7 @@ export class EventoGrupo {
     id: number;
     idEvento: number;
     idGrupo: number;
+    nombreGrupo: string;
 
     constructor(
         id: number,

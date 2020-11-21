@@ -112,6 +112,7 @@ CREATE TABLE "INSCRIPCION_EVENTO" (
     "Id_evento" INT NOT NULL,
     "Id_usuario" VARCHAR(30) NOT NULL,
     "Estado" VARCHAR(30) NOT NULL,
+    "Progreso" NUMERIC(5),
     "Comprobante_pago" VARCHAR(200),
     "IdCategoriaCarrera" INT
 );

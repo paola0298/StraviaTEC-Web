@@ -69,32 +69,58 @@
                 </div>
 
                 <div class="form-row">
-
-                    <div class="form-group input-group col">
-                        <div class="input-group-prepend">
+                    <div class="col-md-6">
+                        <div class="form-group input-group">
+                          <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-money-check-alt"></i> </span>
+                          </div>
+                          <input type="text" id="cuentaB" name="cuentaB" placeholder="Cuenta Bancaria" class="form-control">
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary button-cuenta" type="button" (click)="addCuenta()">
+                              Agregar cuenta bancaria 
+                            </button>
+                          </div>
                         </div>
-                        <input id="cuentaB"name="cuentaB" class="form-control" placeholder="Cuenta Bancaria" type="text">
-                    </div> <!-- form-group// -->
+                      </div>
 
-                    <div class="form-group col-md-4">
-                        <label class="float-md-right" for="recorrido">  Cargar Recorrido </label>
-                    </div>
-                    
-
-                    <div class="form-group col-md-4">
-                        <input type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control-file" (change)="loadRuta($event)">
-                    </div> <!-- form-group// -->
+                    <div class="col">
+                        <div class="table-container">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th class="text-center align-middle" scope="col">Cuenta bancaria</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody *ngFor="let cuenta of cuentas">
+                              <tr>
+                                <td class="text-center align-middle">{{ cuenta }}</td>
+                                <button type="button" class="btn btn-teal btn-rounded btn-sm m-0" (click)="deleteCuenta(cuenta)" ><i class="far fa-trash-alt"></i></button>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="recorrido">  Cargar Recorrido </label>
+                    </div>
+
+                    <div class="form-group col-md-10">
+                        <input  class="float-md-left" type="file" accept=".gpx" name="recorrido" id="recorrido" class="form-control-file" (change)="loadRuta($event)">
+                    </div> <!-- form-group// -->
                 </div>
 
                 <div class="form-row">
 
                     <div class="form-group input-group col-md-4" id="privado-group">
                         <label class="radio-inline padding-custom">
-                            <input type="radio" name="optradio" checked (click)="clearGroups()" value="false">Público</label>
+                            <input id="publico-radio" type="radio" name="optradio" checked (click)="clearGroups()" value="false">Público</label>
                         <label class="radio-inline">
-                            <input type="radio" name="optradio" (click)="setGroups()" value="true">Privado</label>
+                            <input id="privado-radio" type="radio" name="optradio" (click)="setGroups()" value="true">Privado</label>
                     </div>
 
                     <div id="groupsOption" style="display: none;" class="form-group input-group col-md-4">
@@ -104,12 +130,12 @@
                         
                         <select class="selectpicker" multiple id="groups">
                             <option selected="" value="Seleccione los grupos"> Seleccione los grupos</option>
-                            <option *ngFor="let grupo of grupos" value="{{grupo}}">{{ grupo }}</option>
+                            <option *ngFor="let grupo of grupos" value="{{grupo.id}}">{{ grupo.nombre }}</option>
                         </select>
                     </div> <!-- form-group end.// -->
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block" (click)="saveCarrera()">Crear carrera</button>
+                <button id="saveButton" type="submit" class="btn btn-primary btn-block" (click)="saveCarrera()">Crear carrera</button>
             </form>
 
             
@@ -133,19 +159,19 @@
                         <tbody *ngFor="let carrera of carreras; let i = index;">
                             <tr>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.nombre}}</td>
-                                <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.idTipoActividad }}</td>
+                                <td (contextmenu)="onCarreaClick($event, carrera)" class="text-center align-middle">{{ carrera.nombreTipoActividad }}</td>
                                 <td (contextmenu)="onCarreraClick($event, carrera)" class="text-center align-middle">{{ carrera.fecha}}</td>
                                 <td (contextmenu)="onCarreraCick($event, carrera)" class="text-center align-middle">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item" *ngFor="let cat of carrera.categoriaCarrera">
-                                            {{cat.id}}
+                                            {{cat.nombre}}
                                         </li>
                                     </ul>
                                 </td>
                                 <td (contextmenu)="onCarreaClick($event,carrera)" class="text-center align-middle">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item" *ngFor="let pat of carrera.patrocinadorEvento">
-                                            {{pat.id}}
+                                            {{pat.nombreComercial}}
                                         </li>
                                     </ul>
                                 </td>

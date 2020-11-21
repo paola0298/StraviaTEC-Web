@@ -176,6 +176,12 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
       .subscribe((info: any) => {
         var container = document.getElementById('categorias-container');
         this.createItems(container, info);
+        
+        let select = document.getElementById('categoria-usuario');
+        for (let i = 0; i < info.length; i++) {
+          let opt = info[i];
+          select.appendChild(new Option(opt.nombre, opt.id));
+        }
     });
 
     this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/cuentas/${this.carrera.id}`)
@@ -263,6 +269,7 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
     indicator.style.setProperty('display', 'inline-block');
 
     var comprobante = (document.getElementById('comprobante-pago') as HTMLInputElement).files[0];
+    var idCategoria = (document.getElementById('categoria-usuario') as HTMLSelectElement).value;
     
     if (comprobante == null)
       return;
@@ -270,7 +277,8 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
     var data = {
       User: window.localStorage.getItem('userId'),
       IdCarrera: this.carrera.id,
-      ComprobantePago: await this.fileToBase64(comprobante)
+      ComprobantePago: await this.fileToBase64(comprobante),
+      IdCategoriaCarrera: idCategoria
     }
 
     this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras/inscripcion`, data)

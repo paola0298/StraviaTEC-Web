@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+<div class="primary-container">
+    <div class="card bg-light article-custom">
+        <div class="margin-div">
+            <h2>Solicitudes de afiliacion</h2>
+            <div>
+              <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th class="text-center align-middle" scope="col">Carrera</th>
+                      <th class="text-center align-middle" scope="col">Estado</th>
+                      <th class="text-center align-middle" scope="col">Deportista</th>
+                      <th class="text-center align-middle" scope="col">Comprobante de pago</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let affiliation of affiliations; let i = index;">
+                    <tr>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.nombreCarrera }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.estado }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.nombreDeportista }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" (click)="onImageClick()" class="text-center align-middle">
+                        <img id="comprobante" src={{affiliation.comprobantePago}} width="150" height="150"/>
+                      </td>
+                    </tr>
+          
+                  </tbody>
+            </table>
+
+            <div class="dropdown-menu" aria-labelledby="tableMenu" id="context-menu">
+                <a class="dropdown-item btn btn-default" (click)="accept()">Aceptar</a>  
+                <a class="dropdown-item btn" (click)="askUser()">Rechazar</a> 
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="saveMsj">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="saveMsjLabel"></h4>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <a id="msjText"></a>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" (click)="closeModal('saveMsj')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- The Option Modal -->
+  <div class="modal" id="optionMsj">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="optionMsjLabel"></h4>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <a id="optionText"></a>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="deny()">Si</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="closeModal('optionMsj')">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
