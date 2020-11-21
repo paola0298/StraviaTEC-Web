@@ -183,6 +183,7 @@ export class GestionRetosComponent implements OnInit {
 
   deleteReto() {
     console.log('Eliminando reto');
+    document.getElementById('optionMsj').style.setProperty('display', 'none');
     var response = this.apiService.delete(`http://localhost:${this.apiService.PORT}/api/Reto/${this.actualReto.id}`);
     response.subscribe(
       (value: any) => {
