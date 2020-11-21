@@ -12,6 +12,7 @@ export class Race {
     costo: number;
     esPrivado: boolean;
     idTipoActividad: number;
+    nombreTipoActividad: string;
     categoriaCarrera: CategoriaCarrera[];
     cuentaBancaria: CuentaBancaria[];
     patrocinadorEvento: PatrocinadorEvento[];
