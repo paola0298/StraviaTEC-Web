@@ -1,0 +1,22 @@
+<div class="container">
+
+    <h3>Retos Disponibles</h3>
+    <p>
+        Selecciona un reto para ver más información.
+    </p>
+
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action" *ngFor="let reto of retos; trackBy: trackByFn" 
+            href="/reto-detalle/{{ reto.id }}">
+            <div class="d-flex w-100 justify-content-between">
+                <h5>{{ reto.nombre }}</h5>
+                <p>Inicio: {{ reto.inicio }}</p>
+                <p>Final: {{ reto.fin }}</p>
+            </div>
+            <p class="mb-1">
+                Objetivo: <strong>{{ reto.objetivo }}</strong>
+            </p>
+        </a>
+    </div>
+
+</div>

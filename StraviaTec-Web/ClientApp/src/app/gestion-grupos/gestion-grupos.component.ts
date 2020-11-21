@@ -59,12 +59,12 @@ export class GestionGruposComponent implements OnInit {
       (value: Grupo) => {
         console.log('Grupo ' + value);
         this.loadGroups();
-        this.utilsService.showInfoModal('Exito', 'Nueva carrera guardada correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.utilsService.showInfoModal('Exito', 'Nuevo grupo guardado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
       }, (error: any) => {
         console.log(error.statusText);
         console.log(error.status);
         if (error.status === 409) {
-          this.utilsService.showInfoModal('Error', 'La carrera ya existe', 'saveMsjLabel', 'msjText', 'saveMsj');
+          this.utilsService.showInfoModal('Error', 'El grupo ya existe', 'saveMsjLabel', 'msjText', 'saveMsj');
         }
         console.log(grupo);
       });
