@@ -29,6 +29,172 @@ namespace Controllers
         }
 
 
+    // GET: api/Reto/user/id
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetReto(string id)
+        {
+            var user = await _context.Usuario
+                .Where(u => u.User == id)
+                .Include(u => u.UsuarioGrupo)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+                return BadRequest();
+            
+            var visibles = _context.Reto
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => !c.IdEventoNavigation.EsPrivado)
+                .ToList();
+
+            var privados = _context.Reto
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => c.IdEventoNavigation.EsPrivado);
+
+            foreach (var reto in privados)
+            {
+                var evento = reto.IdEventoNavigation;
+                foreach (var grupo in evento.EventoGrupo)
+                {
+                    if (!UserInGroup(grupo.IdGrupoNavigation, user))
+                        continue;
+                    visibles.Append(reto);
+                }
+            }
+            return Ok(visibles.Select(c => _mapper.Map<CarreraDto>(c)));
+        }
+
+         private bool UserInGroup(Grupo group, Usuario user) 
+        {
+            var usersInGroup = _context.UsuarioGrupo
+                .Where(g => g.IdGrupo == group.Id);
+
+            return usersInGroup.Any(g => g.IdUsuario == user.User);
+        }
+
+        // GET: api/Reto/all
+        [HttpGet("all")]
+        public IActionResult GetAllRetos()
+        {
+            var retos = _context.Reto
+                .Include(c => c.IdTipoRetoNavigation)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo);
+            Console.WriteLine(retos.ToString());
+            return Ok(retos.Select(c => _mapper.Map<RetoDto>(c)));
+        }
+
+         // GET: api/Reto/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RetoDto>> GetReto(int id)
+        {
+            var reto = await _context.Reto
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.PatrocinadorEvento)
+                .Include(c => c.IdEventoNavigation)
+                    .ThenInclude(e => e.EventoGrupo)
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (reto == null)
+            {
+                return NotFound();
+            }
+            Console.WriteLine(reto.Id);
+            Console.WriteLine(reto.IdTipoReto);
+            Console.WriteLine(reto.Objetivo);
+            var retoDto = _mapper.Map<RetoDto>(reto);
+            
+
+            return retoDto;
+        }
+
+         // PUT: api/Carreras/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutReto(int id, RetoInfo retoInfo)
+        {   
+            if (id <= 0 || retoInfo == null)
+            {
+                return BadRequest();
+            }
+
+            var reto = await _context.Reto
+                .Where(c => c.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (reto == null) 
+            {
+                return NotFound();
+            }
+
+            var evento = await _context.Evento
+                .Where(e => e.Id == reto.IdEvento)
+                .Include(e => e.PatrocinadorEvento)
+                .Include(e => e.EventoGrupo)
+                .FirstOrDefaultAsync();
+
+            if (evento == null)
+            {
+                return StatusCode(500);
+            }
+
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
+
+            reto.Inicio = retoInfo.Inicio;
+            reto.Fin = retoInfo.Fin;
+            reto.Objetivo = retoInfo.Objetivo;
+
+     
+
+            await _context.SaveChangesAsync();
+
+         
+
+            evento.Nombre = retoInfo.Nombre;
+            evento.IdTipoActividad = retoInfo.IdActividad;
+            evento.EsPrivado = retoInfo.EsPrivado;
+
+            _context.PatrocinadorEvento.RemoveRange(evento.PatrocinadorEvento);
+            _context.EventoGrupo.RemoveRange(evento.EventoGrupo);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var patrocinador in retoInfo.Patrocinadores)
+            {
+                var patrocinadorData = new PatrocinadorEvento
+                {
+                    IdEvento = evento.Id,
+                    IdPatrocinador = patrocinador
+                };
+                await _context.PatrocinadorEvento.AddAsync(patrocinadorData);
+                await _context.SaveChangesAsync();
+            }
+
+            foreach (var grupo in retoInfo.Grupos)
+            {
+                var grupoEvento = new EventoGrupo
+                {
+                    IdEvento = evento.Id,
+                    IdGrupo = grupo
+                };
+                await _context.EventoGrupo.AddAsync(grupoEvento);
+                await _context.SaveChangesAsync();
+            }
+
+            await dbTransaction.CommitAsync();
+
+            return NoContent();
+        }
+
         [HttpPost]
         public async Task<ActionResult<Reto>> PostReto(RetoInfo data)
         {
@@ -96,7 +262,7 @@ namespace Controllers
                     }
                 }
                 await dbTransaction.CommitAsync();
-                 var retoDto = _mapper.Map<RetoDto>(reto);
+                var retoDto = _mapper.Map<RetoDto>(reto);
                 return CreatedAtAction("GetReto", new { id = reto.Id }, retoDto);
                 } catch (DbUpdateException ex)
             {
@@ -118,13 +284,12 @@ namespace Controllers
             var evento = await _context.Evento.FindAsync(reto.IdEvento);
             Console.WriteLine(evento.Nombre);
             _context.Evento.Remove(evento);
-            // _context.Carrera.Remove(carrera);
+            // _context.Reto.Remove(reto);
             await _context.SaveChangesAsync();
 
             return Ok();
         }
-
-     
+        
         private bool RetoExists(int id)
         {
             return _context.Reto.Any(e => e.Id == id);
