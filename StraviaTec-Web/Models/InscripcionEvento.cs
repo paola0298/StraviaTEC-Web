@@ -9,6 +9,7 @@ namespace StraviaTec_Web.Models
         public int IdEvento { get; set; }
         public string IdUsuario { get; set; }
         public string Estado { get; set; }
+        public decimal? Progreso { get; set; }
         public string ComprobantePago { get; set; }
         public int? IdCategoriaCarrera { get; set; }
 
