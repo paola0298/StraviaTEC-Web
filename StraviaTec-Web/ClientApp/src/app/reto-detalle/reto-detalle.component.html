@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="form-group flex-grow-1 mt-lg-2">
+            <h3>{{ reto.nombre }}</h3>
+        </div>
+        <div class="form-group mt-lg-2">
+            <button type="button" class="btn btn-primary" id="inscribirseButton" data-toggle="modal" data-target="#inscripcionModal">
+                Inscribirse al reto
+            </button>
+        </div>
+    </div>
+    
+    <div class="row mt-lg-4">
+        <div class="col-6">
+            <h5>Detalles del evento</h5>
+            <div class="card">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Inicio: <strong>{{ reto.inicio }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Final: <strong>{{ reto.fin }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Objetivo: <strong>{{ reto.objetivo }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            Tipo de actividad: <strong id="tipoActividad"></strong>
+                        </li>
+                        <li class="list-group-item">
+                            Tipo de reto: <strong id="tipoReto"></strong>
+                        </li>
+                        <li class="list-group-item">
+                            Patrocinadores
+                            <ul class="list-group list-group-flush" id="patrocinadores-container"></ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" id="inscripcionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Inscripción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    ¿Seguro que desea inscribirse al reto?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeButton" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onInscribirse()">
+                    Aceptar
+                    <span class="spinner-border spinner-border-sm" style="display: none;" id="loading-indicator" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

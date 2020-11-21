@@ -116,5 +116,18 @@ namespace StraviaTec_Web.Controllers
             return Ok(retos);
         }
 
+        [HttpGet("retos/{id}")]
+        public async Task<IActionResult> GetTiposReto(int id) 
+        {
+            var tipo = await _context.TipoReto
+                .Where(t => t.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (tipo == null)
+                return NotFound();
+
+            return Ok(tipo);
+        }
+
     }
 }
