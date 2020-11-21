@@ -269,23 +269,19 @@ namespace Controllers
             }
         }
 
-        // DELETE: api/Reto/5
+           // DELETE: api/Reto/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Reto>> DeleteReto(int id)
         {
-            Console.WriteLine(id);
             var reto = await _context.Reto.FindAsync(id);
             if (reto == null)
             {
                 return NotFound();
             }
-            Console.WriteLine(reto.IdEvento);
             var evento = await _context.Evento.FindAsync(reto.IdEvento);
-            Console.WriteLine(evento.Nombre);
+            //_context.Reto.Remove(reto);
             _context.Evento.Remove(evento);
-            // _context.Reto.Remove(reto);
             await _context.SaveChangesAsync();
-
             return Ok();
         }
 
