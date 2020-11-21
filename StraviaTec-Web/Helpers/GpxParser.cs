@@ -15,6 +15,9 @@ namespace StraviaTec_Web.Helpers
         {
             var document = ToXmlDocument(input);
 
+            if (document == null)
+                return new List<Punto>();
+
             var nsManager = new XmlNamespaceManager(document.NameTable);
             nsManager.AddNamespace("def", "http://www.topografix.com/GPX/1/1"); 
             nsManager.AddNamespace("gpxtpx", "http://www.garmin.com/xmlschemas/TrackPointExtension/v1");
