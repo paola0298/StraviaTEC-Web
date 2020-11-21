@@ -22,7 +22,7 @@ export class DetalleRetoComponent implements OnInit {
   }
 
   loadExtraInfo() {
-    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idActividad}`)
+    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idTipoActividad}`)
       .subscribe((info: any) => {
         document.getElementById('tipoActividad').innerText = info.nombre;
     });
