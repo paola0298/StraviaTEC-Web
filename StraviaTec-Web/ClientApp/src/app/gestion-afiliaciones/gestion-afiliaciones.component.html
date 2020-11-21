@@ -10,13 +10,17 @@
                       <th class="text-center align-middle" scope="col">Carrera</th>
                       <th class="text-center align-middle" scope="col">Estado</th>
                       <th class="text-center align-middle" scope="col">Deportista</th>
+                      <th class="text-center align-middle" scope="col">Comprobante de pago</th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let affiliation of affiliations; let i = index;">
                     <tr>
-                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.idCarrera }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.nombreCarrera }}</td>
                       <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">Pendiente</td>
-                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.idDepotrista }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">{{ affiliation.nombreDeportista }}</td>
+                      <td (contextmenu)="onAffiliationClick($event, affiliation)" class="text-center align-middle">
+                        <img src=affiliation.comprobantePago alt="description here" />
+                      </td>
                     </tr>
           
                   </tbody>

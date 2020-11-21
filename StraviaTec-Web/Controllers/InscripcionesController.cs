@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StraviaTec_Web.Helpers;
 using StraviaTec_Web.Models;
 
 namespace Controllers
@@ -24,14 +25,21 @@ namespace Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InscripcionEvento>>> GetInscripcionEvento()
         {
-            return await _context.InscripcionEvento.ToListAsync();
+            return await _context.InscripcionEvento.FromSqlInterpolated($@"
+            SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+            FROM ""INSCRIPCION_EVENTO""").ToListAsync();
+            // return await _context.InscripcionEvento.ToListAsync();
         }
 
         // GET: api/Inscripciones/5
         [HttpGet("{id}")]
         public async Task<ActionResult<InscripcionEvento>> GetInscripcionEvento(int id)
         {
-            var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
+            // var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
+            var inscripcionEvento = await _context.InscripcionEvento.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                FROM ""INSCRIPCION_EVENTO""
+                WHERE ""Id"" = {id}").FirstOrDefaultAsync();
 
             if (inscripcionEvento == null)
             {
@@ -52,7 +60,14 @@ namespace Controllers
                 return BadRequest();
             }
 
-            _context.Entry(inscripcionEvento).State = EntityState.Modified;
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                UPDATE ""INSCRIPCION_EVENTO""
+                SET ""Id_evento"" = {inscripcionEvento.IdEvento}, ""Id_usuario"" = {inscripcionEvento.IdUsuario}, 
+                ""Estado"" = {inscripcionEvento.Estado}, ""Comprobante_pago"" = {inscripcionEvento.ComprobantePago}, 
+                ""IdCategoriaCarrera"" = {inscripcionEvento.IdCategoriaCarrera}
+                WHERE ""Id"" = {id}
+            ");
+            // _context.Entry(inscripcionEvento).State = EntityState.Modified;
 
             try
             {
@@ -79,32 +94,73 @@ namespace Controllers
         [HttpPost]
         public async Task<ActionResult<InscripcionEvento>> PostInscripcionEvento(InscripcionEvento inscripcionEvento)
         {
-            inscripcionEvento.Estado = "pendiente";
-            _context.InscripcionEvento.Add(inscripcionEvento);
-            await _context.SaveChangesAsync();
+            var userExist = _context.Usuario.FromSqlInterpolated($@"
+                SELECT ""User"", ""Password"", ""Nombre"", ""Apellido1"", ""Apellido2"", ""Fecha_nacimiento"", ""Nacionalidad"", ""Foto"", ""Es_organizador"" 
+                FROM ""USUARIO"" 
+                WHERE ""User"" = {inscripcionEvento.IdUsuario}").Any();
+            var eventExist = _context.Evento.FromSqlInterpolated($@"
+                SELECT ""Id""
+                FROM ""EVENTO""
+                WHERE ""Id"" = {inscripcionEvento.IdEvento}
+            ").Any();
 
-            return CreatedAtAction("GetInscripcionEvento", new { id = inscripcionEvento.Id }, inscripcionEvento);
+            if (!userExist || !eventExist) {
+                return BadRequest(new ErrorInfo(ErrorCode.BadRequest, "El usuario o el evento dado no existen."));
+            }
+
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                INSERT INTO ""INSCRIPCION_EVENTO"" (""Id_evento"", ""Id_usuario"", ""Estado"", 
+                ""Comprobante_pago"", ""IdCategoriaCarrera"")
+                VALUES ({inscripcionEvento.IdEvento}, {inscripcionEvento.IdUsuario}, 
+                'pendiente', {inscripcionEvento.ComprobantePago}, {inscripcionEvento.IdCategoriaCarrera})
+            ");
+
+            // inscripcionEvento.Estado = "pendiente";
+            // _context.InscripcionEvento.Add(inscripcionEvento);
+            try {
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateException) {
+                return StatusCode(500);
+            }
+
+            return Ok();
+
+            // return CreatedAtAction("GetInscripcionEvento", new { id = inscripcionEvento.Id }, inscripcionEvento);
         }
 
         // DELETE: api/Inscripciones/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<InscripcionEvento>> DeleteInscripcionEvento(int id)
         {
-            var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
+            // var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
+            var inscripcionEvento = await _context.InscripcionEvento.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                FROM ""INSCRIPCION_EVENTO""
+                WHERE ""Id"" = {id}").FirstOrDefaultAsync();
             if (inscripcionEvento == null)
             {
                 return NotFound();
             }
 
-            _context.InscripcionEvento.Remove(inscripcionEvento);
-            await _context.SaveChangesAsync();
+            // _context.InscripcionEvento.Remove(inscripcionEvento);
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"
+                DELETE FROM ""INSCRIPCION_EVENTO"" WHERE ""Id"" = {id}");
+            try {
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateException) {
+                return StatusCode(500);
+            }
 
             return inscripcionEvento;
         }
 
         private bool InscripcionEventoExists(int id)
         {
-            return _context.InscripcionEvento.Any(e => e.Id == id);
+            return _context.InscripcionEvento.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                FROM ""INSCRIPCION_EVENTO""
+                WHERE ""Id"" = {id}").Any();
+            // return _context.InscripcionEvento.Any(e => e.Id == id);
         }
     }
 }
