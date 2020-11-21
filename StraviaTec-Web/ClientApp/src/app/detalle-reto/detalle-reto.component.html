@@ -4,48 +4,55 @@
         <article class="card-body">
             <div class="container">
 
-                <!-- <div class="row">
+                <div class="row">
                     <div class="form-group flex-grow-1 mt-lg-2">
                         <h3>{{ reto.nombre }}</h3>
-                    </div>
-                </div> -->
-                <div class="">
-                    <!-- <div class="col-10"> -->
-                        <h3>{{ reto.nombre }}</h3>
                         <h5>Detalles del evento</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        Fecha de inicio: <strong>{{ reto.inicio }}</strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Fecha de finalizacion: <strong>{{ reto.fin }}</strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Días restantes: <strong id="diasRestantes"></strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Tipo de reto: <strong id="tipoReto"></strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Tipo de actividad: <strong id="tipoActividad"></strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Objetivo: <strong>{{ reto.objetivo }}</strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Objetivo completado: <strong>{{ reto.objetivoCompletado }}</strong>
-                                    </li>
-                                    <li class="list-group-item">
-                                        Patrocinadores
-                                        <ul class="list-group list-group-flush" id="patrocinadores-container"></ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    <!-- </div> -->
+                    </div>
                 </div>
+
+                <div class="row mt-lg-4">
+                    <div class="col-6">
+                        <!-- <div class="col-10"> -->
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            Fecha de inicio: <strong>{{ reto.inicio }}</strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Fecha de finalizacion: <strong>{{ reto.fin }}</strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Días restantes: <strong id="diasRestantes"></strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Tipo de reto: <strong id="tipoReto"></strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Tipo de actividad: <strong id="tipoActividad"></strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Objetivo: <strong>{{ reto.objetivo }}</strong>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Objetivo completado: <strong>{{ reto.objetivoCompletado }}</strong>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+    
+                    <div class="col-6">
+                        <li class="list-group-item">
+                            Patrocinadores
+                            <ul class="list-group list-group-flush" id="patrocinadores-container"></ul>
+                        </li>
+                    </div>
+                </div> 
             </div>
         </article>
     </div>
