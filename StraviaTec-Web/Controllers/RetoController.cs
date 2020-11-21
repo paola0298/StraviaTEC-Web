@@ -123,10 +123,14 @@ namespace Controllers
             Obtener la informacion de los retos necesaria
             */
 
-            return Ok();
+            var retosUsuario = await _context.Reto.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_evento"", ""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo""
+                FROM ""RETO""
+                JOIN ""INSCRIPCION_EVENTO"" ON ""INSCRIPCION_EVENTO"".""Id_evento"" = ""RETO"".""Id_evento""
+                WHERE ""Id_usuario"" = {username}
+                ").ToListAsync();
 
-
-
+            return Ok(_mapper.Map<List<RetoDto>>(retosUsuario));
 
         }
          // PUT: api/Carreras/5
