@@ -7,6 +7,7 @@ export class InscripcionEvento {
     idCategoriaCarrera: number;
     nombreCarrera: string;
     nombreDeportista: string;
+    progreso: number;
 
     constructor() { }
 }
