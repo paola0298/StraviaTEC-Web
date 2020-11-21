@@ -42,7 +42,7 @@
     justify-content: center; */
 
     width: 100vw;
-    height: 60vw;
+    height: 65vw;
     position: relative;
     left: 50%;
     right: 50%;
@@ -61,8 +61,8 @@
     background-color: rgba(255, 255, 255, 0.9) !important;
     align-self: center;
     margin: auto;
-    margin-top: 5%;
 }
+
 
 .custom-margin {
     margin-bottom: 30px !important;
@@ -89,4 +89,15 @@
 #recorrido {
     max-width: auto;
     overflow: hidden;
+}
+
+.input-group-append, .input-group-prepend {
+    display: contents !important;
+}
+.button-cuenta {
+    max-inline-size: max-content !important;
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0) !important;
 }

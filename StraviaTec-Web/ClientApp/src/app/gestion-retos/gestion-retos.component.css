@@ -61,7 +61,6 @@
     background-color: rgba(255, 255, 255, 0.9) !important;
     align-self: center;
     margin: auto;
-    margin-top: 5%;
 }
 
 .custom-margin {
@@ -86,3 +85,6 @@
     padding-right: 10px;
 }
 
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0) !important;
+}
