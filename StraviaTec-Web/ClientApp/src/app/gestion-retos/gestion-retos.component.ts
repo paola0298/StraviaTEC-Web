@@ -47,6 +47,18 @@ export class GestionRetosComponent implements OnInit {
 
   getReto(id:number) {
     console.log("Obteniendo reto");
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`)
+    response.subscribe(
+      (value: Reto) => {
+        value.inicio = this.utilsService.parseDate(value.inicio);
+        value.fin = this.utilsService.parseDate(value.fin);
+        this.actualReto = value;
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      });
+
   }
 
   saveReto() {
@@ -129,11 +141,28 @@ export class GestionRetosComponent implements OnInit {
   }
   updateRetoApi(retoInfo: any, htmlElements: HTMLInputElement[], selectElements: HTMLSelectElement[]) {
     console.log(retoInfo);
+    var response = this.apiService.put(`http://localhost:${this.apiService.PORT}/api/Reto/${retoInfo.id}`, retoInfo);
+    response.subscribe(
+      (value:any) => {
+        this.loadRetos();
+        this.utilsService.showInfoModal('Exito', 'Reto actualizado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.utilsService.cleanField(htmlElements, selectElements,
+          ['Seleccione una actividad', 'Seleccione los grupos', 'Seleccione el tipo de reto','Seleccione un patrocinador']);
+        this.updating = false;
+        (document.getElementById('saveButton') as HTMLButtonElement).textContent = 'Crear reto';
+      }, (error: any) => {
+      console.log(error.statusText);
+      console.log(error.status);
+    });
   }
 
   updateReto() {
     console.log('Actualizando retos');
+    (document.getElementById('saveButton') as HTMLButtonElement).textContent = 'Actualizar reto';
     this.updating = true;
+    this.setActivityName();
+    this.setSponsorName();
+    this.setTipoRetoName();
 
     let privado = this.actualReto.esPrivado;
 
@@ -143,21 +172,18 @@ export class GestionRetosComponent implements OnInit {
     } else {
       (document.getElementById('reto-privado') as HTMLInputElement).checked = true;
       this.setGroups();
+      this.setGroupsName();
     }
 
     (document.getElementById('name') as HTMLInputElement).value = this.actualReto.nombre;
     (document.getElementById('fecha-inicio') as HTMLInputElement).value = this.actualReto.inicio;
     (document.getElementById('fecha-fin') as HTMLInputElement).value = this.actualReto.fin;
-    (document.getElementById('tipoReto') as HTMLSelectElement).value = this.actualReto.nombreTipoReto;
     (document.getElementById('objetivo') as HTMLInputElement).value = this.actualReto.objetivo.toString();
-    (document.getElementById('activity') as HTMLSelectElement).value = this.actualReto.nombreActividad;
-    (document.getElementById('groups') as HTMLSelectElement);
-    (document.getElementById('sponsor') as HTMLSelectElement);
-
   }
 
   deleteReto() {
     console.log('Eliminando reto');
+    
   }
 
   clearGroups() {
@@ -177,7 +203,7 @@ export class GestionRetosComponent implements OnInit {
    */
   onRetoClick(event: any, reto: Reto): boolean {
     this.utilsService.showContextMenu(event);
-    this.getReto(1); // todo obtener el id actual del reto seleccionado
+    this.getReto(reto.id); // todo obtener el id actual del reto seleccionado
     return false;
   }
 
@@ -185,7 +211,7 @@ export class GestionRetosComponent implements OnInit {
    * Metodo para mostrar al usuario un modal para tomar una decision de si o no
    */
   askUser() {
-    this.utilsService.showInfoModal('Eliminar', 'Esta seguro que desea eliminar la carrera',
+    this.utilsService.showInfoModal('Eliminar', 'Esta seguro que desea eliminar el reto',
     'optionMsjLabel', 'optionText', 'optionMsj');
   }
   
