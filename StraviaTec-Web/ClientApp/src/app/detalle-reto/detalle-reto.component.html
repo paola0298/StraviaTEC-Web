@@ -11,7 +11,7 @@
                 </div> -->
                 <div class="">
                     <!-- <div class="col-10"> -->
-                        <h3>Nombre reto</h3>
+                        <h3>{{ reto.nombre }}</h3>
                         <h5>Detalles del evento</h5>
                         <div class="card">
                             <div class="card-body">
@@ -23,7 +23,7 @@
                                         Fecha de finalizacion: <strong>{{ reto.fin }}</strong>
                                     </li>
                                     <li class="list-group-item">
-                                        Días restantes: <strong>Dias restantes</strong>
+                                        Días restantes: <strong id="diasRestantes"></strong>
                                     </li>
                                     <li class="list-group-item">
                                         Tipo de reto: <strong id="tipoReto"></strong>

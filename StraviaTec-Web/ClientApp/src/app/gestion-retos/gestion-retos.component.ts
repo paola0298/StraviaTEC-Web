@@ -58,7 +58,6 @@ export class GestionRetosComponent implements OnInit {
         console.log(error.status);
         console.log(error);
       });
-
   }
 
   saveReto() {
