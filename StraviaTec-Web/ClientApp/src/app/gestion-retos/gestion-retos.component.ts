@@ -183,7 +183,17 @@ export class GestionRetosComponent implements OnInit {
 
   deleteReto() {
     console.log('Eliminando reto');
-    
+    var response = this.apiService.delete(`http://localhost:${this.apiService.PORT}/api/Reto/${this.actualReto.id}`);
+    response.subscribe(
+      (value: any) => {
+        this.utilsService.showInfoModal('Exito', 'Reto eliminado correctamente.', 'saveMsjLabel', 'msjText', 'saveMsj');
+        this.loadRetos();
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        this.utilsService.showInfoModal('Error', 'Hubo un problema al eliminar el reto.', 'saveMsjLabel', 'msjText', 'saveMsj');
+      });
+
   }
 
   clearGroups() {
