@@ -31,7 +31,7 @@ namespace Controllers
 
     // GET: api/Reto/user/id
         [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetReto(string id)
+        public async Task<ActionResult<IEnumerable<RetoDto>>> GetReto(string id)
         {
             var user = await _context.Usuario
                 .Where(u => u.User == id)
@@ -269,22 +269,21 @@ namespace Controllers
             }
         }
 
-        // DELETE: api/Reto/5
+           // DELETE: api/Reto/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Reto>> DeleteReto(int id)
         {
-            Console.WriteLine(id);
             var reto = await _context.Reto.FindAsync(id);
             if (reto == null)
             {
                 return NotFound();
             }
-            Console.WriteLine(reto.IdEvento);
             var evento = await _context.Evento.FindAsync(reto.IdEvento);
-            Console.WriteLine(evento.Nombre);
+            //_context.Reto.Remove(reto);
             _context.Evento.Remove(evento);
-            // _context.Reto.Remove(reto);
             await _context.SaveChangesAsync();
+
+            
 
             return Ok();
         }
