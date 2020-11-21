@@ -282,9 +282,6 @@ namespace Controllers
             //_context.Reto.Remove(reto);
             _context.Evento.Remove(evento);
             await _context.SaveChangesAsync();
-
-            
-
             return Ok();
         }
         
