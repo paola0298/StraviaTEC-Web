@@ -115,6 +115,20 @@ namespace Controllers
             return retoDto;
         }
 
+        [HttpGet("inscritos/{username}")]
+        public async Task<ActionResult<RetoDto>> GetRetosInscrito(string username) {
+            /*
+            Obtener los todos los eventos inscritos de inscripcion evento
+            Obtener los eventos donde el tipo de evento sea Reto
+            Obtener la informacion de los retos necesaria
+            */
+
+            return Ok();
+
+
+
+
+        }
          // PUT: api/Carreras/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

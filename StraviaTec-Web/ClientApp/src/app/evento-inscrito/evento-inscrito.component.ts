@@ -10,6 +10,7 @@ import { Evento } from '../models/evento';
 export class EventoInscritoComponent implements OnInit {
 
   eventos: Evento[] = [];
+  user = localStorage.getItem('userId');
 
   constructor(private router: Router) { }
 
@@ -29,6 +30,10 @@ export class EventoInscritoComponent implements OnInit {
     }
 
     // this.router.navigate(['detalle-carrera']);
+  }
+
+  loadRetos() {
+
   }
 
 }
