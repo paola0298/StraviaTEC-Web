@@ -117,20 +117,19 @@ namespace Controllers
 
         [HttpGet("inscritos/{username}")]
         public async Task<ActionResult<RetoDto>> GetRetosInscrito(string username) {
-            /*
-            Obtener los todos los eventos inscritos de inscripcion evento
-            Obtener los eventos donde el tipo de evento sea Reto
-            Obtener la informacion de los retos necesaria
-            */
 
             var retosUsuario = await _context.Reto.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_evento"", ""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo""
+                SELECT ""RETO"".""Id"", ""RETO"".""Id_evento"", ""RETO"".""Id_tipo_reto"", ""Inicio"", ""Fin"", ""Objetivo""
                 FROM ""RETO""
                 JOIN ""INSCRIPCION_EVENTO"" ON ""INSCRIPCION_EVENTO"".""Id_evento"" = ""RETO"".""Id_evento""
-                WHERE ""Id_usuario"" = {username}
-                ").ToListAsync();
+                JOIN ""EVENTO"" ON ""RETO"".""Id_evento"" = ""EVENTO"".""Id"" 
+                JOIN ""TIPO_EVENTO"" ON ""EVENTO"".""Id_tipo_evento"" = ""TIPO_EVENTO"".""Id""
+                WHERE ""Id_usuario"" = {username} AND ""TIPO_EVENTO"".""Nombre"" = 'Reto'
+                ").Include(r => r.IdEventoNavigation).ToListAsync();
 
-            return Ok(_mapper.Map<List<RetoDto>>(retosUsuario));
+            var retos = _mapper.Map<List<RetoDto>>(retosUsuario); 
+            
+            return Ok(retos);
 
         }
          // PUT: api/Carreras/5

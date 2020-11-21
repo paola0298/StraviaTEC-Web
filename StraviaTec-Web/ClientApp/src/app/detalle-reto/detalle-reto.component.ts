@@ -16,7 +16,6 @@ export class DetalleRetoComponent implements OnInit {
   constructor(private apiService: ApiService, private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.idReto = '3';
     this.loadRetoInfo();
   }
 
