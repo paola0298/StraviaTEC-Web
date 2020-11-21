@@ -78,7 +78,7 @@ namespace Controllers
         }
 
         // GET: api/Reto/all
-        [HttpGet("all")]
+        [HttpGet]
         public IActionResult GetAllRetos()
         {
             var retos = _context.Reto
