@@ -11,30 +11,30 @@ import { ApiService } from '../services/api.service';
 })
 export class RetoDetalleComponent implements OnInit {
   // TODO Obtener retos reales esperar a que esté listo backend, descomentar código cuando esto pase
-  // reto: Reto;
+  reto: Reto;
 
-  patrocinadores = [
-    new Patrocinador(
-      3,
-      'Visa',
-      'Representante Visa',
-      '12345678',
-      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F04%2FVisa.svg%2F1200px-Visa.svg.png&f=1&nofb=1'
-    ),
-  ];
+  // patrocinadores = [
+  //   new Patrocinador(
+  //     3,
+  //     'Visa',
+  //     'Representante Visa',
+  //     '12345678',
+  //     'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F04%2FVisa.svg%2F1200px-Visa.svg.png&f=1&nofb=1'
+  //   ),
+  // ];
 
-  reto: Reto = new Reto(
-    1,
-    'Reto 1',
-    '20 Diciembre',
-    '31 Diciembre',
-    5000,
-    1,
-    4,
-    this.patrocinadores,
-    [],
-    true
-  );
+  // reto: Reto = new Reto(
+  //   1,
+  //   'Reto 1',
+  //   '20 Diciembre',
+  //   '31 Diciembre',
+  //   5000,
+  //   1,
+  //   4,
+  //   this.patrocinadores,
+  //   [],
+  //   true
+  // );
 
   constructor(
     private route: ActivatedRoute,
@@ -43,25 +43,31 @@ export class RetoDetalleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const retoId = this.route.snapshot.params.id;
+    const retoId = this.route.snapshot.params.id; 
     this.loadChallengeInfo(retoId);
   }
 
   loadChallengeInfo(id: number) {
-    /* const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`);
+   const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/${id}`);
     response.subscribe((info: Reto) => {
+      console.log('reto');
+      console.log(info);
       this.reto = info;
       this.reto.inicio = this.reto.inicio.substring(0, this.reto.inicio.indexOf("T"));
       this.reto.fin = this.reto.fin.substring(0, this.reto.fin.indexOf("T"));
-      console.log(this.reto);
-    }); */
-    this.loadExtraInfo();
+      
+      this.loadExtraInfo();
+    }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      }); 
   }
 
   loadExtraInfo() {
     this.apiService
       .get(
-        `http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idActividad}`
+        `http://localhost:${this.apiService.PORT}/api/InfoEvento/tipo/${this.reto.idTipoActividad}`
       )
       .subscribe((info: any) => {
         document.getElementById('tipoActividad').innerText = info.nombre;

@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
 import { Reto } from '../models/reto';
 import { Patrocinador } from '../models/patrocinador';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-retos-disponibles',
@@ -43,10 +44,17 @@ export class RetosDisponiblesComponent implements OnInit {
     response.subscribe((value: Reto[]) => {
       console.log(value);
       this.retos = value;
+      this.formatDate();
     }, (error:any) => {
       console.log(error.statusText);
       console.log(error.status);
       console.log(error);
     });
+  }
+  formatDate() {
+    this.retos.forEach(reto => {
+      reto.inicio = this.utilsService.parseDate(reto.inicio);
+      reto.fin = this.utilsService.parseDate(reto.fin);
+    })
   }
 }

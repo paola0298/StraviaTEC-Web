@@ -31,7 +31,7 @@ namespace Controllers
 
     // GET: api/Reto/user/id
         [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<CarreraDto>>> GetReto(string id)
+        public async Task<ActionResult<IEnumerable<RetoDto>>> GetReto(string id)
         {
             var user = await _context.Usuario
                 .Where(u => u.User == id)
@@ -66,7 +66,7 @@ namespace Controllers
                     visibles.Append(reto);
                 }
             }
-            return Ok(visibles.Select(c => _mapper.Map<CarreraDto>(c)));
+            return Ok(visibles.Select(c => _mapper.Map<RetoDto>(c)));
         }
 
          private bool UserInGroup(Grupo group, Usuario user) 
