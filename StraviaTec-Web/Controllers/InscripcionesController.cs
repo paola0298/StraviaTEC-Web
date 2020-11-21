@@ -49,6 +49,22 @@ namespace Controllers
             return inscripcionEvento;
         }
 
+        [HttpGet("carrera/{id}")]
+        public async Task<ActionResult<Carrera>> GetCarreraEvento(int id) {
+            var carrera = await _context.Carrera.FromSqlInterpolated($@"
+                SELECT ""CARRERA"".""Id"", ""Nombre""
+                FROM ""CARRERA"" JOIN ""CATEGORIA_CARRERA"" 
+                ON ""CARRERA"".""Id"" = ""Id_carrera""
+                WHERE ""CATEGORIA_CARRERA"".""Id"" = {id}
+            ").FirstOrDefaultAsync();
+
+            if (carrera == null) {
+                return NotFound();
+            }
+
+            return Ok(carrera);
+        }
+
         // PUT: api/Inscripciones/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
