@@ -13,7 +13,6 @@ namespace StraviaTec_Web.Models.Dtos
         public DateTime Inicio { get; set; }
         public DateTime Fin { get; set; }
         public decimal Objetivo { get; set; }
-        public int Actividad {get;set;}
         public bool EsPrivado{get;set;}
         public ICollection<PatrocinadorEventoDto> PatrocinadorEvento { get; set; }
         public ICollection<EventoGrupoDto> EventoGrupo { get; set; }

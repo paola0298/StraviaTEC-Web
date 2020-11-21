@@ -82,7 +82,6 @@ namespace Controllers
         public IActionResult GetAllRetos()
         {
             var retos = _context.Reto
-                .Include(c => c.IdTipoRetoNavigation)
                 .Include(c => c.IdEventoNavigation)
                     .ThenInclude(e => e.PatrocinadorEvento)
                 .Include(c => c.IdEventoNavigation)
