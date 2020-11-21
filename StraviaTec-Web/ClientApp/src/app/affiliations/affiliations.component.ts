@@ -41,7 +41,7 @@ export class AffiliationsComponent implements OnInit {
   getNombres() {
     this.affiliations.forEach(affiliation => {  
       this.getUserInfo(affiliation.idUsuario, affiliation);
-      // this.getCarreraInfo(affiliation.idCategoriaCarrera, affiliation);
+      this.getCarreraInfo(affiliation.idCategoriaCarrera, affiliation);
     });
   }
 

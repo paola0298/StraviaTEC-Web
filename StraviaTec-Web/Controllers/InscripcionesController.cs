@@ -52,7 +52,7 @@ namespace Controllers
         [HttpGet("carrera/{id}")]
         public async Task<ActionResult<Carrera>> GetCarreraEvento(int id) {
             var carrera = await _context.Carrera.FromSqlInterpolated($@"
-                SELECT ""CARRERA"".""Id"", ""Nombre""
+                SELECT ""CARRERA"".""Id"", ""Nombre"", ""Id_recorrido"", ""Id_evento"", ""Fecha"", ""Costo""
                 FROM ""CARRERA"" JOIN ""CATEGORIA_CARRERA"" 
                 ON ""CARRERA"".""Id"" = ""Id_carrera""
                 WHERE ""CATEGORIA_CARRERA"".""Id"" = {id}
