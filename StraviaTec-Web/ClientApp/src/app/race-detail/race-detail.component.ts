@@ -13,6 +13,7 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
 
   carrera: Race;
   mapView: Leaflet.Map;
+  idCategoriaCarrera: number;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
@@ -263,6 +264,27 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
     return promise;
   }
 
+  getIdCategoriaCarrera(idCategoria: string, data: any) {
+    console.log('obteniendo id categoria carrera');
+    var response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Carreras/categoriaCarrera/${idCategoria}/${this.carrera.id}`);
+    response.subscribe(
+        (value:any) => {
+          console.log('id categoria carrera ' + value);
+          data.IdCategoriaCarrera = value;
+          console.log(data);
+          this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras/inscripcion`, data)
+          .subscribe(() => {
+            var button = document.getElementById('inscribirseButton') as HTMLButtonElement;
+            button.innerText = "Inscripción pendiente";
+            button.disabled = true;
+            document.getElementById('closeButton').click();
+          });
+        }, (error: any) => {
+          console.log(error);
+        }
+      );
+  }
+
   async onInscribirse() {
     console.log("Inscribiendose...");
     var indicator = document.getElementById('loading-indicator');
@@ -271,6 +293,7 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
     var comprobante = (document.getElementById('comprobante-pago') as HTMLInputElement).files[0];
     var idCategoria = (document.getElementById('categoria-usuario') as HTMLSelectElement).value;
     
+    
     if (comprobante == null)
       return;
     
@@ -278,17 +301,10 @@ export class RaceDetailComponent implements OnInit, OnDestroy {
       User: window.localStorage.getItem('userId'),
       IdCarrera: this.carrera.id,
       ComprobantePago: await this.fileToBase64(comprobante),
-      IdCategoriaCarrera: idCategoria
+      IdCategoriaCarrera: this.idCategoriaCarrera
     }
 
-    this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Carreras/inscripcion`, data)
-      .subscribe(() => {
-        var button = document.getElementById('inscribirseButton') as HTMLButtonElement;
-        button.innerText = "Inscripción pendiente";
-        button.disabled = true;
-
-        document.getElementById('closeButton').click();
-      });
+    this.getIdCategoriaCarrera(idCategoria, data);
   }
 
 }

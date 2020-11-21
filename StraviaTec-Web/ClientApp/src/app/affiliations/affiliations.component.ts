@@ -24,7 +24,7 @@ export class AffiliationsComponent implements OnInit {
   }
 
   loadAffiliations() {
-    var response =  this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Inscripciones`);
+    var response =  this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Inscripciones/carrera`);
     response.subscribe(
       (value: InscripcionEvento[]) => {
         console.log(value);
@@ -39,7 +39,10 @@ export class AffiliationsComponent implements OnInit {
   }
 
   getNombres() {
+    console.log('tamanio afiliaciones' + this.affiliations.length);
     this.affiliations.forEach(affiliation => {  
+      console.log('id categoria carrera ' + affiliation.idCategoriaCarrera);
+      console.log('id usuario ' + affiliation.idUsuario);
       this.getUserInfo(affiliation.idUsuario, affiliation);
       this.getCarreraInfo(affiliation.idCategoriaCarrera, affiliation);
     });

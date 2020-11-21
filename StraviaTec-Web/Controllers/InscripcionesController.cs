@@ -26,8 +26,22 @@ namespace Controllers
         public async Task<ActionResult<IEnumerable<InscripcionEvento>>> GetInscripcionEvento()
         {
             return await _context.InscripcionEvento.FromSqlInterpolated($@"
-            SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+            SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
             FROM ""INSCRIPCION_EVENTO""").ToListAsync();
+            // return await _context.InscripcionEvento.ToListAsync();
+        }
+
+         // GET: api/Inscripciones/carrera
+        [HttpGet("carrera")]
+        public async Task<ActionResult<IEnumerable<InscripcionEvento>>> GetInscripcionCarrera()
+        {
+            return await _context.InscripcionEvento.FromSqlInterpolated($@"
+            SELECT ""INSCRIPCION_EVENTO"".""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+            FROM ""INSCRIPCION_EVENTO""
+            JOIN ""EVENTO"" ON ""Id_evento"" = ""EVENTO"".""Id""
+            JOIN ""TIPO_EVENTO"" ON ""TIPO_EVENTO"".""Id"" = ""Id_tipo_evento""
+            WHERE ""TIPO_EVENTO"".""Nombre"" = 'Carrera'
+            ").ToListAsync();
             // return await _context.InscripcionEvento.ToListAsync();
         }
 
@@ -37,7 +51,7 @@ namespace Controllers
         {
             // var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
             var inscripcionEvento = await _context.InscripcionEvento.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
                 FROM ""INSCRIPCION_EVENTO""
                 WHERE ""Id"" = {id}").FirstOrDefaultAsync();
 
@@ -79,8 +93,8 @@ namespace Controllers
             await _context.Database.ExecuteSqlInterpolatedAsync($@"
                 UPDATE ""INSCRIPCION_EVENTO""
                 SET ""Id_evento"" = {inscripcionEvento.IdEvento}, ""Id_usuario"" = {inscripcionEvento.IdUsuario}, 
-                ""Estado"" = {inscripcionEvento.Estado}, ""Comprobante_pago"" = {inscripcionEvento.ComprobantePago}, 
-                ""IdCategoriaCarrera"" = {inscripcionEvento.IdCategoriaCarrera}
+                ""Estado"" = {inscripcionEvento.Estado}, ""Progreso"" = {inscripcionEvento.Progreso}, 
+                ""Comprobante_pago"" = {inscripcionEvento.ComprobantePago}, ""IdCategoriaCarrera"" = {inscripcionEvento.IdCategoriaCarrera}
                 WHERE ""Id"" = {id}
             ");
             // _context.Entry(inscripcionEvento).State = EntityState.Modified;
@@ -150,7 +164,7 @@ namespace Controllers
         {
             // var inscripcionEvento = await _context.InscripcionEvento.FindAsync(id);
             var inscripcionEvento = await _context.InscripcionEvento.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
                 FROM ""INSCRIPCION_EVENTO""
                 WHERE ""Id"" = {id}").FirstOrDefaultAsync();
             if (inscripcionEvento == null)
@@ -173,7 +187,7 @@ namespace Controllers
         private bool InscripcionEventoExists(int id)
         {
             return _context.InscripcionEvento.FromSqlInterpolated($@"
-                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                SELECT ""Id"", ""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
                 FROM ""INSCRIPCION_EVENTO""
                 WHERE ""Id"" = {id}").Any();
             // return _context.InscripcionEvento.Any(e => e.Id == id);
