@@ -1,37 +1,21 @@
-import { Patrocinador } from "./patrocinador";
+import { EventoGrupo } from "./eventoGrupo";
+import { PatrocinadorEvento } from "./patrocinadorEvento";
 
 export class Reto {
     id: number;
-    nombre: string;
+    idEvento: number;
+    idTipoReto: number;
     inicio: string;
     fin: string;
     objetivo: number;
-    objetivoCompletado: number;
-    idTipoReto: number;
-    idActividad: number;
-    patrocinadores: Patrocinador[];
-    grupos: string[];
-    publico: boolean;
+    esPrivado: boolean;
+    patrocinadorEvento: PatrocinadorEvento[];
+    eventoGrupo: EventoGrupo[];
+    nombre: string;
+    idTipoActividad: number;
+    nombreTipoReto: string;
+    nombreActividad: string;
+    
 
-    constructor(
-        nombre: string,
-        inicio: string,
-        fin: string,
-        objetivo: number,
-        idTipoReto: number,
-        idActividad: number,
-        patrocinadores: Patrocinador[],
-        grupos: string[],
-        publico: boolean
-    ) {
-        this.nombre = nombre;
-        this.inicio = inicio;
-        this.fin = fin;
-        this.objetivo = objetivo;
-        this.idTipoReto = idTipoReto;
-        this.idActividad = idActividad;
-        this.patrocinadores = patrocinadores;
-        this.grupos = grupos;
-        this.publico = publico;
-    }
+    constructor() { }
 }
