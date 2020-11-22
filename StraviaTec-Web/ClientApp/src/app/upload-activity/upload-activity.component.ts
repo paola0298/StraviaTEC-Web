@@ -7,7 +7,7 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./upload-activity.component.css']
 })
 export class UploadActivityComponent implements OnInit {
-
+  nombre: HTMLInputElement;
   fecha: HTMLInputElement;
   hora: HTMLInputElement;
   kilometraje: HTMLInputElement;
@@ -27,6 +27,7 @@ export class UploadActivityComponent implements OnInit {
     this.idUsuario = window.localStorage.getItem('userId');
     console.log(this.idUsuario);
 
+    this.nombre = document.getElementById('nombre') as HTMLInputElement;
     this.fecha = document.getElementById('fecha') as HTMLInputElement;
     this.hora = document.getElementById('hora') as HTMLInputElement;
     this.kilometraje = document.getElementById('kilometraje') as HTMLInputElement;
@@ -70,12 +71,14 @@ export class UploadActivityComponent implements OnInit {
     console.log('Saving...')
 
     var data = {
+      User: window.localStorage.getItem("userId"),
+      Nombre: this.nombre.value,
       Fecha: this.fecha.value,
       Hora: this.hora.value,
-      kilometraje: this.kilometraje.value,
+      Kilometros: this.kilometraje.value,
       Duracion: this.duracion.value,
       Recorrido: this.recorridoData,
-      TipoActividad: this.tipoActividad.value,
+      IdTipoActividad: this.tipoActividad.value,
       EsEvento: this.esEvento.toString()
     };
 
@@ -91,11 +94,11 @@ export class UploadActivityComponent implements OnInit {
       if (this.tipoEvento.value === "reto") {
         if (this.retos.value == "")
           this.showError("Debes seleccionar un reto");
-        data['Reto'] = this.retos.value;
+        data['IdEvento'] = this.retos.value;
       } else if (this.tipoEvento.value === "carrera") {
         if (this.carreras.value == "")
           this.showError("Debes seleccionar una carrera");
-        data['Carrera'] = this.carreras.value;
+        data['IdEvento'] = this.carreras.value;
       } else {
         //Show error
         this.showError("Debes seleccionar un tipo de evento");
@@ -105,7 +108,23 @@ export class UploadActivityComponent implements OnInit {
     console.log(data);
 
     //TODO: enviar información al backend
-    // this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Actividad`, data);
+    this.apiService.post(`http://localhost:${this.apiService.PORT}/api/Actividades`, data)
+      .subscribe((data) => {
+        // @ts-ignore
+        jQuery('#successModal').modal();
+      });
+  }
+
+  loadRetosInscritos() {
+    var user = window.localStorage.getItem("userId");
+    var retos = document.getElementById('reto-select');
+    this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/inscritos/${user}`)
+      .subscribe((data: any[]) => {
+        for (let i = 0; i < data.length; i++) {
+          var item = data[i];
+          retos.appendChild(new Option(item.nombre, item.idEvento));
+        }
+      });
   }
 
   checkData() {
