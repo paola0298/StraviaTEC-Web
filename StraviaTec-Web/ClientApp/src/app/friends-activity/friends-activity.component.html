@@ -1,13 +1,14 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
 
 <nav class="navbar navbar-light bg-white">
-    <a class="nav-link" href="#">Actividades de amigos </a>
-    <a class="nav-link" href="#">Buscar atletas </a>
-    <a class="nav-link" href="#">Registrar actividad </a>
-    <a class="nav-link" href="#">Inscribirse a una carrera </a>
-    <a class="nav-link" href="#">Inscribirse a un reto </a>
-    <a class="nav-link" href="#">Asociarse a un grupo </a>
-    <a class="nav-link" href="#">Ver eventos inscritos </a>
+    <a class="nav-link" [routerLink]="['/friends-activity']">Actividades de amigos </a>
+    <a class="nav-link" [routerLink]="['/add-friend']">Buscar atletas </a>
+    <a class="nav-link" [routerLink]="['/upload-activity']">Registrar actividad </a>
+    <a class="nav-link" [routerLink]="['/race-signup']">Inscribirse a una carrera </a>
+    <a class="nav-link" [routerLink]="['/retos-disponibles']">Inscribirse a un reto </a>
+    <a class="nav-link" [routerLink]="['/asociarse-grupo']">Asociarse a un grupo </a>
+    <a class="nav-link" [routerLink]="['/evento-inscrito']">Ver eventos inscritos </a>
+    <a class="nav-link" [routerLink]="['/gestion-grupos']">Gestion de grupos </a>
     <!-- <a href="#" class="navbar-brand">Actividades de amigos</a>
     <a href="#" class="navbar-brand">Buscar atletas</a>
     <a href="#" class="navbar-brand">Registrar actividad</a>
@@ -38,12 +39,6 @@
                     <div class="h5" id="username"></div> <!--username-->
                     <div class="h7 text-muted" id="nombreCompleto"></div> <!--nombre-->
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Amigos</div>
-                        <div class="h5" id="siguiendo"></div>
-                    </li>
-                </ul>
             </div>
         </div>
 
@@ -72,7 +67,7 @@
                 <div class="card-body">
                     <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{ actividad.fecha }}</div>
                     <a class="card-link" href="#">
-                        <h5 class="card-title">Caminata por la mañana</h5>
+                        <h5 class="card-title">{{ actividad.idRecorridoNavigation.nombre}}</h5>
                     </a>
                     <div class="">
                         <div class="form-row  mt-lg-4">
@@ -86,10 +81,10 @@
 
                         <div class="row mb-lg-2">
                             <div class="col-3">
-                                <span id="distance"></span>
+                                <span>{{ actividad.kilometros}} km</span>
                             </div>
                             <div class="col-3">
-                                <span id="duration"></span>
+                                <span>{{ actividad.duracion }} min</span>
                             </div>
                         </div>
                         <!-- <div id="leaflet-map" style="height: 300px; background-color: lightgray;"></div> -->

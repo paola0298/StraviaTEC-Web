@@ -29,7 +29,7 @@ export class LoginDeportistasComponent implements OnInit {
       (value:any) => {
         window.localStorage.setItem('userId', id);
         if (this.userType == 'athlete') {
-          this.router.navigate(['profile']); //TODO cambiar a menu de deportista
+          this.router.navigate(['friends-activity']); //TODO cambiar a menu de deportista
           return;
         } 
         if (this.userType == 'organizer') {
