@@ -16,7 +16,6 @@ import { GestionCarrerasComponent } from './gestion-carreras/gestion-carreras.co
 import { AddFriendComponent } from './add-friend/add-friend.component';
 import { GestionPatrocinadoresComponent } from './gestion-patrocinadores/gestion-patrocinadores.component';
 import { RaceSignupComponent } from './race-signup/race-signup.component';
-import { AthleteMenuComponent } from './athlete-menu/athlete-menu.component';
 import { RaceDetailComponent } from './race-detail/race-detail.component';
 import { GestionRetosComponent } from './gestion-retos/gestion-retos.component';
 import { AsociarseGrupoComponent } from './asociarse-grupo/asociarse-grupo.component';
@@ -44,7 +43,6 @@ import { FriendsActivityComponent } from './friends-activity/friends-activity.co
     AddFriendComponent,
     GestionPatrocinadoresComponent,
     RaceSignupComponent,
-    AthleteMenuComponent,
     RaceDetailComponent,
     GestionRetosComponent,
     AsociarseGrupoComponent,
@@ -73,7 +71,6 @@ import { FriendsActivityComponent } from './friends-activity/friends-activity.co
       { path: 'add-friend', component: AddFriendComponent },
       { path: 'gestion-patrocinadores', component: GestionPatrocinadoresComponent },
       { path: 'race-signup', component: RaceSignupComponent},
-      { path: 'athlete-menu', component: AthleteMenuComponent},
       { path: 'race-detail/:id', component: RaceDetailComponent },
       { path: 'gestion-retos', component: GestionRetosComponent},
       { path: 'asociarse-grupo', component: AsociarseGrupoComponent},
