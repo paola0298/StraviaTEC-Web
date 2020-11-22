@@ -34,7 +34,7 @@ export class HomeComponent {
     }
 
     if (userType == 'athlete') {
-      this.router.navigate(['athlete-menu']);
+      this.router.navigate(['friends-activity']);
     } else if (userType == 'organizer') {
       this.router.navigate(['menu-organizador']);
     }
