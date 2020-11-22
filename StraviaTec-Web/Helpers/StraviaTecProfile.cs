@@ -15,6 +15,8 @@ namespace StraviaTec_Web.Helpers
             CreateMap<Evento, CarreraDto>(MemberList.None);
             CreateMap<Reto, RetoDto>().IncludeMembers(r => r.IdEventoNavigation);
             CreateMap<Evento, RetoDto>(MemberList.None);
+            CreateMap<Actividad, ActividadDto>().IncludeMembers(a => a.IdEventoNavigation);
+            CreateMap<Evento, ActividadDto>(MemberList.None);
             CreateMap<TipoReto, TipoRetoDto>();
             CreateMap<TipoActividad, TipoActividadDto>();
             CreateMap<Patrocinador, PatrocinadorDto>();
@@ -23,7 +25,6 @@ namespace StraviaTec_Web.Helpers
             CreateMap<EventoGrupo, EventoGrupoDto>();
             CreateMap<PatrocinadorEvento, PatrocinadorEventoDto>();
             CreateMap<CuentaBancaria, CuentaBancariaDto>();
-            CreateMap<TipoReto, TipoRetoDto>();
         }
     }
 }
