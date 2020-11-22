@@ -370,7 +370,40 @@ namespace Controllers
 
         private bool CarreraExists(int id)
         {
-            return _context.Carrera.Any(e => e.Id == id);
+            return _context.Carrera.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_recorrido"", ""Id_evento"", ""Nombre"", ""Fecha"", ""Costo"" 
+                FROM ""CARRERA""
+                WHERE ""Id"" = {id}
+                ").Any();
+            // return _context.Carrera.Any(e => e.Id == id);
+        }
+
+        [HttpGet("categoriaCarrera/{idCategoria}/{idCarrera}")]
+        public async Task<ActionResult> GetIdCategoriaCarrera(int idCategoria, int idCarrera) {
+            
+            var categoriaExists = _context.Categoria.FromSqlInterpolated($@"
+            SELECT ""Id"", ""Nombre"", ""Descripcion"", ""Edad_min"", ""Edad_max""
+            FROM ""CATEGORIA""
+            WHERE ""Id"" = {idCategoria}
+            ").Any();
+
+            if (!categoriaExists || !CarreraExists(idCarrera)) {
+                return BadRequest();
+            }
+
+            var categoriaCarrera = await _context.CategoriaCarrera.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_carrera"", ""Id_categoria""
+                FROM ""CATEGORIA_CARRERA""
+                WHERE ""Id_carrera"" = {idCarrera} AND ""Id_categoria"" = {idCategoria}
+            ").FirstOrDefaultAsync();
+
+            if (categoriaCarrera == null) {
+                return NotFound();
+            }
+
+            return Ok(categoriaCarrera.Id);
+
+            
         }
 
         [HttpPost("inscripcion")]

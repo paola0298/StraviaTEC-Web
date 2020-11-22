@@ -16,8 +16,8 @@
 
 .article-custom {
     width: 80%;
-    height: 60%;
-    background-color: rgba(255, 255, 255, 0.9) !important;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.8) !important;
     margin: auto;
     margin-top: 5%;
 }

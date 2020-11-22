@@ -30,6 +30,21 @@ export class DetalleRetoComponent implements OnInit {
         value.fin = this.utilsService.parseDate(value.fin);
         this.reto = value;
         this.loadExtraInfo();
+        this.loadProgreso();
+      }, (error: any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      });
+  }
+
+  loadProgreso() {
+    console.log("Obteniendo progreso");
+    const response = this.apiService.get(`http://localhost:${this.apiService.PORT}/api/Reto/progreso/${this.idReto}`)
+    response.subscribe(
+      (value: any) => {
+        console.log(value);
+        this.reto.objetivoCompletado = value;
       }, (error: any) => {
         console.log(error.statusText);
         console.log(error.status);

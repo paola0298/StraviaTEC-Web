@@ -15,6 +15,7 @@ export class Reto {
     idTipoActividad: number;
     nombreTipoReto: string;
     nombreActividad: string;
+    objetivoCompletado: number;
     
 
     constructor() { }

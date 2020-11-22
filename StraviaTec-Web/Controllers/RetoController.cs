@@ -130,8 +130,22 @@ namespace Controllers
             var retos = _mapper.Map<List<RetoDto>>(retosUsuario); 
             
             return Ok(retos);
-
         }
+
+        [HttpGet("progreso/{idReto}")]
+        public async Task<ActionResult> GetProgreso(int idReto) {
+            var progreso = await _context.InscripcionEvento.FromSqlInterpolated($@"
+                SELECT ""INSCRIPCION_EVENTO"".""Id"", ""INSCRIPCION_EVENTO"".""Id_evento"", ""INSCRIPCION_EVENTO"".""Id_usuario"",
+                ""Estado"", ""Progreso"", ""Comprobante_pago"", ""IdCategoriaCarrera""
+                FROM ""RETO"" 
+                JOIN ""EVENTO"" ON ""RETO"".""Id_evento"" = ""EVENTO"".""Id""
+                JOIN ""INSCRIPCION_EVENTO"" ON ""INSCRIPCION_EVENTO"".""Id_evento"" = ""EVENTO"".""Id""
+                WHERE ""RETO"".""Id"" = {idReto}
+            ").FirstOrDefaultAsync();
+
+            return Ok(progreso.Progreso);
+        }
+
          // PUT: api/Carreras/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -326,8 +340,8 @@ namespace Controllers
             }
 
             await _context.Database.ExecuteSqlInterpolatedAsync($@"
-                INSERT INTO ""INSCRIPCION_EVENTO"" (""Id_evento"", ""Id_usuario"", ""Estado"") 
-                VALUES ({reto.IdEvento}, {info.User}, 'aprobado')");
+                INSERT INTO ""INSCRIPCION_EVENTO"" (""Id_evento"", ""Id_usuario"", ""Estado"", ""Progreso"") 
+                VALUES ({reto.IdEvento}, {info.User}, 'aprobado', 0)");
 
             await _context.SaveChangesAsync();
 
