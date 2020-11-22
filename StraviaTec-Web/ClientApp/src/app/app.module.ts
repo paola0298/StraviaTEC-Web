@@ -27,6 +27,7 @@ import { GestionGruposComponent } from './gestion-grupos/gestion-grupos.componen
 import { RetosDisponiblesComponent } from './retos-disponibles/retos-disponibles.component';
 import { RetoDetalleComponent } from './reto-detalle/reto-detalle.component';
 import { AffiliationsComponent } from './affiliations/affiliations.component';
+import { DetalleCarreraComponent } from './detalle-carrera/detalle-carrera.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { AffiliationsComponent } from './affiliations/affiliations.component';
     RetosDisponiblesComponent,
     RetoDetalleComponent,
     AffiliationsComponent,
+    DetalleCarreraComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -82,7 +84,7 @@ import { AffiliationsComponent } from './affiliations/affiliations.component';
       { path: 'retos-disponibles', component: RetosDisponiblesComponent },
       { path: 'reto-detalle/:id', component: RetoDetalleComponent },
       { path: 'affiliations', component: AffiliationsComponent},
-      
+      { path: 'detalle-carrera', component: DetalleCarreraComponent},
     ])
   ],
   providers: [],

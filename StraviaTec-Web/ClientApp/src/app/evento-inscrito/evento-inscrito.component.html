@@ -24,6 +24,8 @@
                     <a class="list-group-item list-group-item-action" *ngFor="let carrera of carreras; trackBy: trackByFn" (click)="detailsCarrera(carrera)">
                         <div class="d-flex w-100 justify-content-between">
                             <h5>{{ carrera.nombre }}</h5>
+                            <p> Tipo actividad: {{ carrera.nombreTipoActividad }} </p>
+                            <p>Fecha: {{ carrera.fecha }}</p>
                         </div>
                     </a>
                 </div>
