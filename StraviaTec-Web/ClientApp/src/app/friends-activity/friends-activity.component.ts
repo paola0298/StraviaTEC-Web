@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Leaflet from 'leaflet';
+import { forEachChild } from 'typescript';
+import { Usuario } from '../models/user';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -10,12 +12,18 @@ import { ApiService } from '../services/api.service';
 export class FriendsActivityComponent implements OnInit {
 
   mapView: Leaflet.Map;
+  user = window.localStorage.getItem('userId');
+  actividades = [];
+  actualUser: Usuario;
+  localUrl:string;
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.loadMap();
-    this.loadRoute(2);
+    // this.loadMap();
+    // this.loadRoute(2);
+    this.getActividades();    
+    this.getUser();
   }
 
   loadMap() {
@@ -138,6 +146,38 @@ export class FriendsActivityComponent implements OnInit {
     var hours = Math.floor((duration / 60));
     var minutes = duration - (hours * 60);
     durLabel.innerText = `${hours}h ${minutes.toFixed(0)}m`;
+  }
+
+  getActividades() {
+    var response = this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios/actividades/${this.user}`);
+    response.subscribe(
+      (activities: any) => {
+        activities.forEach(userActivities => {
+          userActivities.forEach(activity => {
+            this.actividades.push(activity);
+          });
+        });
+        console.log(this.actividades);
+      }, (error:any) => {
+        console.log(error.statusText);
+        console.log(error.status);
+        console.log(error);
+      }
+    );
+  }
+
+  getUser() {
+    var result = this.apiService.get(`http://127.0.0.1:${this.apiService.PORT}/api/Usuarios/${this.user}`);
+    result.subscribe(
+      (value: Usuario)=>{
+        this.actualUser = value;
+        document.getElementById('username').innerText = value.user;
+        document.getElementById('nombreCompleto').innerText = `${value.nombre}  ${value.apellido1} ${value.apellido2}`;
+        this.localUrl = value.foto;
+      }, (error:any)=>{
+        console.log(error.statusText);
+        console.log(error.status);
+      });
   }
 
 }

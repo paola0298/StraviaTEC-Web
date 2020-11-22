@@ -64,6 +64,47 @@ namespace Controllers
             return Usuario;
         }
 
+        [HttpGet("actividades/{username}")]
+        public async Task<ActionResult<Actividad>> GetActividadesUsuario(string username) {
+
+            if (!UsuarioExists(username)) {
+                return BadRequest();
+            }
+
+            var amigos = new List<Usuario>();
+            var search = _context.UsuarioAmigo.AsNoTracking().Where(u => u.IdUsuario == username).ToList();
+
+            foreach (var amigo in search) {
+                var amigoUser = await _context.Usuario.FirstOrDefaultAsync(p => p.User == amigo.IdAmigo);
+
+                if (amigoUser == null) continue;
+
+                amigos.Add(amigoUser);
+            }
+
+            var actividadesUsuarios = new List<List<Actividad>>();
+            foreach (var amigo in amigos)
+            {
+                var actividades = await _context.Actividad.FromSqlInterpolated($@"
+                SELECT ""Id"", ""Id_usuario"", ""Id_tipo_actividad"", ""Id_recorrido"", ""Fecha"", 
+                ""Duracion"", ""Kilometros"", ""Es_evento"", ""Id_evento""
+                FROM ""ACTIVIDAD""
+                WHERE ""Id_usuario"" = {amigo.User}")
+                .Include(a => a.IdEventoNavigation)
+                .Include(a => a.IdRecorridoNavigation)
+                .Include(a => a.IdTipoActividadNavigation)
+                .Include(a => a.IdUsuarioNavigation)
+                .ToListAsync();
+
+                if (actividades == null) continue;
+
+                actividadesUsuarios.Add(actividades);
+            }
+
+
+            return Ok(actividadesUsuarios);
+        }
+
         // PUT: api/Usuarios/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
