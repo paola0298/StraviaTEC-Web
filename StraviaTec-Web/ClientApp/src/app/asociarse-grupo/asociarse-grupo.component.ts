@@ -27,6 +27,7 @@ export class AsociarseGrupoComponent implements OnInit {
 
 
   loadUsersGroup(idGroup: number) {
+    console.log('Obteniendo usuarios grupo');
     var response =  this.apiService.get(`http://localhost:${this.apiService.PORT}/api/UsuarioGrupo/usuarios/${idGroup}`);
     response.subscribe(
       (value:Usuario[]) => {
@@ -35,6 +36,7 @@ export class AsociarseGrupoComponent implements OnInit {
         if (actual >= 0) {
           this.usuariosGrupo.splice(actual, 1);
         }
+        this.utilsService.showInfoModal('Informacion', '', 'selectMsjLabel', 'selectmsjText', 'selectMsj');
       }, (error:any) => {
         console.log(error.statusText);
         console.log(error.status);
@@ -98,7 +100,6 @@ export class AsociarseGrupoComponent implements OnInit {
 
     if (idAdmin == this.user) {
       this.loadUsersGroup(idGrupo);
-      this.utilsService.showInfoModal('Informacion', '', 'selectMsjLabel', 'selectmsjText', 'selectMsj');
     }
   }
 
